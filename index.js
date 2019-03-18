@@ -39,6 +39,7 @@ async function getTefs() {
 	});
 	if(pnl == " Net P&L ") 
 	{
+		await browser.close();
 		return;
 	}
 	else
