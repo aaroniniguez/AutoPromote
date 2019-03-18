@@ -38,53 +38,52 @@ async function getTefs() {
 		var countRows = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child").length
 		var pnl = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child")[countRows-1].textContent
 		var totalEquity = document.querySelectorAll("table.boxContentText")[4].querySelectorAll("td:last-child")[5].textContent
-		var returnObject = 
-		{
-			TradingEquity:totalEquity,
-			pnl:pnl
+		return {
+			pnl: pnl,
+			totalEquity: totalEquity
 		};
-		if(pnl == " Net P&L ") 
-		{
-			return "Data not available at this time";
-		}
-		else
-		{
-			//clean up pnl
-			pnl = pnl.replace(/\"/g, "");
-			pnl = pnl.replace(/ /g, "");
-			var sign = (pnl.includes("(")) ? "-" : "+";
-			//negative val
-			pnl = pnl.replace(/\(/g, "");
-			pnl = pnl.replace(/\)/g, "");
-			var messages = {
-				"-" : {
-					500 : "smh fought the trend",
-					300 : "Really could have traded better today :(",
-					100 : "small scratch day, will make it back another day",
-					0   : "annoying red day"
-				},
-				"+" : [
-					{"amount":600, "message":"GODDAMN good day, had some good trades, lot of scalp opportunities"},
-					{"amount":300, "message":"im eating good ramen tonight :D"},
-					{"amount":100, "message":"pretty much a scratch day"},
-					{"amount":0, "message":"churning commission :D!"}
-					]
-				}
-			};
-			for (var i=0; i < messages[sign].length; i++)
-			{
-				if(pnl > messages[sign][i].amount)
-				{
-					var message = messages[sign][i].message;
-					break;
-				}
-			}
-			return message +" :"+ sign + "$" + pnl + " ".repeat(150) + "#Tradenet #tefs #meirbarak";
 	});
+	var pnl = tefsData.pnl;
+	var totalEquity = tefsData.totalEquity;
+	if(pnl == " Net P&L ") 
+	{
+		return "Data not available at this time";
+	}
+	else
+	{
+		//clean up pnl
+		pnl = pnl.replace(/\"/g, "");
+		pnl = pnl.replace(/ /g, "");
+		var sign = (pnl.includes("(")) ? "-" : "+";
+		//negative val
+		pnl = pnl.replace(/\(/g, "");
+		pnl = pnl.replace(/\)/g, "");
+		var messages = {
+			"-" : {
+				500 : "smh fought the trend",
+				300 : "Really could have traded better today :(",
+				100 : "small scratch day, will make it back another day",
+				0   : "annoying red day"
+			},
+			"+" : [
+				{"amount":600, "message":"GODDAMN good day, had some good trades, lot of scalp opportunities"},
+				{"amount":300, "message":"im eating good ramen tonight :D"},
+				{"amount":100, "message":"pretty much a scratch day"},
+				{"amount":0, "message":"churning commission :D!"}
+				]
+			}
+	}
+	for (var i=0; i < messages[sign].length; i++)
+	{
+		if(pnl > messages[sign][i].amount)
+		{
+			var message = messages[sign][i].message;
+			break;
+		}
+	}
 	await page.screenshot(options);
-	console.log(tefsData);
 	await browser.close();
-	return tefsData;
+	return message +" :"+ sign + "$" + pnl + " ".repeat(150) + "#Tradenet #tefs #meirbarak";
 }
 var message = (twitterCredentials.post) ? twitterCredentials.post : "testing!";
 getTefs(tefsCredentials).then(data => postOnTwitter(message)).catch(function(error)
@@ -96,7 +95,7 @@ var defaultDelay =
 	delay: 30,
 };
 async function postOnTwitter(data, uploadFile = false) {
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
   await page.goto(twitter, { waitUntil: 'networkidle2' });
