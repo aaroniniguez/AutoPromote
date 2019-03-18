@@ -1,9 +1,6 @@
 const puppeteer = require('puppeteer');
 const tefs = 'https://mts.tefsec.com/TradenetLogin.aspx';
 const twitter = "https://twitter.com/";
-const chase = 'https://chase.com';
-const util = require('util');
-const fs = require('fs');
 
 let rawdata = require('fs').readFileSync('secret.json');  
 var tefsCredentials = JSON.parse(rawdata).TEFS; 
@@ -80,10 +77,6 @@ async function getTefs() {
 	await browser.close();
 	return message +" :"+ sign + "$" + pnl + " ".repeat(150) + "#Tradenet #tefs #meirbarak";
 }
-getTefs(tefsCredentials).then(data => postOnTwitter(data)).catch(function(error)
-{
-	console.log(error);	
-});
 var defaultDelay = 
 {
 	delay: 30,
@@ -130,3 +123,7 @@ async function postOnTwitter(data, uploadFile = false) {
 	await browser.close();
 	return;
 }
+getTefs(tefsCredentials).then(data => postOnTwitter(data)).catch(function(error)
+{
+	console.log(error);	
+});
