@@ -16,11 +16,11 @@ async function getTefs() {
   await page.goto(tefs, { waitUntil: 'networkidle2' });
 
   /* Run javascript inside of the page */
-  let data = await page.evaluate((tefsCredentials) => {
-    document.querySelector('input[name="TitansID"]').value = tefsCredentials.username;
-    document.querySelector('input[name="Password"]').value = tefsCredentials.password;
-	document.querySelector('input[name="Singin"]').click();
-	}, tefsCredentials);
+	await page.evaluate((tefsCredentials) => {
+		document.querySelector('input[name="TitansID"]').value = tefsCredentials.username;
+		document.querySelector('input[name="Password"]').value = tefsCredentials.password;
+		document.querySelector('input[name="Singin"]').click();
+		}, tefsCredentials);
 	await page.waitFor(6000);
 	var options = 
 	{
@@ -38,14 +38,11 @@ async function getTefs() {
 		var countRows = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child").length
 		var pnl = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child")[countRows-1].textContent
 		var totalEquity = document.querySelectorAll("table.boxContentText")[4].querySelectorAll("td:last-child")[5].textContent
-		return [
-			pnl,
-			totalEquity
-		];
+		return [pnl, totalEquity];
 	});
 	if(pnl == " Net P&L ") 
 	{
-		return "Data not available at this time";
+		return;
 	}
 	else
 	{
@@ -83,8 +80,7 @@ async function getTefs() {
 	await browser.close();
 	return message +" :"+ sign + "$" + pnl + " ".repeat(150) + "#Tradenet #tefs #meirbarak";
 }
-var message = (twitterCredentials.post) ? twitterCredentials.post : "testing!";
-getTefs(tefsCredentials).then(data => postOnTwitter(message)).catch(function(error)
+getTefs(tefsCredentials).then(data => postOnTwitter(data)).catch(function(error)
 {
 	console.log(error);	
 });
@@ -93,6 +89,11 @@ var defaultDelay =
 	delay: 30,
 };
 async function postOnTwitter(data, uploadFile = false) {
+  if(!data)
+  {
+  	data = twitterCredentials.post;	
+  	console.log(data);
+  }
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
