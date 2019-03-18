@@ -62,7 +62,8 @@ async function getTefs() {
 				"-" : {
 					500 : "smh fought the trend",
 					300 : "Really could have traded better today :(",
-					100 : "small scratch day, will make it back another day"
+					100 : "small scratch day, will make it back another day",
+					0   : "annoying red day"
 				},
 				"+" : [
 					{"amount":600, "message":"GODDAMN good day, had some good trades, lot of scalp opportunities"},
@@ -87,7 +88,7 @@ async function getTefs() {
 	await browser.close();
 	return tefsData;
 }
-var message = (twitterCredentials.post) ? twitterCredentials.post : " ".repeat(200) + "http://jump2click.com/visit/?bta=37140&nci=6639";
+var message = (twitterCredentials.post) ? twitterCredentials.post : "testing!";
 getTefs(tefsCredentials).then(data => postOnTwitter(message)).catch(function(error)
 {
 	console.log(error);	
@@ -133,7 +134,3 @@ async function postOnTwitter(data, uploadFile = false) {
 	await browser.close();
 	return;
 }
-//postOnTwitter().catch(function(error)
-//{
-//	console.log(error);	
-//});
