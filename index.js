@@ -34,17 +34,15 @@ async function getTefs() {
 			height:200
 		}
 	};
-	let tefsData = await page.evaluate(() => {
+	let [pnl, totalEquity] = await page.evaluate(() => {
 		var countRows = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child").length
 		var pnl = document.querySelectorAll("table.boxContentText")[6].querySelectorAll("td:last-child")[countRows-1].textContent
 		var totalEquity = document.querySelectorAll("table.boxContentText")[4].querySelectorAll("td:last-child")[5].textContent
-		return {
-			pnl: pnl,
-			totalEquity: totalEquity
-		};
+		return [
+			pnl,
+			totalEquity
+		];
 	});
-	var pnl = tefsData.pnl;
-	var totalEquity = tefsData.totalEquity;
 	if(pnl == " Net P&L ") 
 	{
 		return "Data not available at this time";
