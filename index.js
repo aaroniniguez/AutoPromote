@@ -1,11 +1,9 @@
 const puppeteer = require('puppeteer');
-const IMDB_URL = (movie_id) => `https://www.imdb.com/title/${movie_id}/`;
 const tefs = 'https://mts.tefsec.com/TradenetLogin.aspx';
 const twitter = "https://twitter.com/";
 const chase = 'https://chase.com';
 const util = require('util');
 const fs = require('fs');
-console.log(IMDB_URL);
 
 let rawdata = require('fs').readFileSync('secret.json');  
 var tefsCredentials = JSON.parse(rawdata).TEFS; 
@@ -98,7 +96,7 @@ var defaultDelay =
 	delay: 30,
 };
 async function postOnTwitter(data, uploadFile = false) {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
 
   await page.goto(twitter, { waitUntil: 'networkidle2' });
