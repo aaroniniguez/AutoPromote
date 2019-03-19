@@ -80,8 +80,8 @@ async function getTefs(username, password) {
 	return message +" :"+ sign + "$" + pnl + "\n\n" + "#Tradenet #tefs #meirbarak";
 }
 var today = new Date();
-var message = "It's " + today.getHours() + ":" + today.getMinutes() + "!! That means its promotion time :D \n\n";
-twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, message + twitterCredentialsPromo.post).catch(function(error)
+var message = "It's " + today.getHours() + ":" + today.getMinutes() . "!! That means its promotion time :D \n\n";
+twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, twitterCredentialsPromo.post).catch(function(error)
 {
 	console.log(error);
 });
