@@ -6,18 +6,18 @@ let rawdata = require('fs').readFileSync('secret.json');
 var tefsCredentials = JSON.parse(rawdata).TEFS; 
 var twitterCredentials = JSON.parse(rawdata).Twitter;
 
-async function getTefs() {
+async function getTefs(username, password) {
   /* Initiate the Puppeteer browser */
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
   await page.goto(tefs, { waitUntil: 'networkidle2' });
 
   /* Run javascript inside of the page */
-	await page.evaluate((tefsCredentials) => {
-		document.querySelector('input[name="TitansID"]').value = tefsCredentials.username;
-		document.querySelector('input[name="Password"]').value = tefsCredentials.password;
+	await page.evaluate((username, password) => {
+		document.querySelector('input[name="TitansID"]').value = username;
+		document.querySelector('input[name="Password"]').value = password;
 		document.querySelector('input[name="Singin"]').click();
-		}, tefsCredentials);
+		}, username, password);
 	await page.waitFor(6000);
 	var options = 
 	{
@@ -124,7 +124,11 @@ async function postOnTwitter(data, uploadFile = false) {
 	await browser.close();
 	return;
 }
-getTefs(tefsCredentials).then(data => postOnTwitter(data, "dailyPNL.png")).catch(function(error)
+//postOnTwitter().catch(function(error)
+//{
+//	console.log(error);	
+//});
+getTefs(tefsCredentials.username, tefsCredentials.password).then(data => postOnTwitter(data, "dailyPNL.png")).catch(function(error)
 {
 	console.log(error);	
 });
