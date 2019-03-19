@@ -52,12 +52,12 @@ async function getTefs() {
 		pnl = pnl.replace(/\(/g, "");
 		pnl = pnl.replace(/\)/g, "");
 		var messages = {
-			"-" : {
-				500 : "smh fought the trend",
-				300 : "Really could have traded better today :(",
-				100 : "small scratch day, will make it back another day",
-				0   : "annoying red day"
-			},
+			"-" : [
+				{"amount":500 , "message": "smh fought the trend"},
+				{"amount":300 , "message": "Really could have traded better today :("},
+				{"amount":100 , "message": "small scratch day, will make it back another day"},
+				{"amount":0 , "message": "annoying small red day"}
+			],
 			"+" : [
 				{"amount":600, "message":"GODDAMN good day, had some good trades, lot of scalp opportunities"},
 				{"amount":300, "message":"im eating good ramen tonight :D"},
@@ -76,7 +76,7 @@ async function getTefs() {
 	}
 	await page.screenshot(options);
 	await browser.close();
-	return message +" :"+ sign + "$" + pnl + " ".repeat(150) + "#Tradenet #tefs #meirbarak";
+	return message +" :"+ sign + "$" + pnl + "\n\n" + "#Tradenet #tefs #meirbarak";
 }
 var defaultDelay = 
 {
@@ -124,7 +124,7 @@ async function postOnTwitter(data, uploadFile = false) {
 	await browser.close();
 	return;
 }
-getTefs(tefsCredentials).then(data => postOnTwitter(data)).catch(function(error)
+getTefs(tefsCredentials).then(data => postOnTwitter(data, "dailyPNL.png")).catch(function(error)
 {
 	console.log(error);	
 });
