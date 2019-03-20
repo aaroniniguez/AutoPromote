@@ -38,13 +38,11 @@ async function getTefs(username, password) {
 		var totalEquity = document.querySelectorAll("table.boxContentText")[4].querySelectorAll("td:last-child")[5].textContent
 		return [pnl, totalEquity];
 	});
-	if(pnl == " Net P&L ") 
-	{
+	if(pnl == " Net P&L "){
 		await browser.close();
 		return;
 	}
-	else
-	{
+	else{
 		//clean up pnl
 		pnl = pnl.replace(/\"/g, "");
 		pnl = pnl.replace(/ /g, "");
@@ -80,12 +78,13 @@ async function getTefs(username, password) {
 	return message +" :"+ sign + "$" + pnl + "\n\n" + "#Tradenet #tefs #meirbarak";
 }
 var today = new Date();
-var message = "It's " + today.getHours() + ":" + today.getMinutes() + "!! That means its promotion time :D \n\n";
-//twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, message + twitterCredentialsPromo.post).catch(function(error)
-//{
-//	console.log(error);
-//});
-getTefs(tefsCredentials.username, tefsCredentials.password).then(data => twitter.postOnTwitter(twitterCredentials.username, twitterCredentials.password, data, "dailyPNL.png")).catch(function(error)
+var hours = ((today.getHours() + 11) % 12 + 1);
+var ampm = hours >= 12 ? "PM" : "AM";
+var message = "It's " + hours + ":" + today.getMinutes() + " " + ampm + "!! That means its promotion time :D \n\n";
+twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, message + twitterCredentialsPromo.post).catch(function(error)
 {
 	console.log(error);
 });
+//getTefs(tefsCredentials.username, tefsCredentials.password).then(data => twitter.postOnTwitter(twitterCredentials.username, twitterCredentials.password, data, "dailyPNL.png")).catch(function(error){
+//	console.log(error);
+//});
