@@ -81,7 +81,11 @@ async function getTefs(username, password) {
 }
 var today = new Date();
 var message = "It's " + today.getHours() + ":" + today.getMinutes() + "!! That means its promotion time :D \n\n";
-twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, message + twitterCredentialsPromo.post).catch(function(error)
+//twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, message + twitterCredentialsPromo.post).catch(function(error)
+//{
+//	console.log(error);
+//});
+getTefs(tefsCredentials.username, tefsCredentials.password).then(data => twitter.postOnTwitter(twitterCredentials.username, twitterCredentials.password, data, "dailyPNL.png")).catch(function(error)
 {
 	console.log(error);
 });
