@@ -5,7 +5,7 @@ module.exports = {
 		};
 		const puppeteer = require('puppeteer');
 		const twitter = "https://twitter.com/";
-		const browser = await puppeteer.launch({headless: false});
+		const browser = await puppeteer.launch({headless: true});
 		const page = await browser.newPage();
 
 		await page.goto(twitter, { waitUntil: 'networkidle2' });
