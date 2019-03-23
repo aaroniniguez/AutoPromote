@@ -8,7 +8,7 @@ var twitterCredentialsPromo = JSON.parse(rawdata).TwitterPromo;
 var facebookCredentials = JSON.parse(rawdata).Facebook
 tefs.tefs(tefsCredentials.username, tefsCredentials.password).then(data => 
 {
-	twitter.postOnTwitter(twitterCredentials.username, twitterCredentials.password, data + "\n\n #tefs #TradeNet #suretrader", "dailyPNL.png");
+	twitter.postOnTwitter(twitterCredentials.username, twitterCredentials.password, data + "\n\n #Tefs #TradeNet #SuretraderKiller", "dailyPNL.png");
 	facebook.postOnFacebook(facebookCredentials.username, facebookCredentials.password, data, "dailyPNL.png");
 }).catch(function(error){
 	console.log(error);	
