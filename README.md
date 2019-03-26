@@ -1,5 +1,9 @@
 # Node Browser
 
+To Install 
+```
+npm install puppeteer
+```
 
 Enables you to manage your social media :    
 - Facebook   
