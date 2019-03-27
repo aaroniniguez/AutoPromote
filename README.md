@@ -2,8 +2,13 @@
 
 To Install 
 ```
-npm install puppeteer
+npm install -g puppeteer --unsafe-perm=true
 ```
+To install chrome dependencies on Amazon Linux AMI 
+```
+bash installer.sh
+```
+
 
 Enables you to manage your social media :    
 - Facebook   
