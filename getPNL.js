@@ -13,4 +13,3 @@ tefs.getTefs(tefsCredentials.username, tefsCredentials.password).then(data => {
 }).catch(function(error){
 	console.log(error);	
 });
-//test;
