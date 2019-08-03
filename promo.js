@@ -14,10 +14,10 @@ const promote = process.argv[2];
 if(promote == "tradenet"){
 	var tradenetMessage = twitterCredentialsPromo.message;
 }
-else if(promote == "robinhood"){
+else if(promote == "robinhood") {
 	var robinHoodMessage = robinHoodCredentialsPromo.message;
 }
-else if(promote == "promote"){
+else if(promote == "promote") {
 	var tradenetMessage = twitterCredentialsPromo.message
 	var robinHoodMessage = robinHoodCredentialsPromo.message
 }
@@ -26,7 +26,7 @@ else if(promote == "promote"){
 //{
 //	console.log(error);
 //});
-DB.moveFirstRowToEnd().then(()=>{DB.query("select * from stockQuotes").then((data)=>{
+DB.moveFirstRowToEnd().then(()=>{DB.query("select * from stockQuotes order by id").then((data)=>{
 	if(typeof robinHoodMessage === 'undefined')
 		robinHoodMessage = data[0].quote;
 	if(typeof tradenetMessage === 'undefined')
