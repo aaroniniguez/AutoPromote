@@ -2,7 +2,6 @@ const twitter = require("twitter");
 const database = require("Database");
 let DB =new database("localhost", "root", "stock");
 let rawdata = require('fs').readFileSync('secret.json');  
-var twitterCredentials = JSON.parse(rawdata).Twitter;
 var twitterCredentialsPromo = JSON.parse(rawdata).TwitterPromo;
 var robinHoodCredentialsPromo = JSON.parse(rawdata).RobinHoodPromo;
 
