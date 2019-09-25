@@ -55,5 +55,6 @@ function tweetQuote() {
 		.then(()=>{DB.close();}).catch(handleDBError)
 }
 tweetQuote();
+//promote();
 
 //sudo mysql stop
