@@ -1,4 +1,4 @@
-const twitter = require("twitter");
+var twitter = require("./node_modules/Twitter");
 const database = require("Database");
 let DB =new database("localhost", "root", "stock");
 //var mysql = require("mysql")
@@ -52,7 +52,8 @@ function tweetQuote() {
 			twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
 			twitter.postOnTwitter(robinHoodCredentialsPromo.username, robinHoodCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
 		})
-		.then(()=>{DB.close();}).catch(handleDBError)
+		.then(()=>{DB.close();})
+		.catch(handleDBError)
 }
 tweetQuote();
 //promote();
