@@ -30,6 +30,10 @@ function tweetQuote() {
 		.then(()=>{DB.close();})
 		.catch(handleDBError)
 }
-tweetQuote();
-//promote();
+if(process.argv[2] == "promo") {
+	promote();
+}
+else if(process.argv[2] == "quote") {
+	tweetQuote();
+}
 //sudo mysql stop
