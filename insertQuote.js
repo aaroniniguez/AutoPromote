@@ -7,4 +7,4 @@ DB.query(`insert into stockQuotes (quote) values("${quote}")`)
         console.log("Duplicate Entries Not Allowed!");
         //console.log(e);
     })
-    .finally(() => DB.close());
+    .finally(() => DB.close().catch((e)=>{console.log("couldnt close properly");}));
