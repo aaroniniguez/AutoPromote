@@ -18,17 +18,22 @@ function tweetQuote() {
 		console.log(error.name);
 		process.exit();
 	}
-	DB.query("select * from stockQuotes order by id")
-		.then((rows) => {
-			let id = rows[0].id;
-			let quote = rows[0].quote;
-			DB.query(`delete from stockQuotes where id = ${id}`);
-			DB.query(`insert into stockQuotes (quote) values("${quote}")`);
-			twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
-			twitter.postOnTwitter(robinHoodCredentialsPromo.username, robinHoodCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
-		})
-		.then(()=>{DB.close();})
-		.catch(handleDBError)
+	DB.query(`
+		SELECT *
+		FROM stockQuotes
+		ORDER BY last_read ASC`)
+	.then((rows) => {
+		let id = rows[0].id;
+		let quote = rows[0].quote;
+		DB.query(`
+			UPDATE stockQuotes
+			SET last_read = now()
+			WHERE id = ${id}`);
+		twitter.postOnTwitter(twitterCredentialsPromo.username, twitterCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
+		twitter.postOnTwitter(robinHoodCredentialsPromo.username, robinHoodCredentialsPromo.password, quote, uploadFile = false, randomFollow = true);
+	})
+	.then(()=>{DB.close();})
+	.catch(handleDBError)
 }
 if(process.argv[2] == "promo") {
 	promote();
@@ -37,3 +42,4 @@ else if(process.argv[2] == "quote") {
 	tweetQuote();
 }
 //sudo mysql stop
+//kill -9 node
