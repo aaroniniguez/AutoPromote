@@ -1,4 +1,4 @@
-# Node Browser
+# Auto Tweeter
 
 To Install 
 ```
@@ -11,8 +11,6 @@ bash installer.sh
 
 
 Enables you to manage your social media :    
-- Facebook   
-  - Auto Post with/without image  
 - Twitter  
   - Auto tweet with/without image  
   - Auto Follow on tweet
