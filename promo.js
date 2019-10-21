@@ -1,7 +1,7 @@
-var twitter = require("./node_modules/Twitter");
-const database = require("Database");
+var twitter = require("./Twitter");
+const database = require("./Database");
 let DB =new database("localhost", "root", "stock");
-let rawdata = require('fs').readFileSync('./secret.json');  
+let rawdata = require('fs').readFileSync('/Users/aaroniniguez/NodeProjects/nodeBrowser/secret.json');  
 var twitterCredentialsPromo = JSON.parse(rawdata).TwitterPromo;
 var robinHoodCredentialsPromo = JSON.parse(rawdata).RobinHoodPromo;
 
