@@ -47,7 +47,7 @@ module.exports.postOnTwitter = async function (username, password, data, uploadF
 		const puppeteer = require('puppeteer');
 		const twitter = "https://twitter.com/";
 		//const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  		const browser = await puppeteer.launch({headless: true});
+  		const browser = await puppeteer.launch({headless: false});
 		const page = await browser.newPage();
 		//print out console logging in the page
 		consoleHandler(page);
