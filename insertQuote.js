@@ -1,4 +1,4 @@
-const database = require("Database");
+const database = require("./Database.js");
 let DB = new database()
 var quote = process.argv[2];
 DB.query(`insert into stockQuotes (quote) values("${quote}")`)
