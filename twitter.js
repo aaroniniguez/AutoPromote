@@ -34,7 +34,8 @@ function consoleHandler(page) {
 			console[log._type](log._type+":" + log._text);
 	});
 }
-module.exports.postOnTwitter = async function (username, password, data, uploadFile = false, randomFollow = false) {
+module.exports.postOnTwitter = async function (credentials, data, uploadFile = false, randomFollow = false) {
+		let {username, password} = credentials;
 		function elementDoesntExist(err) {
 			console.log(err);
 			console.log(Object.prototype.toString.call(err));
