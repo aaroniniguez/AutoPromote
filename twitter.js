@@ -41,7 +41,7 @@ module.exports.postOnTwitter = async function (username, password, data, uploadF
 			process.exit();
 		}
 		const validLoginPages = ["https://twitter.com/home", "https://twitter.com/"];
-		var defaultDelay = {
+		var typeDelay = {
 			delay: 3,
 		};
 		const puppeteer = require('puppeteer');
@@ -60,8 +60,8 @@ module.exports.postOnTwitter = async function (username, password, data, uploadF
 		var selector = "input[name='session[username_or_email]']";
 		await page.waitFor(3000);
 		let EH = await page.waitForSelector(selector).catch(elementDoesntExist);
-		await EH.type(username, defaultDelay);
-		await page.type("input.js-password-field", password, defaultDelay).catch(elementDoesntExist);
+		await EH.type(username, typeDelay);
+		await page.type("input.js-password-field", password, typeDelay).catch(elementDoesntExist);
 		await page.waitForXPath("//button[text()='Log in']").then((EH)=>EH.click()).catch(elementDoesntExist);
 		//check if user successfully logged in
 		//wait for page to load before getting url
@@ -81,7 +81,7 @@ module.exports.postOnTwitter = async function (username, password, data, uploadF
 		//assumes logged in...
 		await page.keyboard.press('KeyN');
 		await page.waitFor(2000);
-		await page.keyboard.type(data, defaultDelay);
+		await page.keyboard.type(data, typeDelay);
 		if(uploadFile){
 			const input = await page.$('input[type="file"]');
 			await input.uploadFile(uploadFile);
