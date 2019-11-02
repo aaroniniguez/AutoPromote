@@ -42,7 +42,7 @@ module.exports.postOnTwitter = async function (username, password, data, uploadF
 		}
 		const validLoginPages = ["https://twitter.com/home", "https://twitter.com/"];
 		var defaultDelay = {
-			delay: 30,
+			delay: 3,
 		};
 		const puppeteer = require('puppeteer');
 		const twitter = "https://twitter.com/";
