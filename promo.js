@@ -2,29 +2,18 @@ var twitter = require("./Twitter");
 const database = require("./Database");
 let DB =new database("localhost", "root", "stock");
 let rawdata = require('fs').readFileSync('/Users/aaroniniguez/NodeProjects/nodeBrowser/secret.json');  
-var jesusCredentialsPromo = JSON.parse(rawdata).TwitterPromo;
-let jesusCredentials = {
-	"username":jesusCredentialsPromo.username,
-	"password":jesusCredentialsPromo.password
-}
-var robinHoodCredentialsPromo = JSON.parse(rawdata).RobinHoodPromo;
-let robinHoodCredentials = {
-	"username":robinHoodCredentialsPromo.username,
-	"password":robinHoodCredentialsPromo.password
-}
-var chickCredentialsPromo = JSON.parse(rawdata).chickPromo;
-let chickCredentials = {
-	"username": chickCredentialsPromo.username,
-	"password": chickCredentialsPromo.password
-}
+const Defaults  = require("./Defaults")
+var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
+var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
+var chick = new Defaults(JSON.parse(rawdata).chickPromo);
 
 var today = new Date();
 var hours = ((today.getHours() + 11) % 12 + 1);
 var ampm = today.getHours() >= 12 ? "PM" : "AM";
 function promote() {
-	twitter.postOnTwitter(jesusCredentials, jesusCredentialsPromo.message, uploadFile = false, randomFollow = true);
-	twitter.postOnTwitter(robinHoodCredentials, robinHoodCredentialsPromo.message, uploadFile = false, randomFollow = true);
-	twitter.postOnTwitter(chickCredentials, chickCredentialsPromo.message, uploadFile = false, randomFollow = true);
+	twitter.postOnTwitter(jesus.credentials, jesus.message, uploadFile = false, randomFollow = true);
+	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
+	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
 function tweetQuote() {
 	function handleDBError(error) {
@@ -43,9 +32,9 @@ function tweetQuote() {
 			UPDATE stockQuotes
 			SET last_read = now()
 			WHERE id = ${id}`);
-		twitter.postOnTwitter(jesusCredentials, quote, uploadFile = false, randomFollow = true);
-		twitter.postOnTwitter(robinHoodCredentials, quote, uploadFile = false, randomFollow = true);
-		twitter.postOnTwitter(chickCredentials, quote, uploadFile = false, randomFollow = true);
+		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
+		twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
+		twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
 	})
 	.then(()=>{DB.close();})
 	.catch(handleDBError)
