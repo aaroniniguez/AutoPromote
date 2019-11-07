@@ -11,7 +11,7 @@ var today = new Date();
 var hours = ((today.getHours() + 11) % 12 + 1);
 var ampm = today.getHours() >= 12 ? "PM" : "AM";
 function promote() {
-	twitter.postOnTwitter(jesus.credentials, jesus.message, uploadFile = false, randomFollow = true);
+	twitter.postOnTwitter(jesus.credentials, jesus.message,uploadFile = "/Users/aaroniniguez/Desktop/st/Payouts/NovemberPayout.png", randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
 	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
@@ -32,7 +32,7 @@ function tweetQuote() {
 			UPDATE stockQuotes
 			SET last_read = now()
 			WHERE id = ${id}`);
-		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
+		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = "/Users/aaroniniguez/Desktop/st/Payouts/NovemberPayout.png", randomFollow = true);
 		twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
 		twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
 	})
