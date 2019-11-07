@@ -32,7 +32,7 @@ function tweetQuote() {
 			UPDATE stockQuotes
 			SET last_read = now()
 			WHERE id = ${id}`);
-		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = "/Users/aaroniniguez/Desktop/st/Payouts/NovemberPayout.png", randomFollow = true);
+		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
 		twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
 		twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
 	})
