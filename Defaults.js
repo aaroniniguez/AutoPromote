@@ -4,7 +4,7 @@ class Defaults {
             "username":jsonObj.username,
             "password":jsonObj.password
         }
-        this.promo = jsonObj.promo
+        this.message = jsonObj.message
     }
 }
 module.exports = Defaults
