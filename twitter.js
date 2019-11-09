@@ -34,6 +34,10 @@ function consoleHandler(page) {
 			console[log._type](log._type+":" + log._text);
 	});
 }
+/** Post a tweet on twitter 
+ * - optional image
+ * - optional follow everyone at who_to_follow page
+ * */
 module.exports.postOnTwitter = async function (credentials, data, uploadFile = false, randomFollow = false) {
 		let {username, password} = credentials;
 		function elementDoesntExist(err) {
@@ -50,6 +54,10 @@ module.exports.postOnTwitter = async function (credentials, data, uploadFile = f
 		//const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
   		const browser = await puppeteer.launch({headless: false});
 		const page = await browser.newPage();
+		const session = await page.target().createCDPSession()
+		const {windowId} = await session.send('Browser.getWindowForTarget');
+		await session.send('Browser.setWindowBounds', {windowId, bounds: {windowState: 'minimized'}});
+
 		//print out console logging in the page
 		consoleHandler(page);
 		await page.goto(twitter, { waitUntil: 'networkidle2' });
