@@ -6,12 +6,10 @@ const Defaults  = require("./Defaults")
 var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
 var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
 var chick = new Defaults(JSON.parse(rawdata).chickPromo);
-
-var today = new Date();
-var hours = ((today.getHours() + 11) % 12 + 1);
-var ampm = today.getHours() >= 12 ? "PM" : "AM";
+let ImageManager = rquire("./ImagePromos.js") 
+let randomImageTweet = ImageManager.getRandomImage()
 function promote() {
-	twitter.postOnTwitter(jesus.credentials, jesus.message,uploadFile = "/Users/aaroniniguez/Desktop/st/Payouts/NovemberPayout.png", randomFollow = true);
+	twitter.postOnTwitter(jesus.credentials, randomImageTweet.message, uploadFile = randomImageTweet.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
 	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
