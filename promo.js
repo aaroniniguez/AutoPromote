@@ -1,12 +1,12 @@
-var twitter = require("./Twitter");
-const database = require("./Database");
+var twitter = require("./lib/Twitter.js");
+const database = require("./lib/Database.js");
 let DB =new database("localhost", "root", "stock");
 let rawdata = require('fs').readFileSync('/Users/aaroniniguez/NodeProjects/nodeBrowser/secret.json');  
-const Defaults  = require("./Defaults")
+const Defaults  = require("./lib/Defaults.js")
 var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
 var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
 var chick = new Defaults(JSON.parse(rawdata).chickPromo);
-let ImageManager = rquire("./ImagePromos.js") 
+let ImageManager = require("./lib/ImagePromos.js") 
 let randomImageTweet = ImageManager.getRandomImage()
 function promote() {
 	twitter.postOnTwitter(jesus.credentials, randomImageTweet.message, uploadFile = randomImageTweet.image, randomFollow = true);
