@@ -6,8 +6,8 @@ const Defaults  = require("./lib/Defaults.js")
 var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
 var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
 var chick = new Defaults(JSON.parse(rawdata).chickPromo);
-let ImageManager = require("./lib/ImagePromos.js") 
-let randomImageTweet = ImageManager.getRandomImage()
+let promotionManager = require("./lib/Promos.js") 
+let randomImageTweet = promotionManager.getRandomImagePromotion()
 function promote() {
 	twitter.postOnTwitter(jesus.credentials, randomImageTweet.message, uploadFile = randomImageTweet.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
