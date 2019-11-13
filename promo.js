@@ -7,9 +7,9 @@ var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
 var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
 var chick = new Defaults(JSON.parse(rawdata).chickPromo);
 let promotionManager = require("./lib/Promos.js") 
-let randomImageTweet = promotionManager.getRandomImagePromotion()
+let randomPromotion = promotionManager.getRandomTextPromotion()
 function promote() {
-	twitter.postOnTwitter(jesus.credentials, randomImageTweet.message, uploadFile = randomImageTweet.image, randomFollow = true);
+	twitter.postOnTwitter(jesus.credentials, randomPromotion.message, uploadFile = randomPromotion.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
 	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
