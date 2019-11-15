@@ -1,13 +1,16 @@
 var twitter = require("./lib/Twitter.js");
 const database = require("./lib/Database.js");
 let DB =new database("localhost", "root", "stock");
-let rawdata = require('fs').readFileSync('/Users/aaroniniguez/NodeProjects/nodeBrowser/secret.json');  
-const Defaults  = require("./lib/Defaults.js")
-var jesus = new Defaults(JSON.parse(rawdata).TwitterPromo);
-var robinHood = new Defaults(JSON.parse(rawdata).RobinHoodPromo);
-var chick = new Defaults(JSON.parse(rawdata).chickPromo);
+let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
+var jesus = twitterAccounts.Jesus;
+var robinHood = twitterAccounts.RobinHoodPromo;
+var chick = twitterAccounts.chickPromo;
+var ownAccount = twitterAccounts.OwnAccount;
 let randomPromotion = promotionManager.getRandomTextPromotion()
+function test() {
+	twitter.postOnTwitter(ownAccount.credentials, "test", uploadFile = false, randomFollow = true)
+}
 function promote() {
 	twitter.postOnTwitter(jesus.credentials, randomPromotion.message, uploadFile = randomPromotion.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
