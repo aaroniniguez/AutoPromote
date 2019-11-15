@@ -1,16 +1,13 @@
 var twitter = require("./lib/Twitter.js");
 const database = require("./lib/Database.js");
 let DB =new database("localhost", "root", "stock");
+let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
 var jesus = twitterAccounts.Jesus;
 var robinHood = twitterAccounts.RobinHoodPromo;
 var chick = twitterAccounts.chickPromo;
-var ownAccount = twitterAccounts.OwnAccount;
 let randomPromotion = promotionManager.getRandomTextPromotion()
-function test() {
-	twitter.postOnTwitter(ownAccount.credentials, "test", uploadFile = false, randomFollow = true)
-}
 function promote() {
 	twitter.postOnTwitter(jesus.credentials, randomPromotion.message, uploadFile = randomPromotion.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
@@ -19,13 +16,9 @@ function promote() {
 function tweetQuote() {
 	function handleDBError(error) {
 		console.log(error);
-		console.log(error.name);
 		process.exit();
 	}
-	DB.query(`
-		SELECT *
-		FROM stockQuotes
-		ORDER BY last_read ASC`)
+	Stocks.getAll()
 	.then((rows) => {
 		let id = rows[0].id;
 		let quote = rows[0].quote;
