@@ -8,7 +8,7 @@ var jesus = twitterAccounts.Jesus;
 var robinHood = twitterAccounts.RobinHoodPromo;
 var chick = twitterAccounts.chickPromo;
 let randomPromotion = promotionManager.getRandomTextPromotion()
-function promote() {
+function tweetPromo() {
 	twitter.postOnTwitter(jesus.credentials, randomPromotion.message, uploadFile = randomPromotion.image, randomFollow = true);
 	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
 	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
@@ -18,14 +18,8 @@ function tweetQuote() {
 		console.log(error);
 		process.exit();
 	}
-	Stocks.getAll()
-	.then((rows) => {
-		let id = rows[0].id;
-		let quote = rows[0].quote;
-		DB.query(`
-			UPDATE stockQuotes
-			SET last_read = now()
-			WHERE id = ${id}`);
+	Stocks.getQuote()
+	.then((quote) => {
 		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
 		twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
 		twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
@@ -34,7 +28,7 @@ function tweetQuote() {
 	.catch(handleDBError)
 }
 if(process.argv[2] == "promo") {
-	promote();
+	tweetPromo();
 }
 else if(process.argv[2] == "quote") {
 	tweetQuote();
