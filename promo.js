@@ -19,12 +19,18 @@ function tweetQuote() {
 		process.exit();
 	}
 	Stocks.getQuote()
-	.then((quote) => {
-		twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
-		twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
-		twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
+	.then(async(quote) => {
+		let jesusTweet = twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
+		let robinHoodTweet = twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
+		let chickTweet = twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
+		await jesusTweet
+		await robinHoodTweet
+		await chickTweet
 	})
-	.then(()=>{DB.close();})
+	.then(()=>{
+		console.log("closing")
+		DB.close();
+	})
 	.catch(handleDBError)
 }
 if(process.argv[2] == "promo") {
