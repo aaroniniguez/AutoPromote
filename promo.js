@@ -9,9 +9,10 @@ var robinHood = twitterAccounts.RobinHoodPromo;
 var chick = twitterAccounts.chickPromo;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
-	twitter.postOnTwitter(jesus.credentials, randomPromotion.message, uploadFile = randomPromotion.image, randomFollow = true);
-	twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
-	twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
+	jesusTwitter = new twitter(jesus.credentials)
+	jesusTwitter.tweet(randomPromotion.message, uploadFile = randomPromotion.image);
+	//twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
+	//twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
 function tweetQuote() {
 	function handleDBError(error) {
@@ -20,18 +21,20 @@ function tweetQuote() {
 	}
 	Stocks.getQuote()
 	.then(async(quote) => {
-		let jesusTweet = twitter.postOnTwitter(jesus.credentials, quote, uploadFile = false, randomFollow = true);
-		let robinHoodTweet = twitter.postOnTwitter(robinHood.credentials, quote, uploadFile = false, randomFollow = true);
-		let chickTweet = twitter.postOnTwitter(chick.credentials, quote, uploadFile = false, randomFollow = true);
+		let jesusTwitter = new twitter(jesus.credentials)
+		let jesusTweet = jesusTwitter.tweet(quote, uploadFile = false);
+
+		let robinHoodTwitter = new twitter(robinHood.credentials)
+		let robinHoodTweet = robinHoodTwitter.tweet(quote, uploadFile = false);
+
+		let chickTwitter = new twitter(chick.credentials)
+		let chickTweet = chickTwitter.tweet(quote, uploadFile = false);
 		await jesusTweet
 		await robinHoodTweet
 		await chickTweet
 	})
-	.then(()=>{
-		console.log("closing")
-		DB.close();
-	})
-	.catch(handleDBError)
+	.then(Stocks.close())
+	.catch(handleDBError);
 }
 if(process.argv[2] == "promo") {
 	tweetPromo();
