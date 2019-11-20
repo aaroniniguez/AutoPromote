@@ -13,4 +13,5 @@ bash installer.sh
 Enables you to manage your social media :    
 - Twitter  
   - Auto tweet with/without image  
-  - Auto Follow on tweet
+  - Auto follow
+  - Auto follow unfollow
