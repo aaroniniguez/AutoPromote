@@ -1,6 +1,4 @@
 var twitter = require("./lib/Twitter.js");
-const database = require("./lib/Database.js");
-let DB =new database("localhost", "root", "stock");
 let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
@@ -22,18 +20,18 @@ function tweetQuote() {
 	Stocks.getQuote()
 	.then(async(quote) => {
 		let jesusTwitter = new twitter(jesus.credentials)
-		let jesusTweet = jesusTwitter.tweet(quote, uploadFile = false);
+		let jesusTweet = jesusTwitter.tweet(quote, uploadFile = false).then(() => jesusTwitter.followThenUnfollow());
 
 		let robinHoodTwitter = new twitter(robinHood.credentials)
-		let robinHoodTweet = robinHoodTwitter.tweet(quote, uploadFile = false);
+		let robinHoodTweet = robinHoodTwitter.tweet(quote, uploadFile = false).then(() => robinHoodTwitter.followRandomPeople());
 
 		let chickTwitter = new twitter(chick.credentials)
-		let chickTweet = chickTwitter.tweet(quote, uploadFile = false);
+		let chickTweet = chickTwitter.tweet(quote, uploadFile = false).then(() => chickTwitter.followRandomPeople());
 		await jesusTweet
 		await robinHoodTweet
 		await chickTweet
 	})
-	.then(Stocks.close())
+	.then(() => Stocks.close())
 	.catch(handleDBError);
 }
 if(process.argv[2] == "promo") {
