@@ -9,9 +9,11 @@ let chick = twitterAccounts.chickPromo;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	jesusTwitter = new twitter(jesus.credentials)
-	jesusTwitter.tweet(randomPromotion.message, uploadFile = randomPromotion.image);
-	//twitter.postOnTwitter(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
-	//twitter.postOnTwitter(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
+		jesusTwitter
+			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
+			.then(() => jesusTwitter.close())
+	//twitter.tweet(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
+	//twitter.tweet(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
 }
 function tweetQuote() {
 	function handleDBError(error) {
