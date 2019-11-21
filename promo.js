@@ -2,9 +2,10 @@ var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
-var jesus = twitterAccounts.Jesus;
-var robinHood = twitterAccounts.RobinHoodPromo;
-var chick = twitterAccounts.chickPromo;
+let jesus = twitterAccounts.Jesus;
+let own = twitterAccounts.OwnAccount
+let robinHood = twitterAccounts.RobinHoodPromo;
+let chick = twitterAccounts.chickPromo;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	jesusTwitter = new twitter(jesus.credentials)
@@ -18,21 +19,39 @@ function tweetQuote() {
 		process.exit();
 	}
 	Stocks.getQuote()
-	.then(async(quote) => {
-		let jesusTwitter = new twitter(jesus.credentials)
-		let jesusTweet = jesusTwitter.tweet(quote, uploadFile = false).then(() => jesusTwitter.followThenUnfollow());
+		.then(async(quote) => {
+			let privateTwitter = new twitter(own.credentials)
+				privateTwitter
+					.followThenUnfollow()
+					.then(() => privateTwitter.close());
+			let jesusTwitter = new twitter(jesus.credentials)
+			let jesusTweet = 
+				jesusTwitter
+					.tweet(quote)
+					.then(() => jesusTwitter.followRandomPeople())
+					.then(() => jesusTwitter.close());
 
-		let robinHoodTwitter = new twitter(robinHood.credentials)
-		let robinHoodTweet = robinHoodTwitter.tweet(quote, uploadFile = false).then(() => robinHoodTwitter.followRandomPeople());
+			let robinHoodTwitter = new twitter(robinHood.credentials)
+			let robinHoodTweet = 
+				robinHoodTwitter
+					.tweet(quote)
+					.then(() => robinHoodTwitter.followRandomPeople())
+					.then(() => robinHoodTwitter.close());
 
-		let chickTwitter = new twitter(chick.credentials)
-		let chickTweet = chickTwitter.tweet(quote, uploadFile = false).then(() => chickTwitter.followRandomPeople());
-		await jesusTweet
-		await robinHoodTweet
-		await chickTweet
-	})
-	.then(() => Stocks.close())
-	.catch(handleDBError);
+			let chickTwitter = new twitter(chick.credentials)
+			let chickTweet = 
+				chickTwitter
+					.tweet(quote)
+					.then(() => chickTwitter.followRandomPeople())
+					.then(() => chickTwitter.close());
+			await jesusTweet
+			await robinHoodTweet
+			await chickTweet
+		})
+		.then(async() => {
+			await Stocks.close();
+		})
+		.catch(handleDBError);
 }
 if(process.argv[2] == "promo") {
 	tweetPromo();
