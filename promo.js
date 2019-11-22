@@ -22,18 +22,18 @@ function tweetQuote() {
 	}
 	Stocks.getQuote()
 		.then(async(quote) => {
-			//let privateTwitter = new twitter(own.credentials)
-				//privateTwitter
-					//.followThenUnfollow()
-					//.then(() => {console.log("hi");privateTwitter.close();})
-					//.catch((e) => {console.log(e)});
-			//let jesusTwitter = new twitter(jesus.credentials)
-			//let jesusTweet = 
-				//jesusTwitter
-					//.tweet(quote)
-					//.then(() => jesusTwitter.followRandomPeople())
-					//.then(() => jesusTwitter.close())
-					//.catch((e) => {console.log(e)});
+			let privateTwitter = new twitter(own.credentials)
+				privateTwitter
+					.followThenUnfollow()
+					.then(() => {console.log("hi");privateTwitter.close();})
+					.catch((e) => {console.log(e)});
+			let jesusTwitter = new twitter(jesus.credentials)
+			let jesusTweet = 
+				jesusTwitter
+					.tweet(quote)
+					.then(() => jesusTwitter.followRandomPeople())
+					.then(() => jesusTwitter.close())
+					.catch((e) => {console.log(e)});
 
 			let robinHoodTwitter = new twitter(robinHood.credentials)
 			let robinHoodTweet = 
@@ -50,7 +50,7 @@ function tweetQuote() {
 					.then(() => chickTwitter.followRandomPeople())
 					.then(() => chickTwitter.close())
 					.catch((e) => console.log(e));
-			//await jesusTweet
+			await jesusTweet
 			await robinHoodTweet
 			await chickTweet
 		})
