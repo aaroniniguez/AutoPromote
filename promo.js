@@ -22,31 +22,35 @@ function tweetQuote() {
 	}
 	Stocks.getQuote()
 		.then(async(quote) => {
-			let privateTwitter = new twitter(own.credentials)
-				privateTwitter
-					.followThenUnfollow()
-					.then(() => privateTwitter.close());
-			let jesusTwitter = new twitter(jesus.credentials)
-			let jesusTweet = 
-				jesusTwitter
-					.tweet(quote)
-					.then(() => jesusTwitter.followRandomPeople())
-					.then(() => jesusTwitter.close());
+			//let privateTwitter = new twitter(own.credentials)
+				//privateTwitter
+					//.followThenUnfollow()
+					//.then(() => {console.log("hi");privateTwitter.close();})
+					//.catch((e) => {console.log(e)});
+			//let jesusTwitter = new twitter(jesus.credentials)
+			//let jesusTweet = 
+				//jesusTwitter
+					//.tweet(quote)
+					//.then(() => jesusTwitter.followRandomPeople())
+					//.then(() => jesusTwitter.close())
+					//.catch((e) => {console.log(e)});
 
 			let robinHoodTwitter = new twitter(robinHood.credentials)
 			let robinHoodTweet = 
 				robinHoodTwitter
 					.tweet(quote)
 					.then(() => robinHoodTwitter.followRandomPeople())
-					.then(() => robinHoodTwitter.close());
+					.then(() => robinHoodTwitter.close())
+					.catch((e) => console.log(e));
 
 			let chickTwitter = new twitter(chick.credentials)
 			let chickTweet = 
 				chickTwitter
 					.tweet(quote)
 					.then(() => chickTwitter.followRandomPeople())
-					.then(() => chickTwitter.close());
-			await jesusTweet
+					.then(() => chickTwitter.close())
+					.catch((e) => console.log(e));
+			//await jesusTweet
 			await robinHoodTweet
 			await chickTweet
 		})
