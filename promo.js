@@ -25,30 +25,30 @@ function tweetQuote() {
 			let privateTwitter = new twitter(own.credentials)
 				privateTwitter
 					.followThenUnfollow()
-					.catch((e) => {console.log(e)})
+					.catch((e) => console.trace(e))
 					.finally(() => privateTwitter.close())
 			let jesusTwitter = new twitter(jesus.credentials)
 			let jesusTweet = 
-				jesusTwitter
+				await jesusTwitter
 					.tweet(quote)
 					.then(() => jesusTwitter.followRandomPeople())
-					.catch((e) => {console.log(e)})
+					.catch((e) => console.trace(e))
 					.finally(() => jesusTwitter.close())
 
 			let robinHoodTwitter = new twitter(robinHood.credentials)
 			let robinHoodTweet = 
-				robinHoodTwitter
+				await robinHoodTwitter
 					.tweet(quote)
 					.then(() => robinHoodTwitter.followRandomPeople())
-					.catch((e) => console.log(e))
+					.catch((e) => console.trace(e))
 					.finally(() => {robinHoodTwitter.close()})
 
 			let chickTwitter = new twitter(chick.credentials)
 			let chickTweet = 
-				chickTwitter
+				await chickTwitter
 					.tweet(quote)
 					.then(() => chickTwitter.followRandomPeople())
-					.catch((e) => console.log(e))
+					.catch((e) => console.trace(e))
 					.finally(() => chickTwitter.close())
 			await jesusTweet
 			await robinHoodTweet
