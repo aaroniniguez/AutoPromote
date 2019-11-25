@@ -68,5 +68,3 @@ if(process.argv[2] == "promo") {
 else if(process.argv[2] == "quote") {
 	tweetQuote();
 }
-//sudo mysql stop
-//kill -9 node
