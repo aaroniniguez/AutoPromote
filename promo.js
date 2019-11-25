@@ -20,6 +20,10 @@ async function tweetQuote() {
 		console.log(error);
 		process.exit();
 	}
+	let rows = Stocks.getQuotes(4);
+	await rows
+	console.log(rows)
+	process.exit()
 	Stocks.getQuote()
 		.then(async(quote) => {
 			let privateTwitter = new twitter(own.credentials)
