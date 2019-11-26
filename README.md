@@ -15,3 +15,5 @@ Enables you to manage your social media :
   - Auto tweet with/without image  
   - Auto follow
   - Auto follow unfollow
+  - Change Profile Information!
+	- Change website
