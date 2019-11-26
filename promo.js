@@ -23,11 +23,13 @@ async function tweetQuote() {
 	let rowsPromise = Stocks.getQuotes(4);
 	let rows = await rowsPromise
 	Stocks.close()
-	let privateTwitter = new twitter(own.credentials)
-		privateTwitter
-			.followThenUnfollow()
-			.catch((e) => console.trace(e))
-			.finally(() => privateTwitter.close())
+	//let privateTwitter = new twitter(own.credentials)
+	//let privateTweet = 
+		//privateTwitter
+			//.changeWebsiteTo("https://tradeforthemoney.com")
+			//.catch((e) => console.trace(e))
+			//.finally(() => privateTwitter.close())
+	//await privateTweet
 	let jesusTwitter = new twitter(jesus.credentials)
 	let jesusTweet = 
 		jesusTwitter
