@@ -23,30 +23,24 @@ async function tweetQuote() {
 	let rowsPromise = Stocks.getQuotes(4);
 	let rows = await rowsPromise
 	Stocks.close()
-	let jesusTwitter = new twitter(jesus.credentials)
-	let jesusTweet = 
-		jesusTwitter
-			.tweet(rows.shift()["quote"])
-			.then(() => jesusTwitter.followRandomPeople())
-			.catch((e) => console.trace(e))
-			.finally(() => jesusTwitter.close())
-	await jesusTweet
-	let robinHoodTwitter = new twitter(robinHood.credentials)
-	let robinHoodTweet = 
-		robinHoodTwitter
-			.tweet(rows.shift()["quote"])
-			.then(() => robinHoodTwitter.followRandomPeople())
-			.catch((e) => console.trace(e))
-			.finally(() => {robinHoodTwitter.close()})
-	await robinHoodTweet
-	let chickTwitter = new twitter(chick.credentials)
-	let chickTweet = 
-		chickTwitter
-			.tweet(rows.shift()["quote"])
-			.then(() => chickTwitter.followRandomPeople())
-			.catch((e) => console.trace(e))
-			.finally(() => chickTwitter.close())
-	await chickTweet
+	let accounts = [
+		jesus,
+		chick,
+		robinHood
+	];
+	let tasks = [];
+	accounts.forEach(account => {
+		let accountTwitter = new twitter(account.credentials)
+		let accountActions = 
+			accountTwitter
+				.tweet(rows.shift()["quote"])
+				.then(() => accountTwitter.followRandomPeople())
+				.catch((e) => console.trace(e))
+				.finally(() => accountTwitter.close())
+		tasks.push(accountActions)
+	});
+	console.log(tasks)
+	await Promise.all(tasks)
 }
 if(process.argv[2] == "promo") {
 	tweetPromo();
