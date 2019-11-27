@@ -6,7 +6,7 @@ let jesus = twitterAccounts.Jesus;
 let own = twitterAccounts.OwnAccount
 let robinHood = twitterAccounts.RobinHoodPromo;
 let chick = twitterAccounts.chickPromo;
-let randomPromotion = promotionManager.getRandomImagePromotion()
+let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	jesusTwitter = new twitter(jesus.credentials)
 		jesusTwitter
