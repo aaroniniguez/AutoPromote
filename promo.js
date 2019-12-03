@@ -8,12 +8,21 @@ let robinHood = twitterAccounts.RobinHoodPromo;
 let chick = twitterAccounts.chickPromo;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
-	jesusTwitter = new twitter(jesus.credentials)
+	let currentDate = new Date();
+	let currentDayValue = currentDate.getDate()
+	//odd days use the jesus account
+	if(currentDayValue % 2) {
+		jesusTwitter = new twitter(jesus.credentials)
 		jesusTwitter
 			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
 			.then(() => jesusTwitter.close())
-	//twitter.tweet(robinHood.credentials, robinHood.message, uploadFile = false, randomFollow = true);
-	//twitter.tweet(chick.credentials, chick.message, uploadFile = false, randomFollow = true);
+	//even days use the robinhood account
+	} else {
+		robinHoodTwitter = new twitter(robinHood.credentials)
+		robinHoodTwitter
+			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
+			.then(() => robinHoodTwitter.close())
+	}
 }
 async function tweetQuote() {
 	function handleDBError(error) {
