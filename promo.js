@@ -5,7 +5,7 @@ let promotionManager = require("./lib/Promos.js")
 let jesus = twitterAccounts.Jesus;
 let own = twitterAccounts.OwnAccount
 let robinHood = twitterAccounts.RobinHoodPromo;
-let chick = twitterAccounts.chickPromo;
+let chick = twitterAccounts.richardFeynman;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	let currentDate = new Date();
