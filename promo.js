@@ -5,7 +5,7 @@ let promotionManager = require("./lib/Promos.js")
 let jesus = twitterAccounts.Jesus;
 let own = twitterAccounts.OwnAccount
 let robinHood = twitterAccounts.RobinHoodPromo;
-let chick = twitterAccounts.richardFeynman;
+let richardF = twitterAccounts.richardFeynman;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	let currentDate = new Date();
@@ -34,7 +34,7 @@ async function tweetQuote() {
 	Stocks.close()
 	let accounts = [
 		jesus,
-		chick,
+		richardF,
 		robinHood
 	];
 	let tasks = [];
