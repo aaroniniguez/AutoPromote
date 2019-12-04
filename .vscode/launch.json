@@ -7,7 +7,8 @@
 
         {
             "type": "node",
-            "request": "launch",
+			"request": "launch",
+			"args": ["quote", "debug"],
             "name": "Launch Program",
             "program": "${workspaceFolder}/promo.js",
             "skipFiles": [
