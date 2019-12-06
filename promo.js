@@ -5,6 +5,7 @@ let promotionManager = require("./lib/Promos.js")
 let jesus = twitterAccounts.Jesus;
 let own = twitterAccounts.OwnAccount
 let robinHood = twitterAccounts.RobinHoodPromo;
+let chick2 = twitterAccounts.chickPromo2;
 let richardF = twitterAccounts.richardFeynman;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
@@ -35,7 +36,8 @@ async function tweetQuote() {
 	let accounts = [
 		jesus,
 		richardF,
-		robinHood
+		robinHood,
+		chick2
 	];
 	let tasks = [];
 	accounts.forEach(account => {
