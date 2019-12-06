@@ -2,25 +2,28 @@ var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
-let jesus = twitterAccounts.Jesus;
-let own = twitterAccounts.OwnAccount
-let robinHood = twitterAccounts.RobinHoodPromo;
-let chick2 = twitterAccounts.chickPromo2;
-let richardF = twitterAccounts.richardFeynman;
 let randomPromotion = promotionManager.getRandomTextPromotion()
 function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
-		jesusTwitter = new twitter(jesus.credentials)
+		let credentials = [
+			"stockJesus",
+			twitterAccounts["stockJesus"]
+		]
+		jesusTwitter = new twitter(credentials)
 		jesusTwitter
 			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
 			.then(() => jesusTwitter.close())
 	//even days use the robinhood account
 	} else {
-		robinHoodTwitter = new twitter(robinHood.credentials)
-		robinHoodTwitter
+		let credentials = [
+			"TraderShy",
+			twitterAccounts["TraderShy"]
+		]
+		TraderShyTwitter = new twitter(credentials)
+		TraderShyTwitter
 			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
 			.then(() => robinHoodTwitter.close())
 	}
@@ -33,15 +36,9 @@ async function tweetQuote() {
 	let rowsPromise = Stocks.getQuotes(4);
 	let rows = await rowsPromise
 	Stocks.close()
-	let accounts = [
-		jesus,
-		richardF,
-		robinHood,
-		chick2
-	];
 	let tasks = [];
-	accounts.forEach(account => {
-		let accountTwitter = new twitter(account.credentials)
+	Object.entries(twitterAccounts).forEach(credentials => {
+		let accountTwitter = new twitter(credentials)
 		let accountActions = 
 			accountTwitter
 				.tweet(rows.shift()["quote"])
