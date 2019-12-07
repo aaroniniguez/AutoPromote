@@ -29,10 +29,6 @@ function tweetPromo() {
 	}
 }
 async function tweetQuote() {
-	function handleDBError(error) {
-		console.log(error);
-		process.exit();
-	}
 	let rowsPromise = Stocks.getQuotes(4);
 	let rows = await rowsPromise
 	Stocks.close()
