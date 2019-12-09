@@ -3,6 +3,17 @@ let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
 let randomPromotion = promotionManager.getRandomTextPromotion()
+async function setupAccounts() {
+	let tasks = [];
+	Object.entries(twitterAccounts).forEach(credentials => {
+		let twitterAccount = new twitter(credentials)
+		let actions = twitterAccount
+			.changeWebsiteTo("https://tradeforthemoney.com")
+			.catch((e) => {console.log(e);})
+		tasks.push(actions);
+	});
+	await Promise.all(tasks);
+}
 function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
@@ -29,7 +40,7 @@ function tweetPromo() {
 	}
 }
 async function tweetQuote() {
-	let rowsPromise = Stocks.getQuotes(4);
+	let rowsPromise = Stocks.getQuotes(Object.keys(twitterAccounts).length);
 	let rows = await rowsPromise
 	Stocks.close()
 	let tasks = [];
@@ -43,7 +54,6 @@ async function tweetQuote() {
 				.finally(() => accountTwitter.close())
 		tasks.push(accountActions)
 	});
-	console.log(tasks)
 	await Promise.all(tasks)
 }
 if(process.argv[2] == "promo") {
