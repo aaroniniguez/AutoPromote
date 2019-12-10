@@ -2,7 +2,8 @@ var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
-let randomPromotion = promotionManager.getRandomTextPromotion()
+let randomImagePromo = promotionManager.getRandomImagePromotion()
+let randomTextPromo = promotionManager.getRandomTextPromotion()
 async function setupAccounts() {
 	let tasks = [];
 	Object.entries(twitterAccounts).forEach(credentials => {
@@ -25,7 +26,7 @@ function tweetPromo() {
 		]
 		jesusTwitter = new twitter(credentials)
 		jesusTwitter
-			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
+			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
 			.then(() => jesusTwitter.close())
 	//even days use the robinhood account
 	} else {
@@ -35,9 +36,17 @@ function tweetPromo() {
 		]
 		TraderShyTwitter = new twitter(credentials)
 		TraderShyTwitter
-			.tweet(randomPromotion.message, uploadFile = randomPromotion.image)
-			.then(() => robinHoodTwitter.close())
+			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
+			.then(() => TraderShyTwitter.close())
 	}
+	let credentials = [
+		"ProRobinHoodTr1",
+		twitterAccounts["ProRobinHoodTr1"]
+	]
+	imagePromoAccount = new twitter(credentials)
+	imagePromoAccount
+		.tweet(randomImagePromo.message, randomImagePromo.image)
+		.then(()=> imagePromoAccount.close())
 }
 async function tweetQuote() {
 	let rowsPromise = Stocks.getQuotes(Object.keys(twitterAccounts).length);
