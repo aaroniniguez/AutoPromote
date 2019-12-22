@@ -16,7 +16,6 @@ async function setupAccounts() {
 	}
 	await Promise.all(tasks);
 }
-setupAccounts()
 function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
