@@ -1,0 +1,5 @@
+{ name: 'InvalidCredentials',
+  message:
+   'Login went to invalid url: https://twitter.com/account/login_challenge?platform=web&enc_user_id=AAAAEIBan0me_fJ7PWOCwsMT8WhYX6Hf18vMtQnEJMlHBPiz5U65tNwUJ6wHAfChusRKkdKPi44&challenge_type=RetypeEmail&challenge_id=PXCl0R20InIYxpZDg51i7QajPe4rX3eLsPuZVy&remember_me=true',
+  level: 'error',
+  timestamp: '2019-12-24T20:36:23.609Z' }

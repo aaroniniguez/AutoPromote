@@ -1,0 +1,42 @@
+{ message:
+   'Tweeting Whether any specific trade works out or not is not a reflection on you. Sometimes they work and sometimes they don’t. No traders win rate is 100%. Quit beating yourself up.\n\n',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.668Z' }
+{ message: 'Logging in MarkZion19',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.675Z' }
+{ message:
+   'Tweeting Life is not about money, it’s about time, freedom, & happiness. Money is just a tool.\n\n',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.687Z' }
+{ message: 'Logging in ProRobinHoodTr1',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.687Z' }
+{ message:
+   'Tweeting ATTENTION SALARY PEOPLE Next Friday when your guaranteed monthly paycheck is deposited, take a moment of gratitude for the entrepreneurs who took the risks so you get this risk-free income. Shaming a risk-taker for losing money is like shaming a soldier for losing a limb',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.721Z' }
+{ message: 'Logging in stockJesus',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.721Z' }
+{ message: 'Tweeting First rule of stock trading:\n\nImpulse Kills.\n',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.746Z' }
+{ message: 'Logging in TraderShy',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.747Z' }
+{ message:
+   'Tweeting Trading short term comfort for long term discontent is not a good trade.\n\n',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.787Z' }
+{ message: 'Logging in joo11244620',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:13.787Z' }
+{ name: 'InvalidCredentials',
+  message:
+   'Login went to invalid url: https://twitter.com/account/login_challenge?platform=web&enc_user_id=AAAAEIBan0me_fJ7PWOCwsMT8WhYX6Hf18vMtQnEJMlHBPiz5U65tNwUJ6wHAfChusRKkdKPi44&challenge_type=RetypeEmail&challenge_id=PXCl0R20InIYxpZDg51i7QajPe4rX3eLsPuZVy&remember_me=true',
+  level: 'error',
+  timestamp: '2019-12-24T20:36:23.609Z' }
+{ message: 'Logging in TraderShy',
+  level: 'info',
+  timestamp: '2019-12-24T20:36:23.611Z' }
