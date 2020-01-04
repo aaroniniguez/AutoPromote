@@ -6,13 +6,14 @@ let randomImagePromo = promotionManager.getRandomImagePromotion()
 const imessage = require('osa-imessage')
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
+const aaronPhone = "+19165178775";
 if(debugMode) {
 	async function test() {
 		let twitterAccount = new twitter(twitterAccounts["promoText"]);
 		await twitterAccount.hasMessageRequests()
 			.then((text) => {
 				twitterAccount.close()
-				imessage.send("+19165178775", text);
+				imessage.send(aaronPhone, text);
 			});
 	}
 	test();
