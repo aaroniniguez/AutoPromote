@@ -3,11 +3,19 @@ let Stocks = require("./lib/Stock.js")
 let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
+const imessage = require('osa-imessage')
 let randomTextPromo = promotionManager.getRandomTextPromotion()
-let twitterAccount = new twitter(twitterAccounts["promoText"]);
 const debugMode = process.argv[3] === "debug" ? true : false;
 if(debugMode) {
-	console.log('test');
+	async function test() {
+		let twitterAccount = new twitter(twitterAccounts["promoText"]);
+		await twitterAccount.hasMessageRequests()
+			.then((text) => {
+				twitterAccount.close()
+				imessage.send("+19165178775", text);
+			});
+	}
+	test();
 }
 async function setupAccounts() {
 	let tasks = [];
