@@ -4,6 +4,11 @@ let twitterAccounts = require("./secret.js")
 let promotionManager = require("./lib/Promos.js") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
+let twitterAccount = new twitter(twitterAccounts["promoText"]);
+const debugMode = process.argv[3] === "debug" ? true : false;
+if(debugMode) {
+	console.log('test');
+}
 async function setupAccounts() {
 	let tasks = [];
 	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
