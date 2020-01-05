@@ -46,7 +46,7 @@ async function tweetQuote() {
 		let accountActions = 
 			accountTwitter
 				.tweet(rows.shift()["quote"])
-				.then(() => accountTwitter.hasMessageRequests())
+				.then(() => accountTwitter.sendMessageOnDMRequest())
 				.then(() => accountTwitter.followRandomPeople())
 				.catch((e) => console.trace(e))
 				.finally(() => accountTwitter.close())
