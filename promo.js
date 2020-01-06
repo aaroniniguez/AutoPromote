@@ -32,7 +32,7 @@ function tweetPromo() {
 	} else {
 		TraderShyTwitter = new twitter(twitterAccounts["promoImage"])
 		TraderShyTwitter
-			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
+			.tweet(randomImagePromo.message, uploadFile = randomImagePromo.image)
 			.then(() => TraderShyTwitter.close())
 	}
 }
