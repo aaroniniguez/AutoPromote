@@ -1,12 +1,17 @@
 var twitter = require("./lib/Twitter.js");
-let Stocks = require("./lib/Stock.js")
-let twitterAccounts = require("./secret.js")
+let Stocks = require("./lib/Stock.js");
+let database = require("./lib/Database");
 let promotionManager = require("./lib/Promos.js") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
-if(debugMode) {
+async function getAllTwitterAccounts() {
+	let DB = new database("localhost", "root", "stock");
+	let result = await DB.query("SELECT * FROM twitterAccounts");
+	DB.close();
+	return result;
 }
+
 async function setupAccounts() {
 	let tasks = [];
 	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
@@ -19,30 +24,32 @@ async function setupAccounts() {
 	}
 	await Promise.all(tasks);
 }
-function tweetPromo() {
+async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
+	let twitterAccounts = await getAllTwitterAccounts();
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
-		jesusTwitter = new twitter(twitterAccounts["promoText"])
+		jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
 		jesusTwitter
 			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
 			.then(() => jesusTwitter.close())
 	//even days use the robinhood account
 	} else {
-		TraderShyTwitter = new twitter(twitterAccounts["promoImage"])
+		TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
 		TraderShyTwitter
 			.tweet(randomImagePromo.message, uploadFile = randomImagePromo.image)
 			.then(() => TraderShyTwitter.close())
 	}
 }
 async function tweetQuote() {
-	let rowsPromise = Stocks.getQuotes(Object.keys(twitterAccounts).length);
+	let twitterAccounts = await getAllTwitterAccounts();
+	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	Stocks.close()
 	let tasks = [];
-	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
-		let accountTwitter = new twitter(accountInfo)
+	twitterAccounts.forEach(twitterAccount => {
+		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
 		let accountActions = 
 			accountTwitter
 				.tweet(rows.shift()["quote"])
@@ -51,7 +58,7 @@ async function tweetQuote() {
 				.catch((e) => console.trace(e))
 				.finally(() => accountTwitter.close())
 		tasks.push(accountActions)
-	};
+	});
 	await Promise.all(tasks)
 }
 if(process.argv[2] == "promo") {
