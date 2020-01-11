@@ -12,6 +12,17 @@ async function getAllTwitterAccounts() {
 	return result;
 }
 
+if(debugMode) {
+	(async function () {
+		let users = await getAllTwitterAccounts();
+		let testUser = users[1];
+		console.log(testUser);
+		let twitterAccount = new twitter(testUser.username, testUser.password);
+		let count = await twitterAccount.getFollowerCount();
+		twitterAccount.close();
+		console.log(count);
+	})();
+}
 async function setupAccounts() {
 	let tasks = [];
 	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
