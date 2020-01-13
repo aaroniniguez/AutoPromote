@@ -1,3 +1,4 @@
+console.log("Hm")
 var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/Stock.js");
 let database = require("./lib/Database");
@@ -13,21 +14,21 @@ async function getAllTwitterAccounts() {
 }
 
 if(debugMode) {
-	(async function () {
-		let users = await getAllTwitterAccounts();
-		let testUser = users[1];
-		console.log(testUser);
-		let twitterAccount = new twitter(testUser.username, testUser.password);
-		let count = await twitterAccount.getFollowerCount();
-		twitterAccount.close();
-		console.log(count);
-	})();
+	//let DB = new database("localhost", "root", "stock");
+	//console.log("hi");
+	//(async function () {
+	//	let users = await getAllTwitterAccounts();
+	//	let testUser = users[1];
+	//	console.log(testUser);
+	//	let twitterAccount = new twitter(testUser.username, testUser.password);
+	//	await twitterAccount.saveFollowerCount(DB);
+	//	twitterAccount.close();
+	//})();
 }
 async function setupAccounts() {
 	let tasks = [];
 	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
 		let twitterAccount = new twitter(accountInfo)
-		console.log(twitterAccount)
 		let actions = twitterAccount
 			.changeWebsiteTo("https://tradeforthemoney.com")
 			.catch((e) => {console.log(e);})
@@ -54,6 +55,7 @@ async function tweetPromo() {
 	}
 }
 async function tweetQuote() {
+	let DB = new database("localhost", "root", "stock");
 	let twitterAccounts = await getAllTwitterAccounts();
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
@@ -66,11 +68,13 @@ async function tweetQuote() {
 				.tweet(rows.shift()["quote"])
 				.then(() => accountTwitter.sendMessageOnDMRequest())
 				.then(() => accountTwitter.followRandomPeople())
+				.then(() => accountTwitter.saveFollowerCount(DB))
 				.catch((e) => console.trace(e))
 				.finally(() => accountTwitter.close())
 		tasks.push(accountActions)
 	});
 	await Promise.all(tasks)
+	DB.close();
 }
 if(process.argv[2] == "promo") {
 	tweetPromo();
