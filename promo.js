@@ -1,4 +1,3 @@
-console.log("Hm")
 var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/Stock.js");
 let database = require("./lib/Database");
@@ -6,9 +5,7 @@ let promotionManager = require("./lib/Promos.js")
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
-let DB = new database("localhost", "root", "stock");
 async function getAllTwitterAccounts(DB) {
-	console.log(DB)
 	let result = await DB.query("SELECT * FROM twitterAccounts");
 	return result;
 }
@@ -36,6 +33,7 @@ async function setupAccounts() {
 	await Promise.all(tasks);
 }
 async function tweetPromo() {
+	let DB = new database("localhost", "root", "stock");
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
 	let twitterAccounts = await getAllTwitterAccounts(DB);
@@ -54,7 +52,8 @@ async function tweetPromo() {
 	}
 }
 async function tweetQuote() {
-	let twitterAccounts = await getAllTwitterAccounts();
+	let DB = new database("localhost", "root", "stock");
+	let twitterAccounts = await getAllTwitterAccounts(DB);
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	Stocks.close()
