@@ -64,6 +64,7 @@ async function tweetQuote() {
 			accountTwitter
 				.tweet(rows.shift()["quote"])
 				.then(() => accountTwitter.sendMessageOnDMRequest())
+				.then(() => accountTwitter.saveFollowingCount(DB))
 				.then(() => accountTwitter.followRandomPeople())
 				.then(() => accountTwitter.saveFollowerCount(DB))
 				.catch((e) => console.trace(e))
