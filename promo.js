@@ -51,6 +51,7 @@ async function tweetPromo() {
 			.then(() => TraderShyTwitter.close())
 	}
 }
+
 async function tweetQuote() {
 	let DB = new database("localhost", "root", "stock");
 	let twitterAccounts = await getAllTwitterAccounts(DB);
@@ -65,8 +66,8 @@ async function tweetQuote() {
 				.tweet(rows.shift()["quote"])
 				.then(() => accountTwitter.sendMessageOnDMRequest())
 				.then(() => accountTwitter.saveFollowingCount(DB))
-				.then(() => accountTwitter.followRandomPeople())
 				.then(() => accountTwitter.saveFollowerCount(DB))
+				.then(() => accountTwitter.followRandomPeople())
 				.catch((e) => console.trace(e))
 				.finally(() => accountTwitter.close())
 		tasks.push(accountActions)
