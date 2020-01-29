@@ -1,7 +1,3 @@
-const database = require("./lib/Database.js");
-let DB = new database()
+const Stocks = require("./lib/Stock.js");
 var quote = process.argv[2].trim();
-DB.query(`insert into stockQuotes (quote) values("${quote}")`)
-    .catch((e)=> {
-        console.log("Duplicate Entries Not Allowed!");
-	})
+Stocks.insert(quote);
