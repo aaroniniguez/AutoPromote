@@ -57,7 +57,6 @@ async function tweetQuote() {
 	let twitterAccounts = await getAllTwitterAccounts(DB);
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
-	Stocks.close()
 	let tasks = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
