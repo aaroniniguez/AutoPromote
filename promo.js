@@ -5,10 +5,6 @@ let promotionManager = require("./lib/Promos.js")
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
-async function getAllTwitterAccounts(DB) {
-	let result = await DB.query("SELECT * FROM twitterAccounts");
-	return result;
-}
 if(debugMode) {
 	//let DB = new database("localhost", "root", "stock");
 	//console.log("hi");
@@ -33,10 +29,9 @@ async function setupAccounts() {
 	await Promise.all(tasks);
 }
 async function tweetPromo() {
-	let DB = new database("localhost", "root", "stock");
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
-	let twitterAccounts = await getAllTwitterAccounts(DB);
+	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
 		jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
@@ -54,7 +49,7 @@ async function tweetPromo() {
 
 async function tweetQuote() {
 	let DB = new database("localhost", "root", "stock");
-	let twitterAccounts = await getAllTwitterAccounts(DB);
+	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	let tasks = [];
