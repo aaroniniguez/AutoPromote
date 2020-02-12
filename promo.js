@@ -1,5 +1,5 @@
 var twitter = require("./lib/Twitter.js");
-let Stocks = require("./lib/DB/Stock.js");
+let Stocks = require("./lib/DAO/Stock.js");
 let database = require("./lib/Database");
 let promotionManager = require("./lib/Promos.js") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
