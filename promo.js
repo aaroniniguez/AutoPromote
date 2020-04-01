@@ -1,3 +1,4 @@
+const log = require('why-is-node-running');
 var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/DAO/Stock.js");
 let database = require("./lib/Database");
@@ -32,7 +33,6 @@ async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
 	let twitterAccounts = await Stocks.getAllTwitterAccounts();
-	currentDayValue = 2; 
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
 		jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
