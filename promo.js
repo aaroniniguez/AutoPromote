@@ -31,14 +31,18 @@ async function setupAccounts() {
 	await Promise.all(tasks);
 }
 async function tweetPromo() {
+	let DB = new database("localhost", "root", "stock");
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
 	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
+		console.log("here...")
 		jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
 		jesusTwitter
 			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
+			.then(() => jesusTwitter.saveFollowingCount(DB))
+			.then(() => jesusTwitter.saveFollowerCount(DB))
 			.then(() => jesusTwitter.close())
 	//even days use the robinhood account
 	} else {
