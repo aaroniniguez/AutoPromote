@@ -1,9 +1,9 @@
 const log = require('why-is-node-running');
 require("dotenv").config();
-var twitter = require("./lib/Twitter.js");
-let Stocks = require("./lib/DAO/Stock.js");
-let database = require("./lib/Database");
-let promotionManager = require("./lib/Promos.js") 
+var twitter = require("./dist/Twitter.js");
+let Stocks = require("./dist/DAO/Stock.js");
+let database = require("./dist/Database");
+let promotionManager = require("./dist/Promos.js") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
