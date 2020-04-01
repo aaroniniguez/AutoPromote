@@ -1,4 +1,5 @@
 const log = require('why-is-node-running');
+require("dotenv").config();
 var twitter = require("./lib/Twitter.js");
 let Stocks = require("./lib/DAO/Stock.js");
 let database = require("./lib/Database");

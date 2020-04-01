@@ -11,6 +11,7 @@
   "dependencies": {
     "assert": "^2.0.0",
     "dotenv": "^8.2.0",
+    "find-config": "^1.0.0",
     "fs": "0.0.1-security",
     "moment-timezone": "^0.5.27",
     "mysql": "^2.17.1",
@@ -19,6 +20,7 @@
     "puppeteer": "^1.13.0",
     "sqlite3": "^4.1.1",
     "twilio": "^3.39.5",
+    "why-is-node-running": "^2.1.2",
     "winston": "^3.2.1"
   }
 }
