@@ -1,9 +1,9 @@
 const log = require('why-is-node-running');
 require("dotenv").config();
-var twitter = require("./dist/Twitter.js");
-let Stocks = require("./dist/DAO/Stock.js");
-let database = require("./dist/Database");
-let promotionManager = require("./dist/Promos.js") 
+import twitter from "./lib/Twitter";
+import Stocks from "./lib/DAO/Stock";
+let database = require("./lib/Database");
+let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
 const debugMode = process.argv[3] === "debug" ? true : false;
@@ -37,18 +37,17 @@ async function tweetPromo() {
 	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	//odd days use the jesus account
 	if(currentDayValue % 2) {
-		console.log("here...")
-		jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
+		let jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
 		jesusTwitter
-			.tweet(randomTextPromo.message, uploadFile = randomTextPromo.image)
+			.tweet(randomTextPromo.message, randomTextPromo.image)
 			.then(() => jesusTwitter.saveFollowingCount(DB))
 			.then(() => jesusTwitter.saveFollowerCount(DB))
 			.then(() => jesusTwitter.close())
 	//even days use the robinhood account
 	} else {
-		TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
+		let TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
 		TraderShyTwitter
-			.tweet(randomImagePromo.message, uploadFile = randomImagePromo.image)
+			.tweet(randomImagePromo.message, randomImagePromo.image)
 			.then(() => TraderShyTwitter.close())
 	}
 }

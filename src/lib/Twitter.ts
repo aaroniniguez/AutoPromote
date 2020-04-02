@@ -23,7 +23,17 @@ const ElementNotFound = require("./ElementNotFound.js")
 	//assert.strictEqual(resolved, "google.coms");
 //});
 class Twitter {
-	constructor(username, password) {
+	credentials: any;
+	accountDAO: any;
+	flowID: string;
+	loggedon: boolean;
+	typeDelay: object;
+	clickDelay: object;
+	navigationParams: any;
+	page: any;
+	browser: any;
+
+	constructor(username: string, password: string) {
 		this.credentials = {
 			username,
 			password
@@ -307,4 +317,4 @@ class Twitter {
 	}
 
 }
-module.exports = Twitter
+export default Twitter

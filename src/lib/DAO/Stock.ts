@@ -69,5 +69,4 @@ class Stock implements interfaceStock{
 		});
 	}
 }
-let stockTable = new Stock()
-module.exports = stockTable
+export default new Stock()
