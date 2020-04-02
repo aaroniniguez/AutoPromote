@@ -1,21 +1,26 @@
 /**
  * DAO for stock table
  */
-import database from "../Database.js";
+import database from "../Database";
 
-interface interfaceStock {
-	DB: any
-}
-
-class Stock implements interfaceStock{
+class Stock {
 	DB: any;
 	constructor() {
 		this.DB = new database("localhost", "root", "stock")
 	}
 
-	async getFollowersData(userID) {
-		console.log("TODO")
-		// let result = await this.DB.query("SELECT * from followers left join")
+	async getAccountFollowerData(userID: string): Promise<JSON> {
+		let query =  
+		`
+			SELECT *
+			FROM twitterAccounts
+			LEFT JOIN
+			followers ON twitterAccounts.id = followers.userId
+			WHERE twitterAccounts.id = ${userID}
+			ORDER BY time ASC;
+		`;
+		let result = await this.DB.query(query);
+		return result;
 	}
 
 	async getAllTwitterAccounts() {

@@ -6,7 +6,7 @@ const LoginPage = require("./PageObjects/LoginPage.js");
 const ProfilePage = require("./PageObjects/ProfilePage.js");
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
-let twitterAccountDAO = require("./DAO/TwitterAccounts.js");
+import twitterAccountDAO from "./DAO/TwitterAccounts";
 
 var random = require('randomstring');
 var generateUniqueFlowID = function(){
@@ -204,10 +204,19 @@ class Twitter {
 		}
 	}
 
+	async isAbleToFollow() {
+		let followingCount = await this.accountDAO.getNumberFollowing()
+		if(followingCount < 5000)
+			return true;
+		else 
+			return false;
+	}
 	/**
 	 * Follows everyone on who_to_follow page
 	 */
 	async followRandomPeople() {
+		if(await this.isAbleToFollow() === false)
+			return;
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.guardInit()
 		await this.goToPage(FollowPage.url);

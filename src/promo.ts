@@ -2,7 +2,7 @@ const log = require('why-is-node-running');
 require("dotenv").config();
 import twitter from "./lib/Twitter";
 import Stocks from "./lib/DAO/Stock";
-let database = require("./lib/Database");
+import database from "./lib/Database";
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
@@ -48,6 +48,7 @@ async function tweetPromo() {
 		let TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
 		TraderShyTwitter
 			.tweet(randomImagePromo.message, randomImagePromo.image)
+			.then(() => TraderShyTwitter.isAbleToFollow())
 			.then(() => TraderShyTwitter.close())
 	}
 }

@@ -6,7 +6,13 @@ router.get("/", function(req, res, next) {
         .then((val) => res.send(val))
         .catch((e) => res.status(500).send(`getting all twitter accounts broke!`))
 });
-router.get("/testing", function(req, res, next) {
-    res.send("hi");
+
+router.get("/info", function(req, res, next) {
+    res.send("adding");
+});
+router.get("/:accountID", function(req, res, next) {
+    Stocks.getAccountFollowerData(req.params.accountID)
+        .then((val) => res.send(val))
+        .catch((e) => res.status(500).send(`testing broke`))
 })
 module.exports = router;

@@ -1,12 +1,21 @@
 /**
  * DAO for stock table
  */
-const database = require("../Database.js");
+import database from "../Database";
 const moment = require('moment-timezone');
 class TwitterAccounts {
-	constructor(username) {
+	username: string;
+	DB: any;
+
+	constructor(username: string) {
 		this.DB = new database("localhost", "root", "stock")
 		this.username = username;
+	}
+
+	async getNumberFollowing() {
+		let query = `SELECT following FROM twitterAccounts`;
+		let result = await this.DB.query(query);
+		return result[0]["following"];
 	}
 
 	async getAccountID() {
@@ -25,6 +34,7 @@ class TwitterAccounts {
 		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${mysqlTimestamp}','${numFollowers}')`;
 		await this.DB.query(query);
 	}
+
 }
 
-module.exports = TwitterAccounts;
+export default TwitterAccounts;
