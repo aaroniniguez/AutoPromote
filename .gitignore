@@ -3,3 +3,4 @@ secret.js
 logs/
 .env
 dist/
+serverLog.txt

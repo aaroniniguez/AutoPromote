@@ -1,5 +1,5 @@
 const express = require("express");
-let Stocks = require("../../lib/DAO/Stock.js");
+let Stocks = require("../../dist/lib/DAO/Stock").default
 const router = express.Router();
 router.get("/", function(req, res, next) {
     Stocks.getAllTwitterAccounts()

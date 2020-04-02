@@ -221,7 +221,7 @@ app.post(['/tweet.php', '/api/v1/tweet.php'], asyncHandler(async function(req, r
 }));
 
 let server = app.listen(process.env.PORT)
-	.on("close", message => console.log(message))
-	.on("connection", message => console.log(message))
-	.on("error", error => console.log(error))
-	.on("listening", error => console.log(error))
+	.on("close", message => console.log("close", message))
+	.on("connection", message => console.log("connection", message))
+	.on("error", error => console.log("error", error))
+	.on("listening", error => console.log(`listening at http://localhost:${process.env.PORT}`, error))
