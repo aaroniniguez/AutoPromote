@@ -35,6 +35,10 @@ class TwitterAccounts {
 		await this.DB.query(query);
 	}
 
+	cleanup() {
+		this.DB.disconnect();
+	}	
+
 }
 
 export default TwitterAccounts;

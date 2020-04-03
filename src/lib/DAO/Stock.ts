@@ -74,5 +74,9 @@ class Stock {
 			return row[0].quote
 		});
 	}
+
+	cleanup() {
+		this.DB.disconnect();
+	}
 }
 export default new Stock()

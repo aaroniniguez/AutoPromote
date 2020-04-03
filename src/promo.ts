@@ -54,10 +54,12 @@ async function tweetPromo() {
 }
 
 async function tweetQuote() {
-	let DB = new database("localhost", "root", "stock");
+	//TODO: in future , pass in db object...
+	// let DB = new database("localhost", "root", "stock");
 	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
+	Stocks.cleanup();
 	let tasks = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
@@ -65,8 +67,8 @@ async function tweetQuote() {
 			accountTwitter
 				.tweet(rows.shift()["quote"])
 				.then(() => accountTwitter.sendMessageOnDMRequest())
-				.then(() => accountTwitter.saveFollowingCount(DB))
-				.then(() => accountTwitter.saveFollowerCount(DB))
+				.then(() => accountTwitter.saveFollowingCount())
+				.then(() => accountTwitter.saveFollowerCount())
 				.then(() => accountTwitter.followRandomPeople())
 				.catch((e) => console.trace(e))
 				.finally(() => accountTwitter.close())

@@ -106,7 +106,7 @@ class Twitter {
 	 * 
 	 * @param {Object} DB database object
 	 */
-	async saveFollowingCount(DB) {
+	async saveFollowingCount() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url);
 		let followingCountSelection = ProfilePageObject.numberFollowing;
@@ -123,7 +123,7 @@ class Twitter {
 	 * Saves and overwrites the follower account into the database
 	 * @param {Object} DB database object
 	 */
-	async saveFollowerCount(DB) {
+	async saveFollowerCount() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url);
 		let followerCountSelection = ProfilePageObject.numberOfFollowers;
@@ -322,6 +322,7 @@ class Twitter {
 	};
 	
 	async close() {
+		await this.accountDAO.cleanup();
 		await this.browser.close();
 	}
 
