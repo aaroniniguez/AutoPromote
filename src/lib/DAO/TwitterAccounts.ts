@@ -13,7 +13,7 @@ class TwitterAccounts {
 	}
 
 	async getNumberFollowing() {
-		let query = `SELECT following FROM twitterAccounts`;
+		let query = `SELECT following FROM twitterAccounts where username='${this.username}'`;
 		let result = await this.DB.query(query);
 		return result[0]["following"];
 	}

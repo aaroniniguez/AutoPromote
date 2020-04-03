@@ -118,6 +118,7 @@ class Twitter {
 		});
 		let numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
 		await this.accountDAO.updateFollowing(numFollowing);
+		logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
 	}
 	/**
 	 * Saves and overwrites the follower account into the database
