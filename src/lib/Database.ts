@@ -34,6 +34,7 @@ class Database {
 		this.connection = mysql.createConnection(this.dbConfig); 
 	}
 
+	//this is when you want to stop the connection between your app and the mysql server..so only when your app is stopped...
 	disconnect() {
 		this.connection.end();
 	}
@@ -55,7 +56,7 @@ class Database {
 					//return this.query(sql, args);
 					//return reject(err);
 				};
-				this.disconnect();
+				// this.disconnect();
 				resolve(rows);
 			});
 		}).catch((e) => {

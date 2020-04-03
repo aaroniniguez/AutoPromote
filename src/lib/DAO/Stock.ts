@@ -17,7 +17,8 @@ class Stock {
 			LEFT JOIN
 			followers ON twitterAccounts.id = followers.userId
 			WHERE twitterAccounts.id = ${userID}
-			ORDER BY time ASC;
+			ORDER BY time ASC
+			LIMIT 10
 		`;
 		let result = await this.DB.query(query);
 		return result;
@@ -31,14 +32,14 @@ class Stock {
 	 * 
 	 * @param {string} quote inserts a quote into the table
 	 */
-	insert(quote) {
+	insert(quote: string) {
 		this.DB.query(`insert into stockQuotes (quote) values("${quote}")`)
 			.then(() => this.DB.query(`select count(*) from stockQuotes`).then(data => console.log(data)))
 			.catch((e)=> {
 				console.log("Duplicate Entries Not Allowed!");
 			});
 	}
-	getQuotes(number) {
+	getQuotes(number: string) {
 		return this.DB.query(`
 			SELECT *
 			FROM stockQuotes
