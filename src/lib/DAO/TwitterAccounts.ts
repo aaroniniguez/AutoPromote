@@ -7,11 +7,20 @@ class TwitterAccounts {
 	username: string;
 	DB: any;
 
-	constructor(username: string) {
+	constructor(username?: string) {
 		this.DB = new database("localhost", "root", "stock")
 		this.username = username;
 	}
 
+	async addNewAccount(username: string, password: string, email: string, phone: string) {
+		//TODO: temp pass in 1 for owner
+		let query = `
+			INSERT INTO twitterAccounts (username, password, email, phone, owner)
+			VALUES ("${username}", "${password}", "${email}", "${phone}", 1)
+		`;
+		let result = await this.DB.query(query);
+		return result;
+	}
 	async getNumberFollowing() {
 		let query = `SELECT following FROM twitterAccounts where username='${this.username}'`;
 		let result = await this.DB.query(query);

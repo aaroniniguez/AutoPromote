@@ -1,6 +1,6 @@
 class Promos {
 	constructor() {
-		this.imageBasePath = "./Images/Payouts/"
+		this.imageBasePath = __dirname + "/../../Images/Payouts/";
 		this.baseWebSitePromo = "\nRead about my experience with them here: tradeforthemoney.com"
 		this.hashTags = "#Tefs #Tradenet #tradezero #promo #underPDT\n"
 		this.affiliateLink = "http://jump2click.com/visit/?bta=37140&nci=6714"

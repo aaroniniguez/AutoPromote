@@ -9,6 +9,17 @@ class Stock {
 		this.DB = new database("localhost", "root", "stock")
 	}
 
+	async getAllAccountFollowerData() {
+		let query = `
+			SELECT *
+			FROM twitterAccounts
+			LEFT JOIN 
+			followers on twitterAccounts.id = followers.userId
+			ORDER BY twitterAccounts.id, time ASC
+		`;
+		let result = await this.DB.query(query)
+		return result;
+	}
 	async getAccountFollowerData(userID: string): Promise<JSON> {
 		let query =  
 		`

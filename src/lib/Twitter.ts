@@ -1,12 +1,13 @@
 const puppeteer = require("puppeteer")
 const EditProfile = require("./PageObjects/EditProfile.js");
-const logger = require("./Logger.js");
+import {Logger} from "./Logger";
 const FollowPage = require("./PageObjects/FollowPage.js");
 const LoginPage = require("./PageObjects/LoginPage.js");
 const ProfilePage = require("./PageObjects/ProfilePage.js");
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
 import twitterAccountDAO from "./DAO/TwitterAccounts";
+import { pathToFileURL } from "url";
 
 var random = require('randomstring');
 var generateUniqueFlowID = function(){
@@ -85,10 +86,10 @@ class Twitter {
 	async sendMessageOnDMRequest() {
 		await this.goToPage(MessagesPage.url);
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
-		logger.log({level: "info", username: ProfilePageObject.url, message: `Went to dm request url ${MessagesPage.url}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Went to dm request url ${MessagesPage.url}`, id: this.flowID})
 		let EH = await this.page.$$(MessagesPage.dmRequests);
 		if(EH.length < 1) {
-			logger.log({level: "info", username: ProfilePageObject.url, message: `could not find element with ${MessagesPage.dmRequests} selector`, id: this.flowID})
+			Logger.log({level: "info", username: ProfilePageObject.url, message: `could not find element with ${MessagesPage.dmRequests} selector`, id: this.flowID})
 			return
 		}
 		let newEH = EH[0]
@@ -118,7 +119,7 @@ class Twitter {
 		});
 		let numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
 		await this.accountDAO.updateFollowing(numFollowing);
-		logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
 	}
 	/**
 	 * Saves and overwrites the follower account into the database
@@ -136,7 +137,7 @@ class Twitter {
 		});
 		let numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
 		await this.accountDAO.updateFollowers(numFollowers);
-		logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number followers to ${numFollowers}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number followers to ${numFollowers}`, id: this.flowID})
 	}
 
 	async changeWebsiteTo(url) {
@@ -222,7 +223,7 @@ class Twitter {
 		await this.guardInit()
 		await this.goToPage(FollowPage.url);
 		await this.page.waitForXPath(FollowPage.whoToFollow).catch((e) => {
-			logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find elent ${FollowPage.whoToFollow}`, id: this.flowID})
+			Logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find elent ${FollowPage.whoToFollow}`, id: this.flowID})
 		});
 		var results = await this.page.$x(FollowPage.whoToFollow);
 		for(let i = 0; i < results.length; i++) {
@@ -260,10 +261,10 @@ class Twitter {
 				this.loggedon = true
 			}
 		} catch(e) {
-			logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID})
+			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID})
 			throw e;
 		}
-		logger.log({level: "info", username: ProfilePageObject.url, message: `Logged in`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Logged in`, id: this.flowID})
 	}
 
 	async consoleHandler() {
@@ -304,6 +305,8 @@ class Twitter {
 			await this.page.waitFor(2000);
 			await this.page.keyboard.type(data, this.typeDelay);
 			if(uploadFile) {
+				console.log(process.cwd());
+				Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadFile}`, id: this.flowID});
 				const input = await this.page.findSingleElement("input[type='file']");
 				await input.uploadFile(uploadFile);
 				await this.page.waitFor(10000);
@@ -316,9 +319,9 @@ class Twitter {
 			await this.page.waitFor(9000);
 		}
 		catch(e) {
-			logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
+			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
 		}
-		logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${data}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${data}`, id: this.flowID})
 		return;
 	};
 	
