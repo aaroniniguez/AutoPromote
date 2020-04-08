@@ -35,6 +35,7 @@ async function tweetPromo() {
 	let currentDayValue = currentDate.getDate()
 	let twitterAccounts = await Stocks.getAllTwitterAccounts();
 	//odd days use the jesus account
+	Stocks.cleanup();
 	if(currentDayValue % 2) {
 		let jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
 		jesusTwitter
