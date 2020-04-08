@@ -12,6 +12,15 @@ class Database {
 		};
 
 		this.connection = mysql.createConnection(this.dbConfig);
+		//test out connection
+		this.connection.connect(function(err) {
+			if (err) {
+			  throw console.error('Could not connect to Mysql Server: ' + err.message);
+			}
+			console.log('Connected to the MySQL server.');
+		  });
+
+
 	}
 
 	handleDisconnect(e) {
