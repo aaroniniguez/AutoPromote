@@ -1,4 +1,4 @@
-class ProfilePage {
+export default class ProfilePage {
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop
@@ -28,5 +28,3 @@ class ProfilePage {
 		return "//span[text()='Save']"
 	}
 }
-
-module.exports = ProfilePage;

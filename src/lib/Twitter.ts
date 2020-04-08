@@ -3,7 +3,7 @@ const EditProfile = require("./PageObjects/EditProfile.js");
 import {Logger} from "./Logger";
 const FollowPage = require("./PageObjects/FollowPage.js");
 const LoginPage = require("./PageObjects/LoginPage.js");
-const ProfilePage = require("./PageObjects/ProfilePage.js");
+import ProfilePage from "./PageObjects/ProfilePage.js";
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
 import twitterAccountDAO from "./DAO/TwitterAccounts";

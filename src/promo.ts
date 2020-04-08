@@ -3,6 +3,8 @@ require("dotenv").config();
 import twitter from "./lib/Twitter";
 import Stocks from "./lib/DAO/Stock";
 import database from "./lib/Database";
+import TwitterAccountsDAO from "./lib/DAO/TwitterAccounts";
+let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
@@ -33,9 +35,10 @@ async function setupAccounts() {
 async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
-	let twitterAccounts = await Stocks.getAllTwitterAccounts();
+	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
 	//odd days use the jesus account
 	Stocks.cleanup();
+	TwitterAccountDAO.cleanup()
 	if(currentDayValue % 2) {
 		let jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
 		jesusTwitter
@@ -55,11 +58,12 @@ async function tweetPromo() {
 
 async function tweetQuote() {
 	//TODO: in future , pass in db object...
-	// let DB = new database("localhost", "root", "stock");
-	let twitterAccounts = await Stocks.getAllTwitterAccounts();
+	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
+	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
 	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
-	Stocks.cleanup();
+	TwitterAccountDAO.cleanup();
+	Stocks.cleanup()
 	let tasks = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)

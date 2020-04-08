@@ -1,5 +1,5 @@
 /**
- * DAO for stock table
+ * DAO for TwitterAccounts table
  */
 import database from "../Database";
 const moment = require('moment-timezone');
@@ -10,6 +10,15 @@ class TwitterAccounts {
 	constructor(username?: string) {
 		this.DB = new database("localhost", "root", "stock")
 		this.username = username;
+	}
+	async getTwitterAccount(username: string) {
+		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`);
+		return result;
+	}
+
+	async getAllTwitterAccounts() {
+		let result = await this.DB.query("SELECT * FROM twitterAccounts");
+		return result;
 	}
 
 	async addNewAccount(username: string, password: string, email: string, phone: string) {

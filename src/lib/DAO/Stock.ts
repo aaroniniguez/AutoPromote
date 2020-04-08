@@ -35,10 +35,7 @@ class Stock {
 		return result;
 	}
 
-	async getAllTwitterAccounts() {
-		let result = await this.DB.query("SELECT * FROM twitterAccounts");
-		return result;
-	}
+
 	/**
 	 * 
 	 * @param {string} quote inserts a quote into the table
