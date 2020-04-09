@@ -290,7 +290,7 @@ class Twitter {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		 try {
 			await this.guardInit()
-			const twitter = "https://twitter.com/";
+			const twitter = "https://twitter.com/compose/tweet";
 			if(debugMode) {
 				const session = await this.page.target().createCDPSession()
 				const {windowId} = await session.send('Browser.getWindowForTarget');
@@ -301,7 +301,7 @@ class Twitter {
 			//print out console logging in the page
 			//await this.consoleHandler();
 			await this.page.goto(twitter, this.navigationParams);
-			await this.page.keyboard.press('KeyN');
+			// await this.page.waitFor(10000000);
 			await this.page.waitFor(2000);
 			await this.page.keyboard.type(data, this.typeDelay);
 			if(uploadFile) {

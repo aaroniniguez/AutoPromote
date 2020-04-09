@@ -1,9 +1,10 @@
 const express = require("express");
 let Stocks = require("../../dist/lib/DAO/Stock").default
-let TwitterAccounts = require("../../dist/lib/DAO/TwitterAccounts").default
+let TwitterAccountsDAO = require("../../dist/lib/DAO/TwitterAccounts").default
 const router = express.Router();
 router.get("/", function(req, res, next) {
-    Stocks.getAllTwitterAccounts()
+    let TwitterAccounts = new TwitterAccountsDAO()
+    TwitterAccounts.getAllTwitterAccounts()
         .then((val) => res.send(val))
         .catch((e) => res.status(500).send(`getting all twitter accounts broke!`))
 });
