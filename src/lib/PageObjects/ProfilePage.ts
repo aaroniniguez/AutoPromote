@@ -1,4 +1,6 @@
 export default class ProfilePage {
+	url: string;
+	username: string;
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop

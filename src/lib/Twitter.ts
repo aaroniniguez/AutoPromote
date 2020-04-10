@@ -207,7 +207,9 @@ class Twitter {
 	}
 
 	async isAbleToFollow() {
+		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		let followingCount = await this.accountDAO.getNumberFollowing()
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, has followers: ${followingCount}`, id: this.flowID})
 		if(followingCount < 5000)
 			return true;
 		else 
@@ -223,7 +225,7 @@ class Twitter {
 		await this.guardInit()
 		await this.goToPage(FollowPage.url);
 		await this.page.waitForXPath(FollowPage.whoToFollow).catch((e) => {
-			Logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find elent ${FollowPage.whoToFollow}`, id: this.flowID})
+			Logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find element ${FollowPage.whoToFollow}`, id: this.flowID})
 		});
 		var results = await this.page.$x(FollowPage.whoToFollow);
 		for(let i = 0; i < results.length; i++) {
