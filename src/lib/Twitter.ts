@@ -83,6 +83,18 @@ class Twitter {
 		}
 	}
 
+	async isSuspended() {
+		await this.guardInit();
+		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		//DONT login the user...can only see suspended status if not logged in
+		await this.page.goto(ProfilePageObject.url, this.navigationParams);
+		let result = await this.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
+			.then(() => {
+				this.accountDAO.setSuspended(this.credentials.username);
+			})
+			.catch(() => {console.log("account is not suspended")})
+	}
+
 	async sendMessageOnDMRequest() {
 		await this.goToPage(MessagesPage.url);
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
@@ -140,7 +152,7 @@ class Twitter {
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number followers to ${numFollowers}`, id: this.flowID})
 	}
 
-	async changeWebsiteTo(url) {
+	async changeWebsiteTo(url: string) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url)
 		let EH = await this.page.findSingleXPathElement(ProfilePageObject.editProfile);
@@ -157,7 +169,7 @@ class Twitter {
 	/**
 	 * Go to a specific twitter page
 	 */
-	async goToPage(pageGoTo) {
+	async goToPage(pageGoTo: string) {
 		await this.guardInit()
 		if(!this.loggedon) {
 			await this.login()
@@ -165,7 +177,7 @@ class Twitter {
 		await this.page.goto(pageGoTo, this.navigationParams);
 	}
 
-	async goToPageTest(page, pageGoTo) {
+	async goToPageTest(page, pageGoTo: string) {
 		await this.guardInit()
 		if(!this.loggedon) {
 			await this.login()
@@ -210,13 +222,18 @@ class Twitter {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		let followingCount = await this.accountDAO.getNumberFollowing()
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, has followers: ${followingCount}`, id: this.flowID})
-		if(followingCount < 5000)
+		let isSuspended = await this.accountDAO.getSuspended(this.credentials.username);
+		if(isSuspended === 1)
+			return false
+		if(followingCount < 4990)
 			return true;
 		else 
 			return false;
 	}
 	/**
 	 * Follows everyone on who_to_follow page
+	 * 	1. does not follow if suspended
+	 * 	2. max follow is 5,000
 	 */
 	async followRandomPeople() {
 		if(await this.isAbleToFollow() === false)
@@ -288,7 +305,7 @@ class Twitter {
 	 * @param {string} data message to tweet out
 	 * @param {string} uploadFile path to image file to be uploaded in the tweet
 	 */
-	async tweet(data, uploadFile = false) {
+	async tweet(data: string, uploadFile = false) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		 try {
 			await this.guardInit()

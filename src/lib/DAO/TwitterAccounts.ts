@@ -21,6 +21,15 @@ class TwitterAccounts {
 		return result;
 	}
 
+	async setSuspended(username: string) : Promise<void> {
+		let result = await this.DB.query(`UPDATE twitterAccounts SET suspended = true WHERE username='${username}'`)
+	}
+
+	async getSuspended(username: string) {
+		let result = await this.DB.query(`SELECT suspended FROM twitterAccounts WHERE username='${username}'`) 
+		return result[0]["suspended"];
+	}
+
 	async addNewAccount(username: string, password: string, email: string, phone: string) {
 		//TODO: temp pass in 1 for owner
 		let query = `

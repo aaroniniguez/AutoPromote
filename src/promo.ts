@@ -69,7 +69,8 @@ async function tweetQuote() {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
 		let accountActions = 
 			accountTwitter
-				.tweet(rows.shift()["quote"])
+				.isSuspended()
+				.then(() => accountTwitter.tweet(rows.shift()["quote"]))
 				.then(() => accountTwitter.sendMessageOnDMRequest())
 				.then(() => accountTwitter.saveFollowingCount())
 				.then(() => accountTwitter.saveFollowerCount())

@@ -29,4 +29,8 @@ export default class ProfilePage {
 	get saveProfileEdits() {
 		return "//span[text()='Save']"
 	}
+
+	get isAcccountSuspended() {
+		return "//span[text()='Account suspended']"
+	}
 }
