@@ -10,12 +10,12 @@ bash installer.sh
 ```
 
 
-Enables you to manage your social media :    
-- Twitter  
-  - Auto tweet with/without image  
+Enables you to manage your Twitter Account :    
+  - Auto tweet with/without image 
   - Auto follow
   - Auto follow unfollow
   - SMS on dm request 
+  - Track Account Suspensions
   - Followers/Following Metrics
   - Change Profile Information!
 	- Change website
