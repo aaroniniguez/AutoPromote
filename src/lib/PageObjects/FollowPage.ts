@@ -5,7 +5,7 @@ class FollowPage {
 	 */
 	constructor(version) {
 		this.version = version;
-		this.url = "https://twitter.com/who_to_follow"
+		this.url = "https://twitter.com/i/connect_people"
 	}
 
 	get whoToFollow() {
