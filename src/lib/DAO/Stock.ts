@@ -87,4 +87,4 @@ class Stock {
 		this.DB.disconnect();
 	}
 }
-export default new Stock()
+export default Stock

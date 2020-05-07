@@ -1,9 +1,10 @@
 const log = require('why-is-node-running');
 require("dotenv").config();
 import twitter from "./lib/Twitter";
-import Stocks from "./lib/DAO/Stock";
+import Stock from "./lib/DAO/Stock";
 import database from "./lib/Database";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccounts";
+import { TwitterAccountDBRecord } from "./lib/interfaces";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
@@ -22,14 +23,17 @@ if(debugMode) {
 	//})();
 }
 async function setupAccounts() {
-	let tasks = [];
-	for(let [accountType, accountInfo] of Object.entries(twitterAccounts)) {
-		let twitterAccount = new twitter(accountInfo)
+	let tasks: Promise<any>[] = [];
+	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
+	TwitterAccountDAO.cleanup()
+	twitterAccounts.forEach((credentials: TwitterAccountDBRecord) => {
+		let twitterAccount  = new twitter(credentials.username, credentials.password);
 		let actions = twitterAccount
 			.changeWebsiteTo("https://tradeforthemoney.com")
-			.catch((e) => {console.log(e);})
+			.catch((e: any) => {console.log(e);})
+			.finally(() => twitterAccount.close())
 		tasks.push(actions);
-	}
+	});
 	await Promise.all(tasks);
 }
 async function tweetPromo() {
@@ -37,7 +41,6 @@ async function tweetPromo() {
 	let currentDayValue = currentDate.getDate()
 	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
 	//odd days use the jesus account
-	Stocks.cleanup();
 	TwitterAccountDAO.cleanup()
 	if(currentDayValue % 2) {
 		let jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
@@ -59,11 +62,12 @@ async function tweetPromo() {
 async function tweetQuote() {
 	//TODO: in future , pass in db object...
 	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
+	let StockQuotes = new Stock()
 	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
-	let rowsPromise = Stocks.getQuotes(twitterAccounts.length);
+	let rowsPromise = StockQuotes.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
-	Stocks.cleanup()
+	StockQuotes.cleanup()
 	let tasks = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
@@ -81,9 +85,17 @@ async function tweetQuote() {
 	});
 	await Promise.all(tasks)
 }
-if(process.argv[2] == "promo") {
-	tweetPromo();
-}
-else if(process.argv[2] == "quote") {
-	tweetQuote();
+let adminAction = process.argv[2];
+switch(adminAction) {
+	case "promo": 
+		tweetPromo();
+		break;
+	case "quote":
+		tweetQuote();
+		break;
+	case "config":
+		setupAccounts()
+		break;
+	default: 
+		console.log("Invalid Action")
 }

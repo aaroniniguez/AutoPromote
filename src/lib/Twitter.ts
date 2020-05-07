@@ -157,7 +157,7 @@ class Twitter {
 		await this.goToPage(ProfilePageObject.url)
 		let EH = await this.page.findSingleXPathElement(ProfilePageObject.editProfile);
 		await EH.click()
-		EH = await this.page.findSingleXPathElement(ProfilePageObject.editWebsite);
+		EH = await this.page.findSingleElement(ProfilePageObject.editWebsite);
 		await EH.click({ clickCount: 3 })
 		await EH.type(url)
 		EH = await this.page.findSingleXPathElement(ProfilePageObject.saveProfileEdits);
