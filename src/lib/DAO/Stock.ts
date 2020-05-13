@@ -40,9 +40,13 @@ class Stock {
 	 * 
 	 * @param {string} quote inserts a quote into the table
 	 */
-	insert(quote: string) {
-		this.DB.query(`insert into stockQuotes (quote) values("${quote}")`)
-			.then(() => this.DB.query(`select count(*) from stockQuotes`).then(data => console.log(data)))
+	insert(quote: string): Promise<any> {
+		return this.DB.query(`insert into stockQuotes (quote) values("${quote}")`)
+			.then(() => {
+				return this.DB.query(`select count(*) from stockQuotes`)
+			})
+			.then((data: string) => console.log(data))
+			//TODO what type should the error object be...
 			.catch((e)=> {
 				console.log("Duplicate Entries Not Allowed!");
 			});

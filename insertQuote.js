@@ -1,3 +1,6 @@
-const Stocks = require("./lib/DAO/Stock.js");
+const Stocks = require("./dist/lib/DAO/Stock.js").default;
+let Stock = new Stocks()
 var quote = process.argv[2].trim();
-Stocks.insert(quote);
+Stock
+    .insert(quote)
+    .then(() => Stock.cleanup());

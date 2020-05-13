@@ -29,6 +29,8 @@ class Database {
 		}
 		else if(e.code === "ER_DUP_ENTRY") {
 			console.log("Duplicate Entries Not Allowed!");
+		} else {
+			console.log("error: ", e.code)
 		}
 		this.disconnect();
 	}
@@ -58,7 +60,16 @@ class Database {
 				resolve(rows);
 			});
 		}).catch((e) => {
-			this.handleDisconnect(e);
+			//prior...was disconnecting the mysql connection on error...now, just reject ...leave the connection open for reuse
+			//return a rejected promise based on what the use case is gonna be...if you chain your queries you want the query to 
+			//be rejected so the following queries cant be run...
+			if(e.code === "ER_DUP_ENTRY") {
+				return new Promise((resolve, reject) => {
+					reject("Error Duplicate Entries")
+				});
+			} else {
+				this.handleDisconnect(e);
+			}
 		});
 	}
 
