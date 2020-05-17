@@ -5,6 +5,7 @@ import Stock from "./lib/DAO/Stock";
 import database from "./lib/Database";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccounts";
 import { TwitterAccountDBRecord } from "./lib/interfaces";
+import PostMatesPromos from "./lib/DAO/Postmates";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
@@ -36,6 +37,14 @@ async function setupAccounts() {
 	});
 	await Promise.all(tasks);
 }
+
+async function tweetPostmates() {
+	let PostMatesPromosDAO = new PostMatesPromos()
+	let post = await PostMatesPromosDAO.getPost()
+	console.log(post);
+	PostMatesPromosDAO.cleanup()
+}
+
 async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
@@ -95,6 +104,10 @@ switch(adminAction) {
 		break;
 	case "config":
 		setupAccounts()
+		break;
+	case "postmates": 
+		//do something
+		tweetPostmates()
 		break;
 	default: 
 		console.log("Invalid Action")
