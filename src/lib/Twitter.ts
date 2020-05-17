@@ -7,7 +7,7 @@ import ProfilePage from "./PageObjects/ProfilePage.js";
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
 import twitterAccountDAO from "./DAO/TwitterAccounts";
-import { pathToFileURL } from "url";
+import { Browser, Page } from "puppeteer";
 
 var random = require('randomstring');
 var generateUniqueFlowID = function(){
@@ -28,11 +28,11 @@ class Twitter {
 	accountDAO: any;
 	flowID: string;
 	loggedon: boolean;
-	typeDelay: object;
+	typeDelay: {delay: number};
 	clickDelay: object;
 	navigationParams: any;
-	page: any;
-	browser: any;
+	page: Page;
+	browser: Browser;
 
 	constructor(username: string, password: string) {
 		this.credentials = {
@@ -177,7 +177,7 @@ class Twitter {
 		await this.page.goto(pageGoTo, this.navigationParams);
 	}
 
-	async goToPageTest(page, pageGoTo: string) {
+	async goToPageTest(page: Page, pageGoTo: string) {
 		await this.guardInit()
 		if(!this.loggedon) {
 			await this.login()
@@ -241,7 +241,7 @@ class Twitter {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.guardInit()
 		await this.goToPage(FollowPage.url);
-		await this.page.waitForXPath(FollowPage.whoToFollow).catch((e) => {
+		await this.page.waitForXPath(FollowPage.whoToFollow).catch(() => {
 			Logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find element ${FollowPage.whoToFollow}`, id: this.flowID})
 		});
 		var results = await this.page.$x(FollowPage.whoToFollow);
