@@ -1,4 +1,5 @@
 class Promos {
+	textQuotes: {message: string}[];
 	constructor() {
 		this.imageBasePath = __dirname + "/../../Images/Payouts/";
 		this.baseWebSitePromo = "\nRead about my experience with Tradenet here: tradeforthemoney.com"
