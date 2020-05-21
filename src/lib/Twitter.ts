@@ -83,7 +83,7 @@ class Twitter {
 		}
 	}
 
-	async isSuspended() {
+	async updateSuspendedFlag() {
 		await this.guardInit();
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		//DONT login the user...can only see suspended status if not logged in
@@ -92,6 +92,7 @@ class Twitter {
 			.then(() => {
 				this.accountDAO.setSuspended(this.credentials.username);
 			})
+			//TODO log this instead of console.log...
 			.catch(() => {console.log("account is not suspended")})
 	}
 
