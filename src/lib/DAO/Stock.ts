@@ -51,7 +51,7 @@ class Stock {
 				console.log("Duplicate Entries Not Allowed!");
 			});
 	}
-	getQuotes(number: string) {
+	getQuotes(number: number) {
 		return this.DB.query(`
 			SELECT *
 			FROM stockQuotes

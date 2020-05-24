@@ -81,7 +81,7 @@ async function tweetQuote() {
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
 	StockQuotes.cleanup()
-	let tasks = [];
+	let tasks : Promise<any>[] = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
 		let accountActions = 
