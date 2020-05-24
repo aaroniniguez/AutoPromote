@@ -39,14 +39,12 @@ async function setupAccounts() {
 
 async function tweetPostmates() {
 	let PostMatesPromosDAO = new PostMatesPromos()
-	let post = await PostMatesPromosDAO.getPost()
-	console.log(post);
+	let post = await PostMatesPromosDAO.getRandomTweet()
 	PostMatesPromosDAO.cleanup()
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4");
-	console.log(twitterAccountInfo)
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
-		.tweet("hello there!")
+		.tweet(post)
 		.then(() => twitterAccount.close())
 	TwitterAccountDAO.cleanup()
 }

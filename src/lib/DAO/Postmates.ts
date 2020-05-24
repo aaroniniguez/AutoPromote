@@ -9,7 +9,7 @@ class PostMatesPromos {
 		this.DB = new database("localhost", "root", "stock")
 	}
 
-	getPost() {
+	getRandomTweet() {
 		return this.DB.query(`
 			SELECT post 
 			FROM postmatesPromos
