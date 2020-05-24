@@ -2,8 +2,7 @@
  * DAO for TwitterAccounts table
  */
 import database from "../Database";
-import Twitter from "../Twitter";
-import {TwitterAccountDBRecord} from "../interfaces"
+import {TwitterAccountDBRecord, TwitterAccountRow} from "../interfaces"
 const moment = require('moment-timezone');
 
 //put interface for promisereturn type here ....
@@ -16,9 +15,9 @@ class TwitterAccounts {
 		this.DB = new database("localhost", "root", "stock")
 		this.username = username;
 	}
-	async getTwitterAccount(username: string) {
+	async getTwitterAccount(username: string) : Promise<TwitterAccountRow>{
 		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`);
-		return result;
+		return result[0];
 	}
 
 	async getAllTwitterAccounts() : Promise<TwitterAccountDBRecord[]> {

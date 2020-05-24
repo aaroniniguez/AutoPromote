@@ -1,1 +1,1 @@
-export {TwitterAccountDBRecord} from "./TwitterAccountDBRecord"
+export {TwitterAccountDBRecord, TwitterAccountRow} from "./TwitterAccountDBRecord"

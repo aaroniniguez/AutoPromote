@@ -2,7 +2,6 @@ const log = require('why-is-node-running');
 require("dotenv").config();
 import twitter from "./lib/Twitter";
 import Stock from "./lib/DAO/Stock";
-import database from "./lib/Database";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccounts";
 import { TwitterAccountDBRecord } from "./lib/interfaces";
 import PostMatesPromos from "./lib/DAO/Postmates";
@@ -43,6 +42,13 @@ async function tweetPostmates() {
 	let post = await PostMatesPromosDAO.getPost()
 	console.log(post);
 	PostMatesPromosDAO.cleanup()
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4");
+	console.log(twitterAccountInfo)
+	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+	twitterAccount
+		.tweet("hello there!")
+		.then(() => twitterAccount.close())
+	TwitterAccountDAO.cleanup()
 }
 
 async function tweetPromo() {
