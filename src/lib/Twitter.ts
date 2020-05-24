@@ -90,10 +90,13 @@ class Twitter {
 		await this.page.goto(ProfilePageObject.url, this.navigationParams);
 		let result = await this.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
 			.then(() => {
+				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is suspended`, id: this.flowID})
 				this.accountDAO.setSuspended(this.credentials.username);
 			})
 			//TODO log this instead of console.log...
-			.catch(() => {console.log("account is not suspended")})
+			.catch(() => {
+				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is not suspended`, id: this.flowID})
+			})
 	}
 
 	async sendMessageOnDMRequest() {
