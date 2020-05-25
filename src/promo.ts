@@ -67,7 +67,7 @@ async function tweetPromo() {
 		let TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
 		TraderShyTwitter
 			.tweet(randomImagePromo.message, randomImagePromo.image)
-			.then(() => TraderShyTwitter.isAbleToFollow())
+			.then(() => TraderShyTwitter.canFollow())
 			.then(() => TraderShyTwitter.close())
 	}
 }
