@@ -1,11 +1,10 @@
 export default class ProfilePage {
 	url: string;
-	username: string;
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop
 	 */
-	constructor(username) {
+	constructor(public username: string) {
 		this.url = `https://twitter.com/${username}`
 		this.username = username;
 	}
