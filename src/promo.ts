@@ -41,7 +41,7 @@ async function tweetPostmates() {
 	let PostMatesPromosDAO = new PostMatesPromos()
 	let post = await PostMatesPromosDAO.getRandomTweet()
 	PostMatesPromosDAO.cleanup()
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4", "postmates");
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4");
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(post)
@@ -60,7 +60,7 @@ async function tweetPromo() {
 		account = "joo11244620";
 		promotion = randomImagePromo;
 	}
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount(account, "tradenet");
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount(account);
 	TwitterAccountDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
@@ -74,7 +74,7 @@ async function tweetQuote() {
 	//TODO: in future , pass in db object...
 	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
 	let StockQuotes = new Stock()
-	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
 	let rowsPromise = StockQuotes.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
