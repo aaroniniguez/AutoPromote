@@ -41,7 +41,7 @@ async function tweetPostmates() {
 	let PostMatesPromosDAO = new PostMatesPromos()
 	let post = await PostMatesPromosDAO.getRandomTweet()
 	PostMatesPromosDAO.cleanup()
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4");
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4", "postmates");
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(post)
@@ -52,24 +52,22 @@ async function tweetPostmates() {
 async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
-	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
-	//odd days use the jesus account
-	TwitterAccountDAO.cleanup()
+	let account, promotion;
 	if(currentDayValue % 2) {
-		let jesusTwitter = new twitter(twitterAccounts[1].username, twitterAccounts[1].password)
-		jesusTwitter
-			.tweet(randomTextPromo.message, randomTextPromo.image)
-			.then(() => jesusTwitter.saveFollowingCount())
-			.then(() => jesusTwitter.saveFollowerCount())
-			.then(() => jesusTwitter.close())
-	//even days use the robinhood account
+		account = "StockJesus";
+		promotion = randomTextPromo;
 	} else {
-		let TraderShyTwitter = new twitter(twitterAccounts[0].username, twitterAccounts[0].password)
-		TraderShyTwitter
-			.tweet(randomImagePromo.message, randomImagePromo.image)
-			.then(() => TraderShyTwitter.canFollow())
-			.then(() => TraderShyTwitter.close())
+		account = "joo11244620";
+		promotion = randomImagePromo;
 	}
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount(account, "tradenet");
+	TwitterAccountDAO.cleanup()
+	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+	twitterAccount
+		.tweet(promotion.message, promotion.image)
+		.then(() => twitterAccount.saveFollowingCount())
+		.then(() => twitterAccount.saveFollowerCount())
+		.then(() => twitterAccount.close())
 }
 
 async function tweetQuote() {

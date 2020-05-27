@@ -15,8 +15,8 @@ class TwitterAccounts {
 		this.DB = new database("localhost", "root", "stock")
 		this.username = username;
 	}
-	async getTwitterAccount(username: string) : Promise<TwitterAccountRow>{
-		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`);
+	async getTwitterAccount(username: string, promotionType: string) : Promise<TwitterAccountRow>{
+		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}" AND type="${promotionType}"`);
 		return result[0];
 	}
 
