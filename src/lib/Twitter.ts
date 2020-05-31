@@ -293,14 +293,14 @@ class Twitter {
 	 * @param {string} data message to tweet out
 	 * @param {string} uploadFile path to image file to be uploaded in the tweet
 	 */
-	async tweet(data: string, uploadFile = false) {
+	async tweet(data: string, uploadFile?: string) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		 try {
 			await this.guardInit()
 			const twitter = "https://twitter.com/compose/tweet";
 			if(debugMode) {
 				const session = await this.pageWrapper.page.target().createCDPSession()
-				const {windowId} = await session.send('Browser.getWindowForTarget');
+				const {windowId} = await session.send('Browser.getWindowForTarget') as {windowId: number};
 				await session.send('Browser.setWindowBounds', {windowId, bounds: {windowState: 'minimized'}});
 			}
 			if(!this.loggedon)

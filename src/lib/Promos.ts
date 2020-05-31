@@ -1,5 +1,14 @@
 class Promos {
 	textQuotes: {message: string}[];
+	baseWebSitePromo: string;
+	imageBasePath: string;
+	hashTags: string;
+	affiliateLink: string;
+	intro: string;
+	student: string;
+	expert: string;
+	pro: string;
+	ImageQuotes: {image: string, message: string}[]
 	constructor() {
 		this.imageBasePath = __dirname + "/../../Images/Payouts/";
 		this.baseWebSitePromo = "\nRead about my experience with Tradenet here: tradeforthemoney.com"

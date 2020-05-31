@@ -1,11 +1,9 @@
 class LoginPage {
-	/**
-	 * 
-	 * @param {String} version either mobile or desktop
-	 */
-	constructor(version) {
-		this.version = version;
-		this.url = "https://twitter.com/login";
+	url: string;
+	validLoginPages: string[];
+
+	constructor() {
+		this.url = "https://twitter.com/login",
 		this.validLoginPages = [
 			"https://twitter.com/home",
 			"https://twitter.com/"
