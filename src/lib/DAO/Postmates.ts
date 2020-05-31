@@ -2,9 +2,11 @@
  * DAO for stock table
  */
 import database from "../Database";
+import Database from "../Database";
+import { RowDataPacket } from "mysql";
 
 class PostMatesPromos {
-	DB: any;
+	DB: Database;
 	constructor() {
 		this.DB = new database("localhost", "root", "stock")
 	}
@@ -15,7 +17,7 @@ class PostMatesPromos {
 			FROM postmatesPromos
 			ORDER BY RAND()
 			LIMIT 1
-		`).then(row => {
+		`).then((row: RowDataPacket[]) => {
 			return row[0].post
 		});
 	}

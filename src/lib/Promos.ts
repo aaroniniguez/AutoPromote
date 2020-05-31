@@ -8,7 +8,7 @@ class Promos {
 	student: string;
 	expert: string;
 	pro: string;
-	ImageQuotes: {image: string, message: string}[]
+	ImageQuotes: {image: string, message: string}[];
 	constructor() {
 		this.imageBasePath = __dirname + "/../../Images/Payouts/";
 		this.baseWebSitePromo = "\nRead about my experience with Tradenet here: tradeforthemoney.com"
@@ -54,10 +54,11 @@ class Promos {
 	}
 	getRandomTextPromotion() {
 		let length = this.textQuotes.length	
-		let item = this.textQuotes[Math.floor(Math.random()*length)]
-		item.message = this.hashTags + item.message;
-		item.image = false;
-		return item;
+		let quote = this.textQuotes[Math.floor(Math.random()*length)].message
+		return {
+			message: this.hashTags + quote,
+			image: false
+		}
 	}
 }
 module.exports = new Promos();

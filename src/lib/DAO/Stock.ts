@@ -2,9 +2,11 @@
  * DAO for stock table
  */
 import database from "../Database";
+import { QueryError } from "mysql";
+import Database from "../Database";
 
 class Stock {
-	DB: any;
+	DB: Database;
 	constructor() {
 		this.DB = new database("localhost", "root", "stock")
 	}
@@ -47,7 +49,7 @@ class Stock {
 			})
 			.then((data: string) => console.log(data))
 			//TODO what type should the error object be...
-			.catch((e)=> {
+			.catch((e: QueryError)=> {
 				console.log("Duplicate Entries Not Allowed!");
 			});
 	}

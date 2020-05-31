@@ -1,8 +1,17 @@
 require('dotenv').config({ path: '/Users/aaroniniguez/AutoPromote/.env'})
 
-const mysql = require("mysql")
+interface DBConfig {
+	host: string; 
+	user: string;
+	database: string;
+	password: string;
+}
+type RowsType = mysql.RowDataPacket[] | mysql.RowDataPacket[][] | mysql.OkPacket | mysql.OkPacket[]; 
+import mysql, { QueryError, RowDataPacket } from "mysql"
+import Connection from "mysql/lib/Connection";
 class Database {
-
+	dbConfig: DBConfig;
+	connection: Connection;
 	constructor(host = "localhost", user = "root", database = "stock") {
 		this.dbConfig = {
 			host: host,
@@ -12,18 +21,15 @@ class Database {
 		};
 
 		this.connection = mysql.createConnection(this.dbConfig);
-		//test out connection
 		this.connection.connect(function(err) {
 			if (err) {
 			  throw console.error('Could not connect to Mysql Server: ' + err.message);
 			}
 			console.log('Connected to the MySQL server.');
 		  });
-
-
 	}
 
-	handleDisconnect(e) {
+	handleDisconnect(e: QueryError) {
 		if(e.code === "PROTOCOL_CONNECTION_LOST") {
 			console.log("Protocol Connection Lost");
 		}
@@ -40,9 +46,9 @@ class Database {
 		this.connection.end();
 	}
 
-	query(sql, args) {
-		return new Promise((resolve, reject) => {
-			this.connection.query(sql, args, (err, rows)=> {
+	query(sql: string): Promise<RowsType | void>{
+		return new Promise<RowsType>((resolve, reject) => {
+			this.connection.query(sql, (err, rows)=> {
 				if(err) {
 					if(err.code !== "PROTOCOL_CONNECTION_LOST")
 						return reject(err);
@@ -50,7 +56,7 @@ class Database {
 					(async () => {
 						setTimeout(() => {
 							this.connection = mysql.createConnection(this.dbConfig);
-							this.query(sql, args);
+							this.query(sql);
 						}, 10000);
 					})();
 					//return this.query(sql, args);
@@ -64,9 +70,7 @@ class Database {
 			//return a rejected promise based on what the use case is gonna be...if you chain your queries you want the query to 
 			//be rejected so the following queries cant be run...
 			if(e.code === "ER_DUP_ENTRY") {
-				return new Promise((resolve, reject) => {
-					reject("Error Duplicate Entries")
-				});
+				throw e;
 			} else {
 				this.handleDisconnect(e);
 			}

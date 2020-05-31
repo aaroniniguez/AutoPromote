@@ -29,6 +29,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@types/mysql": "github:types/mysql",
     "@types/node": "^13.9.8"
   }
 }
