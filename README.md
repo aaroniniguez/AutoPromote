@@ -17,5 +17,5 @@ Enables you to manage your Twitter Account :
   - SMS on dm request 
   - Track Account Suspensions
   - Followers/Following Metrics
-  - Change Profile Information!
+  - Change Profile Information
 	- Change website
