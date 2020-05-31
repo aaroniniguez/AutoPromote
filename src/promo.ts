@@ -41,11 +41,14 @@ async function tweetPostmates() {
 	let PostMatesPromosDAO = new PostMatesPromos()
 	let post = await PostMatesPromosDAO.getRandomTweet()
 	PostMatesPromosDAO.cleanup()
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount("postmatespromo4");
-	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
-	twitterAccount
-		.tweet(post)
-		.then(() => twitterAccount.close())
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("postmates");
+	twitterAccounts.forEach((twitterAccountInfo) => {
+		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+		twitterAccount
+			.tweet(post)
+			.then(() => twitterAccount.close())
+			.then(() => twitterAccount.followRandomPeople())
+	});
 	TwitterAccountDAO.cleanup()
 }
 
