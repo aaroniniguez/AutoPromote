@@ -46,8 +46,8 @@ async function tweetPostmates() {
 		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 		twitterAccount
 			.tweet(post)
-			.then(() => twitterAccount.close())
 			.then(() => twitterAccount.followRandomPeople())
+			.then(() => twitterAccount.close())
 	});
 	TwitterAccountDAO.cleanup()
 }
