@@ -19,3 +19,8 @@ Enables you to manage your Twitter Account :
   - Followers/Following Metrics
   - Change Profile Information
 	- Change website
+
+Manage multiple accounts by: 
+
+ - Uses a LIFO(based on last tweeted timestamp) approach to tweeting promotional material
+ - utilizes cron jobs to tweet a promotion(which can have multiple promoters)
