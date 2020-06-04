@@ -3,8 +3,8 @@ class MessagesPage {
 	 * 
 	 * @param {String} version either mobile or desktop
 	 */
-	constructor(version) {
-		this.version = version;
+	public url: string;
+	constructor(public version?: string) {
 		this.url = `https://twitter.com/messages/requests`;
 	}
 

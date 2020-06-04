@@ -60,11 +60,11 @@ class TwitterAccounts {
 		return result[0]["id"];
 	}
 
-	async updateFollowing(numFollowing: string) {
+	async updateFollowing(numFollowing: number) {
 		await this.DB.query(`UPDATE twitterAccounts set following = '${numFollowing}' WHERE username = '${this.username}'`);
 	}
 	
-	async updateFollowers(numFollowers: string) {
+	async updateFollowers(numFollowers: number) {
 		let accountId = await this.getAccountID();
 		var mysqlTimestamp = moment(Date.now()).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm:ss');
 		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${mysqlTimestamp}','${numFollowers}')`;

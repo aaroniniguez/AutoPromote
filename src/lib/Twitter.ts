@@ -26,7 +26,7 @@ const ElementNotFound = require("./ElementNotFound.js")
 //});
 class Twitter {
 	credentials: any;
-	accountDAO: any;
+	accountDAO: twitterAccountDAO;
 	flowID: string;
 	loggedon: boolean;
 	typeDelay: {delay: number};
