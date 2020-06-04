@@ -328,6 +328,7 @@ class Twitter {
 		catch(e) {
 			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
 		}
+		await this.twitterAccountsDAO.updateLastTweeted()
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${data}`, id: this.flowID})
 		return;
 	};

@@ -30,6 +30,12 @@ class TwitterAccountsDAO {
 		return result;
 	}
 
+	//TODO: the func above will get deleted soon in a refactor... use this one
+	async getTwitterAccountByType(promo: string) : Promise<TwitterAccountDBRecord> {
+		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}" ORDER BY last_tweeted ASC`);
+		return result[0];
+	}
+
 	async setSuspended(username: string) : Promise<void> {
 		let result = await this.DB.query(`UPDATE twitterAccounts SET suspended = true WHERE username='${username}'`)
 	}
@@ -68,6 +74,12 @@ class TwitterAccountsDAO {
 		let accountId = await this.getAccountID();
 		var mysqlTimestamp = moment(Date.now()).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm:ss');
 		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${mysqlTimestamp}','${numFollowers}')`;
+		await this.DB.query(query);
+	}
+
+	async updateLastTweeted() {
+		var mysqlTimestamp = moment(Date.now()).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm:ss');
+		let query = `UPDATE twitterAccounts SET last_tweeted = "${mysqlTimestamp}" WHERE username = "${this.username}";`;
 		await this.DB.query(query);
 	}
 
