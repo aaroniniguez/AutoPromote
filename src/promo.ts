@@ -1,10 +1,10 @@
 const log = require('why-is-node-running');
 require("dotenv").config();
 import twitter from "./lib/Twitter";
-import Stock from "./lib/DAO/Stock";
-import TwitterAccountsDAO from "./lib/DAO/TwitterAccounts";
+import StockDAO from "./lib/DAO/StockDAO";
+import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import { TwitterAccountDBRecord } from "./lib/interfaces";
-import PostMatesPromos from "./lib/DAO/Postmates";
+import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
@@ -38,9 +38,9 @@ async function setupAccounts() {
 }
 
 async function tweetPostmates() {
-	let PostMatesPromosDAO = new PostMatesPromos()
-	let post = await PostMatesPromosDAO.getRandomTweet()
-	PostMatesPromosDAO.cleanup()
+	let PostMatePromosDAO = new PostMatesPromosDAO()
+	let post = await PostMatePromosDAO.getRandomTweet()
+	PostMatePromosDAO.cleanup()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("postmates");
 	twitterAccounts.forEach((twitterAccountInfo) => {
 		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
@@ -76,7 +76,7 @@ async function tweetPromo() {
 async function tweetQuote() {
 	//TODO: in future , pass in db object...
 	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
-	let StockQuotes = new Stock()
+	let StockQuotes = new StockDAO()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
 	let rowsPromise = StockQuotes.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise

@@ -5,7 +5,7 @@ import database from "../Database";
 import Database from "../Database";
 import { RowDataPacket } from "mysql";
 
-class PostMatesPromos {
+class PostMatesPromosDAO {
 	DB: Database;
 	constructor() {
 		this.DB = new database("localhost", "root", "stock")
@@ -26,4 +26,4 @@ class PostMatesPromos {
 		this.DB.disconnect();
 	}
 }
-export default PostMatesPromos;
+export default PostMatesPromosDAO;

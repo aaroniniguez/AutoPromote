@@ -5,7 +5,7 @@ import database from "../Database";
 import { QueryError } from "mysql";
 import Database from "../Database";
 
-class Stock {
+class StockDAO {
 	DB: Database;
 	constructor() {
 		this.DB = new database("localhost", "root", "stock")
@@ -93,4 +93,4 @@ class Stock {
 		this.DB.disconnect();
 	}
 }
-export default Stock
+export default StockDAO

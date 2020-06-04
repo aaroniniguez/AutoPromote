@@ -6,7 +6,7 @@ const LoginPage = require("./PageObjects/LoginPage.js");
 import ProfilePage from "./PageObjects/ProfilePage.js";
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
-import twitterAccountDAO from "./DAO/TwitterAccounts";
+import twitterAccountDAO from "./DAO/TwitterAccountsDAO";
 import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 

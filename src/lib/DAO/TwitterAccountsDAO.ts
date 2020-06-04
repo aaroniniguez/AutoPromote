@@ -7,7 +7,7 @@ const moment = require('moment-timezone');
 
 //put interface for promisereturn type here ....
 
-class TwitterAccounts {
+class TwitterAccountsDAO {
 	username: string;
 	DB: any;
 
@@ -77,4 +77,4 @@ class TwitterAccounts {
 
 }
 
-export default TwitterAccounts;
+export default TwitterAccountsDAO;
