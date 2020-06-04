@@ -38,9 +38,9 @@ async function setupAccounts() {
 }
 
 async function tweetPostmates() {
-	let PostMatePromosDAO = new PostMatesPromosDAO()
-	let post = await PostMatePromosDAO.getRandomTweet()
-	PostMatePromosDAO.cleanup()
+	let postMatesPromosDAO = new PostMatesPromosDAO()
+	let post = await postMatesPromosDAO.getRandomTweet()
+	postMatesPromosDAO.cleanup()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("postmates");
 	twitterAccounts.forEach((twitterAccountInfo) => {
 		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
@@ -76,12 +76,12 @@ async function tweetPromo() {
 async function tweetQuote() {
 	//TODO: in future , pass in db object...
 	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
-	let StockQuotes = new StockDAO()
+	let stockDAO = new StockDAO()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
-	let rowsPromise = StockQuotes.getQuotes(twitterAccounts.length);
+	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
-	StockQuotes.cleanup()
+	stockDAO.cleanup()
 	let tasks : Promise<any>[] = [];
 	twitterAccounts.forEach(twitterAccount => {
 		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)

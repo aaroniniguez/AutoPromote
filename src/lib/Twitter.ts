@@ -6,7 +6,7 @@ const LoginPage = require("./PageObjects/LoginPage.js");
 import ProfilePage from "./PageObjects/ProfilePage.js";
 const MessagesPage = require("./PageObjects/MessagesPage.js");
 // const sendMessage = require("./send_sms.js")
-import twitterAccountDAO from "./DAO/TwitterAccountsDAO";
+import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
 import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 
@@ -26,7 +26,7 @@ const ElementNotFound = require("./ElementNotFound.js")
 //});
 class Twitter {
 	credentials: any;
-	accountDAO: twitterAccountDAO;
+	twitterAccountsDAO: TwitterAccountsDAO;
 	flowID: string;
 	loggedon: boolean;
 	typeDelay: {delay: number};
@@ -40,7 +40,7 @@ class Twitter {
 			username,
 			password
 		}
-		this.accountDAO = new twitterAccountDAO(this.credentials.username);
+		this.twitterAccountsDAO = new TwitterAccountsDAO(this.credentials.username);
 		this.flowID = generateUniqueFlowID()
 		this.loggedon = false
 		this.typeDelay = {
@@ -75,7 +75,7 @@ class Twitter {
 		let result = await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
 			.then(() => {
 				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is suspended`, id: this.flowID})
-				this.accountDAO.setSuspended(this.credentials.username);
+				this.twitterAccountsDAO.setSuspended(this.credentials.username);
 			})
 			//TODO log this instead of console.log...
 			.catch(() => {
@@ -118,7 +118,7 @@ class Twitter {
 			return text;
 		});
 		let numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
-		await this.accountDAO.updateFollowing(numFollowing);
+		await this.twitterAccountsDAO.updateFollowing(numFollowing);
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
 	}
 	/**
@@ -136,7 +136,7 @@ class Twitter {
 			return text;
 		});
 		let numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
-		await this.accountDAO.updateFollowers(numFollowers);
+		await this.twitterAccountsDAO.updateFollowers(numFollowers);
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number followers to ${numFollowers}`, id: this.flowID})
 	}
 
@@ -208,9 +208,9 @@ class Twitter {
 
 	async canFollow() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
-		let followingCount = await this.accountDAO.getNumberFollowing()
+		let followingCount = await this.twitterAccountsDAO.getNumberFollowing()
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, has followers: ${followingCount}`, id: this.flowID})
-		let isSuspended = await this.accountDAO.getSuspended(this.credentials.username);
+		let isSuspended = await this.twitterAccountsDAO.getSuspended(this.credentials.username);
 		if(isSuspended === 1)
 			return false
 		if(followingCount < 4990)
@@ -333,7 +333,7 @@ class Twitter {
 	};
 	
 	async close() {
-		await this.accountDAO.cleanup();
+		await this.twitterAccountsDAO.cleanup();
 		await this.browser.close();
 	}
 
