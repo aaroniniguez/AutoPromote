@@ -2,7 +2,7 @@
  * DAO for TwitterAccounts table
  */
 import Database from "../Database";
-const moment = require('moment-timezone');
+import readableTimestamp from "/../utils/readable-timestamp";
 
 class TwitterAccountsDAO {
 	username: string;
@@ -59,14 +59,12 @@ class TwitterAccountsDAO {
 	
 	async updateFollowers(numFollowers: number) {
 		let accountId = await this.getAccountID();
-		var mysqlTimestamp = moment(Date.now()).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm:ss');
-		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${mysqlTimestamp}','${numFollowers}')`;
+		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${readableTimestamp()}','${numFollowers}')`;
 		await this.DB.query(query);
 	}
 
 	async updateLastTweeted() {
-		var mysqlTimestamp = moment(Date.now()).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm:ss');
-		let query = `UPDATE twitterAccounts SET last_tweeted = "${mysqlTimestamp}" WHERE username = "${this.username}";`;
+		let query = `UPDATE twitterAccounts SET last_tweeted = "${readableTimestamp()}" WHERE username = "${this.username}";`;
 		await this.DB.query(query);
 	}
 
