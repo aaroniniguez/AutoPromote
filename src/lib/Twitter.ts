@@ -274,20 +274,6 @@ class Twitter {
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Logged in`, id: this.flowID})
 	}
 
-	async consoleHandler() {
-		await this.guardInit()
-		this.pageWrapper.page.on('console', (log) => {
-			if(log._type == "warning")
-				return;
-				//console.warn(log._text);	
-			else if(log._type == "verbose")
-				return;
-				//console.debug(log._text);
-			else
-				console[log._type](log._type+":" + log._text);
-		});
-	}
-
 	/**
 	 * 
 	 * @param {string} data message to tweet out
@@ -306,7 +292,6 @@ class Twitter {
 			if(!this.loggedon)
 				await this.login()
 			//print out console logging in the page
-			//await this.consoleHandler();
 			await this.pageWrapper.page.goto(twitter, this.navigationParams);
 			// await this.page.waitFor(10000000);
 			await this.pageWrapper.page.waitFor(2000);

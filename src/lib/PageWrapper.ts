@@ -1,6 +1,6 @@
 import { Page } from "puppeteer";
 
-//wrapper class to add extra functionality for page
+// Wrapper for the Page Class
 export default class PageWrapper {
     constructor(public page: Page) {}
     async init() {

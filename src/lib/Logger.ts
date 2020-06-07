@@ -1,4 +1,4 @@
-const winston = require("winston");
+import winston from "winston";
 const {combine, prettyPrint} = winston.format;
 const logPath = __dirname+"../logs";
 const moment = require('moment-timezone');
