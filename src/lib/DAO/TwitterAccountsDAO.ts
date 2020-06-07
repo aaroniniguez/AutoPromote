@@ -1,48 +1,40 @@
 /**
  * DAO for TwitterAccounts table
  */
-import database from "../Database";
-import {TwitterAccountDBRecord, TwitterAccountRow} from "../interfaces"
+import Database from "../Database";
 const moment = require('moment-timezone');
-
-//put interface for promisereturn type here ....
 
 class TwitterAccountsDAO {
 	username: string;
-	DB: any;
+	DB: Database;
 
 	constructor(username?: string) {
-		this.DB = new database("localhost", "root", "stock")
+		this.DB = new Database("localhost", "root", "stock")
 		this.username = username;
 	}
-	async getTwitterAccount(username: string) : Promise<TwitterAccountRow>{
-		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`);
-		return result[0];
+	async getTwitterAccount(username: string) {
+		return (await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`))[0];
 	}
 
-	async getAllTwitterAccounts() : Promise<TwitterAccountDBRecord[]> {
-		let result = await this.DB.query("SELECT * FROM twitterAccounts");
-		return result;
+	async getAllTwitterAccounts() {
+		return await this.DB.query("SELECT * FROM twitterAccounts");
 	}
 
-	async getTwitterAccountsByType(promo: string) : Promise<TwitterAccountDBRecord[]> {
-		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}"`);
-		return result;
+	async getTwitterAccountsByType(promo: string) {
+		return await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}"`);
 	}
 
 	//TODO: the func above will get deleted soon in a refactor... use this one
-	async getTwitterAccountByType(promo: string) : Promise<TwitterAccountDBRecord> {
-		let result = await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}" ORDER BY last_tweeted ASC`);
-		return result[0];
+	async getTwitterAccountByType(promo: string) {
+		return (await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}" ORDER BY last_tweeted ASC`))[0];
 	}
 
 	async setSuspended(username: string) : Promise<void> {
-		let result = await this.DB.query(`UPDATE twitterAccounts SET suspended = true WHERE username='${username}'`)
+		await this.DB.query(`UPDATE twitterAccounts SET suspended = true WHERE username='${username}'`)
 	}
 
-	async getSuspended(username: string) {
-		let result = await this.DB.query(`SELECT suspended FROM twitterAccounts WHERE username='${username}'`) 
-		return result[0]["suspended"];
+	async getSuspended(username: string) : Promise<number>{
+		return (await this.DB.query(`SELECT suspended FROM twitterAccounts WHERE username='${username}'`))[0]["suspended"];
 	}
 
 	async addNewAccount(username: string, password: string, email: string, phone: string) {
@@ -51,19 +43,14 @@ class TwitterAccountsDAO {
 			INSERT INTO twitterAccounts (username, password, email, phone, owner)
 			VALUES ("${username}", "${password}", "${email}", "${phone}", 1)
 		`;
-		let result = await this.DB.query(query);
-		return result;
+		return await this.DB.query(query);
 	}
-	async getNumberFollowing() {
-		let query = `SELECT following FROM twitterAccounts where username='${this.username}'`;
-		let result = await this.DB.query(query);
-		return result[0]["following"];
+	async getNumberFollowing() : Promise<number>{
+		return (await this.DB.query(`SELECT following FROM twitterAccounts where username='${this.username}'`))[0]["following"];
 	}
 
-	async getAccountID() {
-		let query = `SELECT id FROM twitterAccounts WHERE username='${this.username}'`;
-		let result = await this.DB.query(query);
-		return result[0]["id"];
+	async getAccountID(): Promise<number> {
+		return (await this.DB.query(`SELECT id FROM twitterAccounts WHERE username='${this.username}'`))[0]["id"];
 	}
 
 	async updateFollowing(numFollowing: number) {

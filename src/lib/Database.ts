@@ -6,7 +6,6 @@ interface DBConfig {
 	database: string;
 	password: string;
 }
-type RowsType = mysql.RowDataPacket[] | mysql.RowDataPacket[][] | mysql.OkPacket | mysql.OkPacket[]; 
 import mysql, { QueryError, RowDataPacket } from "mysql"
 import Connection from "mysql/lib/Connection";
 class Database {

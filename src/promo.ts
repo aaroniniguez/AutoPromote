@@ -26,7 +26,7 @@ async function setupAccounts() {
 	let tasks: Promise<any>[] = [];
 	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
 	TwitterAccountDAO.cleanup()
-	twitterAccounts.forEach((credentials: TwitterAccountDBRecord) => {
+	twitterAccounts.forEach((credentials) => {
 		let twitterAccount  = new twitter(credentials.username, credentials.password);
 		let actions = twitterAccount
 			.changeWebsiteTo("https://tradeforthemoney.com")
@@ -109,7 +109,6 @@ switch(adminAction) {
 		setupAccounts()
 		break;
 	case "postmates": 
-		//do something
 		tweetPostmates()
 		break;
 	default: 
