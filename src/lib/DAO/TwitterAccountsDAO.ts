@@ -20,13 +20,13 @@ class TwitterAccountsDAO {
 		return await this.DB.query("SELECT * FROM twitterAccounts");
 	}
 
-	async getTwitterAccountsByType(promo: string) {
-		return await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}"`);
+	async getTwitterAccountsByType(type: string) {
+		return await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${type}" and suspended=0`);
 	}
 
 	//TODO: the func above will get deleted soon in a refactor... use this one
 	async getTwitterAccountByType(promo: string) {
-		return (await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}" ORDER BY last_tweeted ASC`))[0];
+		return (await this.DB.query(`SELECT * FROM twitterAccounts WHERE type="${promo}" AND suspended=0 ORDER BY last_tweeted ASC`))[0];
 	}
 
 	async setSuspended(username: string) : Promise<void> {
