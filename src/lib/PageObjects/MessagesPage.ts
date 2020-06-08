@@ -1,10 +1,12 @@
-class MessagesPage {
+import Page from "./Page";
+
+class MessagesPage extends Page {
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop
 	 */
-	public url: string;
 	constructor(public version?: string) {
+		super()
 		this.url = `https://twitter.com/messages/requests`;
 	}
 

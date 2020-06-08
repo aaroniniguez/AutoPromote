@@ -1,10 +1,12 @@
-class EditProfile {
+import Page from "./Page";
+
+class EditProfile extends Page {
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop
 	 */
-	public url: string;
 	constructor(public version?: string) {
+		super()
 		this.url = `https://twitter.com/settings/profile`
 	}
 

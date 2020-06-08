@@ -1,10 +1,12 @@
-export default class ProfilePage {
-	url: string;
+import Page from "./Page";
+
+export default class ProfilePage extends Page {
 	/**
 	 * 
 	 * @param {String} version either mobile or desktop
 	 */
 	constructor(public username: string) {
+		super()
 		this.url = `https://twitter.com/${username}`
 		this.username = username;
 	}

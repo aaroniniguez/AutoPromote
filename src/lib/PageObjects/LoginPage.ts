@@ -1,8 +1,10 @@
-class LoginPage {
-	url: string;
+import Page from "./Page";
+
+class LoginPage extends Page {
 	validLoginPages: string[];
 
 	constructor() {
+		super()
 		this.url = "https://twitter.com/login",
 		this.validLoginPages = [
 			"https://twitter.com/home",
