@@ -1,9 +1,7 @@
-const log = require('why-is-node-running');
 require("dotenv").config();
 import twitter from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
-import { TwitterAccountDBRecord } from "./lib/interfaces";
 import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
@@ -24,7 +22,7 @@ if(debugMode) {
 }
 async function setupAccounts() {
 	let tasks: Promise<any>[] = [];
-	let twitterAccounts = await TwitterAccountDAO.getAllTwitterAccounts();
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
 	TwitterAccountDAO.cleanup()
 	twitterAccounts.forEach((credentials) => {
 		let twitterAccount  = new twitter(credentials.username, credentials.password);
@@ -53,16 +51,9 @@ async function tweetPostmates() {
 async function tweetPromo() {
 	let currentDate = new Date();
 	let currentDayValue = currentDate.getDate()
-	let account, promotion;
-	if(currentDayValue % 2) {
-		account = "StockJesus";
-		promotion = randomTextPromo;
-	} else {
-		account = "joo11244620";
-		promotion = randomImagePromo;
-	}
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccount(account);
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("tradenet");
 	TwitterAccountDAO.cleanup()
+	let promotion = currentDayValue %2 ? randomTextPromo : randomImagePromo;
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotion.message, promotion.image)
@@ -73,7 +64,6 @@ async function tweetPromo() {
 
 async function tweetQuote() {
 	//TODO: in future , pass in db object...
-	// let twitterAccounts = await TwitterAccountDAO.getTwitterAccount("MarkZion19");
 	let stockDAO = new StockDAO()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
 	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
