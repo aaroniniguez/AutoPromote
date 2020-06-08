@@ -8,7 +8,7 @@ interface DBConfig {
 }
 import mysql, { QueryError, RowDataPacket } from "mysql"
 import Connection from "mysql/lib/Connection";
-class Database {
+export default class Database {
 	dbConfig: DBConfig;
 	connection: Connection;
 	constructor(host = "localhost", user = "root", database = "stock") {
@@ -57,5 +57,3 @@ class Database {
 	}
 
 }
-
-export default Database;

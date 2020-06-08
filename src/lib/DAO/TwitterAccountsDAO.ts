@@ -2,7 +2,7 @@
  * DAO for TwitterAccounts table
  */
 import Database from "../Database";
-import readableTimestamp from "/../utils/readable-timestamp";
+import readableTimestamp from "../../utils/readable-timestamp";
 
 class TwitterAccountsDAO {
 	username: string;
