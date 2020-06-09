@@ -1,14 +1,14 @@
 const puppeteer = require("puppeteer")
-const EditProfile = require("./PageObjects/EditProfile.js");
 import {Logger} from "./Logger";
-const FollowPage = require("./PageObjects/FollowPage.js");
-const LoginPage = require("./PageObjects/LoginPage.js");
+import FollowPage from "./PageObjects/FollowPage";
+import LoginPage from "./PageObjects/LoginPage";
 import ProfilePage from "./PageObjects/ProfilePage.js";
-const MessagesPage = require("./PageObjects/MessagesPage.js");
+import MessagesPage from "./PageObjects/MessagesPage";
 // const sendMessage = require("./send_sms.js")
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
 import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
+import NotificationsPage from "./PageObjects/NotificationsPage";
 
 var random = require('randomstring');
 var generateUniqueFlowID = function(){
@@ -28,9 +28,9 @@ class Twitter {
 	credentials: any;
 	twitterAccountsDAO: TwitterAccountsDAO;
 	flowID: string;
-	loggedon: boolean;
-	typeDelay: {delay: number};
-	clickDelay: object;
+	loggedon = false;
+	typeDelay: {delay: 3};
+	clickDelay: { delay: 500};
 	navigationParams: any;
 	pageWrapper: PageWrapper;
 	browser: Browser;
@@ -42,13 +42,6 @@ class Twitter {
 		}
 		this.twitterAccountsDAO = new TwitterAccountsDAO(this.credentials.username);
 		this.flowID = generateUniqueFlowID()
-		this.loggedon = false
-		this.typeDelay = {
-			delay: 3,
-		}
-		this.clickDelay = {
-			delay: 500
-		}
 		this.navigationParams = {
 			waitUntil: [
 				"domcontentloaded", //waits till this is fired
@@ -81,6 +74,17 @@ class Twitter {
 			.catch(() => {
 				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is not suspended`, id: this.flowID})
 			})
+	}
+
+	async likeAllNotifications() {
+		await this.guardInit();
+		await this.goToPage(NotificationsPage.url);		
+		let EH = await this.pageWrapper.page.$$(NotificationsPage.getHearts);
+		console.log(`Liking ${EH.length} mentions`)
+		for(let i =0; i < EH.length; i++) {
+			await EH[i].click(this.clickDelay).catch((e) => console.log(e));
+
+		}
 	}
 
 	async sendMessageOnDMRequest() {

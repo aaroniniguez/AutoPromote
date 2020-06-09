@@ -3,6 +3,7 @@ import twitter from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
+import Twitter from "./lib/Twitter";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
@@ -43,6 +44,7 @@ async function tweetPostmates() {
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(post)
+		.then(() => twitterAccount.likeAllNotifications())
 		.then(() => twitterAccount.followRandomPeople())
 		.then(() => twitterAccount.close())
 	TwitterAccountDAO.cleanup()
@@ -57,6 +59,7 @@ async function tweetPromo() {
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotion.message, promotion.image)
+		.then(() => twitterAccount.likeAllNotifications())
 		.then(() => twitterAccount.saveFollowingCount())
 		.then(() => twitterAccount.saveFollowerCount())
 		.then(() => twitterAccount.close())
@@ -76,6 +79,7 @@ async function tweetQuote() {
 		let accountActions = 
 			accountTwitter
 				.updateSuspendedFlag()
+				.then(() => accountTwitter.likeAllNotifications())
 				.then(() => accountTwitter.tweet(rows.shift()["quote"]))
 				.then(() => accountTwitter.sendMessageOnDMRequest())
 				.then(() => accountTwitter.saveFollowingCount())
@@ -87,6 +91,18 @@ async function tweetQuote() {
 	});
 	await Promise.all(tasks)
 }
+
+async function testing() {
+	let twitterAccount = await TwitterAccountDAO.getTwitterAccount("joo11244620");
+	TwitterAccountDAO.cleanup();
+	let account = new twitter(twitterAccount.username, twitterAccount.password);
+	await account
+		.likeAllNotifications()
+		.then(() => account.close())
+		.catch((e) => console.log(e));
+
+}
+
 let adminAction = process.argv[2];
 switch(adminAction) {
 	case "promo": 
@@ -100,6 +116,9 @@ switch(adminAction) {
 		break;
 	case "postmates": 
 		tweetPostmates()
+		break;
+	case "testing": 
+		testing();
 		break;
 	default: 
 		console.log("Invalid Action")

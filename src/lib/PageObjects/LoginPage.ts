@@ -1,11 +1,12 @@
 import Page from "./Page";
 
 class LoginPage extends Page {
+
 	validLoginPages: string[];
+	url = "https://twitter.com/login";
 
 	constructor() {
 		super()
-		this.url = "https://twitter.com/login",
 		this.validLoginPages = [
 			"https://twitter.com/home",
 			"https://twitter.com/"
@@ -17,18 +18,15 @@ class LoginPage extends Page {
 	}
 
 	get password() {
-		//const passwordSelector = "input.js-password-field"
+		// old version: const passwordSelector = "input.js-password-field"
 		return "input[name='session[password]']";
 	}
 
-	/**
-	 * returns xpath expression
-	 */
 	get loginButton() {
-		//await this.page.waitForXPath("//button[text()='Log in']").then((EH)=>EH.click());
+		// old version: await this.page.waitForXPath("//button[text()='Log in']").then((EH)=>EH.click());
 		return "//span[text()='Log in']";
 	}
 
 }
 
-module.exports = new LoginPage();
+export default new LoginPage();
