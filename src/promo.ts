@@ -3,7 +3,6 @@ import twitter from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
-import Twitter from "./lib/Twitter";
 let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()

@@ -9,12 +9,8 @@ import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
 import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
+import generateUniqueFlowID from "../utils/create-unique-flowID";
 
-var random = require('randomstring');
-var generateUniqueFlowID = function(){
-    var dt = new Date();
-    return random.generate() + dt.toISOString();
-}
 const debugMode = process.argv[3] === "debug" ? true : false;
 const ElementNotFound = require("./ElementNotFound.js")
 //const assert = require('assert');
@@ -25,7 +21,7 @@ const ElementNotFound = require("./ElementNotFound.js")
 	//assert.strictEqual(resolved, "google.coms");
 //});
 class Twitter {
-	credentials: any;
+	credentials: {username: string, password: string};
 	twitterAccountsDAO: TwitterAccountsDAO;
 	flowID: string;
 	loggedon = false;
@@ -107,10 +103,7 @@ class Twitter {
 				}
 			});
 	}
-	/**
-	 * 
-	 * @param {Object} DB database object
-	 */
+
 	async saveFollowingCount() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url);
@@ -126,8 +119,7 @@ class Twitter {
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
 	}
 	/**
-	 * Saves and overwrites the follower account into the database
-	 * @param {Object} DB database object
+	 * Saves/updates the follower account in the database
 	 */
 	async saveFollowerCount() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
