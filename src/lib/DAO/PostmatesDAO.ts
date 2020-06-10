@@ -8,13 +8,13 @@ import { RowDataPacket } from "mysql";
 class PostMatesPromosDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("localhost", "root", "stock")
+		this.DB = new database("localhost", "root", "promotions")
 	}
 
 	getRandomTweet() {
 		return this.DB.query(`
 			SELECT post 
-			FROM postmatesPromos
+			FROM postmatesPromotions
 			ORDER BY RAND()
 			LIMIT 1
 		`).then((row: RowDataPacket[]) => {
