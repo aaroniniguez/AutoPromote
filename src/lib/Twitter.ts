@@ -56,6 +56,18 @@ class Twitter {
 		}
 	}
 
+	/**
+	 * Performs routine twitter actions
+	 */
+	async update() {
+		await this
+			.updateSuspendedFlag()
+			.then(() => this.likeAllNotifications())
+			.then(() => this.sendMessageOnDMRequest())
+			.then(() => this.saveFollowingCount())
+			.then(() => this.saveFollowerCount())
+			.then(() => this.followRandomPeople())
+	}
 	async updateSuspendedFlag() {
 		await this.guardInit();
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
