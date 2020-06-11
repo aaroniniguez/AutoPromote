@@ -7,19 +7,6 @@ let TwitterAccountDAO = new TwitterAccountsDAO();
 let promotionManager = require("./lib/Promos") 
 let randomImagePromo = promotionManager.getRandomImagePromotion()
 let randomTextPromo = promotionManager.getRandomTextPromotion()
-const debugMode = process.argv[3] === "debug" ? true : false;
-if(debugMode) {
-	//let DB = new database("localhost", "root", "stock");
-	//console.log("hi");
-	//(async function () {
-	//	let users = await getAllTwitterAccounts();
-	//	let testUser = users[1];
-	//	console.log(testUser);
-	//	let twitterAccount = new twitter(testUser.username, testUser.password);
-	//	await twitterAccount.saveFollowerCount(DB);
-	//	twitterAccount.close();
-	//})();
-}
 async function setupAccounts() {
 	let tasks: Promise<any>[] = [];
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
@@ -40,13 +27,13 @@ async function tweetPostmates() {
 	let post = await postMatesPromosDAO.getRandomTweet()
 	postMatesPromosDAO.cleanup()
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("postmates");
+	TwitterAccountDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(post)
-		.then(() => twitterAccount.likeAllNotifications())
-		.then(() => twitterAccount.followRandomPeople())
-		.then(() => twitterAccount.close())
-	TwitterAccountDAO.cleanup()
+		.then(() => twitterAccount.update())
+		.catch((e) => console.trace(e))
+		.finally(() => twitterAccount.close())
 }
 
 async function tweetPromo() {
@@ -58,14 +45,12 @@ async function tweetPromo() {
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotion.message, promotion.image)
-		.then(() => twitterAccount.likeAllNotifications())
-		.then(() => twitterAccount.saveFollowingCount())
-		.then(() => twitterAccount.saveFollowerCount())
-		.then(() => twitterAccount.close())
+		.then(() => twitterAccount.update())
+		.catch((e) => console.trace(e))
+		.finally(() => twitterAccount.close())
 }
-
+//TODO: in future , pass in db object...
 async function tweetQuote() {
-	//TODO: in future , pass in db object...
 	let stockDAO = new StockDAO()
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
 	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
@@ -73,19 +58,14 @@ async function tweetQuote() {
 	TwitterAccountDAO.cleanup();
 	stockDAO.cleanup()
 	let tasks : Promise<any>[] = [];
-	twitterAccounts.forEach(twitterAccount => {
-		let accountTwitter = new twitter(twitterAccount.username, twitterAccount.password)
+	twitterAccounts.forEach(twitterAccountInfo => {
+		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 		let accountActions = 
-			accountTwitter
-				.updateSuspendedFlag()
-				.then(() => accountTwitter.likeAllNotifications())
-				.then(() => accountTwitter.tweet(rows.shift()["quote"]))
-				.then(() => accountTwitter.sendMessageOnDMRequest())
-				.then(() => accountTwitter.saveFollowingCount())
-				.then(() => accountTwitter.saveFollowerCount())
-				.then(() => accountTwitter.followRandomPeople())
+			twitterAccount
+				.update()
+				.then(() => twitterAccount.tweet(rows.shift()["quote"]))
 				.catch((e) => console.trace(e))
-				.finally(() => accountTwitter.close())
+				.finally(() => twitterAccount.close())
 		tasks.push(accountActions)
 	});
 	await Promise.all(tasks)
