@@ -5,6 +5,7 @@ interface DBConfig {
 	user: string;
 	database: string;
 	password: string;
+	charset: string;
 }
 import mysql, { QueryError, RowDataPacket } from "mysql"
 import Connection from "mysql/lib/Connection";
@@ -16,7 +17,8 @@ export default class Database {
 			host: host,
 			user: user,
 			database: database,
-			password: process.env.DB_PASS
+			password: process.env.DB_PASS,
+			charset: 'utf8mb4'
 		};
 
 		this.connection = mysql.createConnection(this.dbConfig);
