@@ -50,6 +50,7 @@ export default class Database {
 					else if (err.code === "ER_DUP_ENTRY") {
 						reject(err);
 					} else {
+						console.log(err);
 						this.disconnect();
 					}
 				};
