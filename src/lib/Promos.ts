@@ -1,5 +1,8 @@
+interface promotion {
+	message: string, 
+	image: null | string
+}
 class Promos {
-	textQuotes: {message: string}[];
 	baseWebSitePromo: string;
 	imageBasePath: string;
 	hashTags: string;
@@ -8,7 +11,7 @@ class Promos {
 	student: string;
 	expert: string;
 	pro: string;
-	ImageQuotes: {image: string, message: string}[];
+	promotions: promotion[];
 	constructor() {
 		this.imageBasePath = __dirname + "/../../Images/Payouts/";
 		this.baseWebSitePromo = "\nRead about my experience with Tradenet here: tradeforthemoney.com"
@@ -18,7 +21,7 @@ class Promos {
 		this.student = "$2,700"
 		this.expert = "$5,400"
 		this.pro = "$8,100"
-		this.ImageQuotes = [
+		this.promotions = [
 			{
 				image: "NovemberPayout.png",
 				message: "~November 2018 ~ \nThis was my biggest month ever, literally traded $UVXY this entire month as the market as a whole was on fire!"
@@ -31,34 +34,25 @@ class Promos {
 			}, {
 				image: "OctoberPayout.png",
 				message: "Second payout I got on my student account , almost $3000!"
-			}
-		]
-		this.textQuotes = [
+			}, 
 			{
+				image: null,
 				message: `TradeNet , my go to platform for trading US Stocks under PDT is having a monster sale! (dm me for an even better sale ;):\n\n\nIntro for ${this.intro}\nStudent for ${this.student}\nExpert for ${this.expert}\nPro for ${this.pro}\n\n`+this.affiliateLink
 			},
 			{
+				image: null,
 				message: "\nMy go to platform for building small accounts and for those under pdt is without a doubt tradenet. Excellent buying power and crazy low comissions - perfect for scalping! Get a discount here:\n"+this.affiliateLink
 			}
-		]
+		];
 	}
-	/**
-	 * test
-	 */
-	getRandomImagePromotion() {
-		let length = this.ImageQuotes.length
-		let item = this.ImageQuotes[Math.floor(Math.random()*length)];
-		item.message = item.message + this.baseWebSitePromo
-		item.image = this.imageBasePath + item.image
-		return item;
-	}
-	getRandomTextPromotion() {
-		let length = this.textQuotes.length	
-		let quote = this.textQuotes[Math.floor(Math.random()*length)].message
+
+	getRandomPromotion(): promotion {
+		let length = this.promotions.length
+		let item = this.promotions[Math.floor(Math.random()*length)];
 		return {
-			message: this.hashTags + quote,
-			image: false
+			message: item.message + this.baseWebSitePromo,
+			image: this.imageBasePath + item.image
 		}
 	}
 }
-module.exports = new Promos();
+export default new Promos();

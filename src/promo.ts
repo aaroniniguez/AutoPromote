@@ -4,9 +4,7 @@ import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
 let TwitterAccountDAO = new TwitterAccountsDAO();
-let promotionManager = require("./lib/Promos") 
-let randomImagePromo = promotionManager.getRandomImagePromotion()
-let randomTextPromo = promotionManager.getRandomTextPromotion()
+import promotionManager from "./lib/Promos";
 async function setupAccounts() {
 	let tasks: Promise<any>[] = [];
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
@@ -36,12 +34,10 @@ async function tweetPostmates() {
 		.finally(() => twitterAccount.close())
 }
 
-async function tweetPromo() {
-	let currentDate = new Date();
-	let currentDayValue = currentDate.getDate()
+async function tweetTradenet() {
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("tradenet");
 	TwitterAccountDAO.cleanup()
-	let promotion = currentDayValue %2 ? randomTextPromo : randomImagePromo;
+	let promotion = promotionManager.getRandomPromotion()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotion.message, promotion.image)
@@ -84,8 +80,8 @@ async function testing() {
 
 let adminAction = process.argv[2];
 switch(adminAction) {
-	case "promo": 
-		tweetPromo();
+	case "tradenet": 
+		tweetTradenet();
 		break;
 	case "quote":
 		tweetQuote();
