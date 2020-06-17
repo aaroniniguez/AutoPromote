@@ -13,6 +13,7 @@
     "@types/node-cron": "^2.0.3",
     "@types/puppeteer": "^2.1.0",
     "assert": "^2.0.0",
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "find-config": "^1.0.0",
     "fs": "0.0.1-security",
