@@ -2,9 +2,8 @@ require("dotenv").config();
 import twitter from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
-import PostMatesPromosDAO from "./lib/DAO/PostmatesDAO";
+import PromotionsDAO from "./lib/DAO/PromotionsDAO";
 let TwitterAccountDAO = new TwitterAccountsDAO();
-import promotionManager from "./lib/Promos";
 async function setupAccounts() {
 	let tasks: Promise<any>[] = [];
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
@@ -21,14 +20,14 @@ async function setupAccounts() {
 }
 
 async function tweetPostmates() {
-	let postMatesPromosDAO = new PostMatesPromosDAO()
-	let post = await postMatesPromosDAO.getRandomTweet()
-	postMatesPromosDAO.cleanup()
+	let promotionsDAO = new PromotionsDAO()
+	let promotionInfo = await promotionsDAO.getRandomTweet("postmates")
+	promotionsDAO.cleanup()
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("postmates");
 	TwitterAccountDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
-		.tweet(post)
+		.tweet(promotionInfo.post, promotionInfo.image)
 		.then(() => twitterAccount.update())
 		.catch((e) => console.trace(e))
 		.finally(() => twitterAccount.close())
@@ -37,10 +36,12 @@ async function tweetPostmates() {
 async function tweetTradenet() {
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("tradenet");
 	TwitterAccountDAO.cleanup()
-	let promotion = promotionManager.getRandomPromotion()
+	let promotionsDAO = new PromotionsDAO()
+	let promotionInfo = await promotionsDAO.getRandomTweet("tradenet")
+	promotionsDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
-		.tweet(promotion.message, promotion.image)
+		.tweet(promotionInfo.post, promotionInfo.image)
 		.then(() => twitterAccount.update())
 		.catch((e) => console.trace(e))
 		.finally(() => twitterAccount.close())

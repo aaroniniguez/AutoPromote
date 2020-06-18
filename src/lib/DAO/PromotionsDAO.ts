@@ -5,20 +5,21 @@ import database from "../Database";
 import Database from "../Database";
 import { RowDataPacket } from "mysql";
 
-class PostMatesPromosDAO {
+class PromotionsDAO {
 	DB: Database;
 	constructor() {
 		this.DB = new database("localhost", "root", "promotions")
 	}
 
-	getRandomTweet() {
+	getRandomTweet(promoter: string) {
 		return this.DB.query(`
-			SELECT post 
-			FROM postmatesPromotions
+			SELECT * 
+			FROM promotions
+			WHERE promoter = "${promoter}"
 			ORDER BY RAND()
 			LIMIT 1
 		`).then((row: RowDataPacket[]) => {
-			return row[0].post
+			return row[0]
 		});
 	}
 
@@ -26,4 +27,4 @@ class PostMatesPromosDAO {
 		this.DB.disconnect();
 	}
 }
-export default PostMatesPromosDAO;
+export default PromotionsDAO;

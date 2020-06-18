@@ -10,6 +10,7 @@ import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
+import ImageHandler from "./ImageHandler";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
 const ElementNotFound = require("./ElementNotFound.js")
@@ -285,9 +286,9 @@ class Twitter {
 	/**
 	 * 
 	 * @param {string} data message to tweet out
-	 * @param {string} uploadFile path to image file to be uploaded in the tweet
+	 * @param {string} uploadImage path to image file to be uploaded in the tweet
 	 */
-	async tweet(data: string, uploadFile?: string) {
+	async tweet(data: string, uploadImage?: string) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		 try {
 			await this.guardInit()
@@ -304,15 +305,17 @@ class Twitter {
 			// await this.page.waitFor(10000000);
 			await this.pageWrapper.page.waitFor(2000);
 			await this.pageWrapper.page.keyboard.type(data, this.typeDelay);
-			if(uploadFile) {
-				console.log(process.cwd());
-				Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadFile}`, id: this.flowID});
-				const input = await this.pageWrapper.findSingleElement("input[type='file']");
-				await input.uploadFile(uploadFile);
+			if(uploadImage) {
+				Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadImage}`, id: this.flowID});
+				const filePath = await ImageHandler.saveImage(uploadImage);
+				(await this.pageWrapper.findSingleElement("input[type='file']")).uploadFile(filePath);
 				await this.pageWrapper.page.waitFor(10000);
+				ImageHandler.deleteImage(filePath);
 			}
-			if(debugMode)
+			if(debugMode) {
+				await this.twitterAccountsDAO.updateLastTweeted()
 				return;
+			}
 			await this.pageWrapper.page.keyboard.down('MetaLeft');
 			await this.pageWrapper.page.keyboard.press('Enter');
 			await this.pageWrapper.page.keyboard.up('MetaLeft');
