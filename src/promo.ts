@@ -21,8 +21,8 @@ async function setupAccounts() {
 
 async function tweetPostmates() {
 	let promotionsDAO = new PromotionsDAO()
-	let promotionInfo = await promotionsDAO.getRandomTweet("postmates")
-	promotionsDAO.cleanup()
+	let promotionInfo = await promotionsDAO.getRandomTweet("postmates");
+	await promotionsDAO.cleanup()
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("postmates");
 	TwitterAccountDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
@@ -30,14 +30,16 @@ async function tweetPostmates() {
 		.tweet(promotionInfo.post, promotionInfo.image)
 		.then(() => twitterAccount.update())
 		.catch((e) => console.trace(e))
-		.finally(() => twitterAccount.close())
+		.finally(() => {
+			twitterAccount.close();
+		})
 }
 
 async function tweetTradenet() {
 	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("tradenet");
 	TwitterAccountDAO.cleanup()
 	let promotionsDAO = new PromotionsDAO()
-	let promotionInfo = await promotionsDAO.getRandomTweet("tradenet")
+	let promotionInfo = await promotionsDAO.getRandomTweet("tradenet");
 	promotionsDAO.cleanup()
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount

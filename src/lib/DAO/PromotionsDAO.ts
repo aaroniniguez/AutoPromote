@@ -4,6 +4,7 @@
 import database from "../Database";
 import Database from "../Database";
 import { RowDataPacket } from "mysql";
+import readableTimestamp from "../../utils/readable-timestamp";
 
 class PromotionsDAO {
 	DB: Database;
@@ -13,14 +14,19 @@ class PromotionsDAO {
 
 	getRandomTweet(promoter: string) {
 		return this.DB.query(`
-			SELECT * 
+			SELECT id, post, image 
 			FROM promotions
 			WHERE promoter = "${promoter}"
-			ORDER BY RAND()
+			ORDER BY last_read ASC
 			LIMIT 1
 		`).then((row: RowDataPacket[]) => {
-			return row[0]
-		});
+				this.DB.query(`
+					UPDATE promotions
+					SET last_read = "${readableTimestamp()}"
+					WHERE id = ${row[0].id}`
+				);
+				return row[0]
+			});
 	}
 
 	cleanup() {

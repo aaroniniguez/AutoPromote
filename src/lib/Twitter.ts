@@ -11,6 +11,7 @@ import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
 import ImageHandler from "./ImageHandler";
+import PromotionsDAO from "./DAO/PromotionsDAO";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
 const ElementNotFound = require("./ElementNotFound.js")
@@ -21,6 +22,7 @@ const ElementNotFound = require("./ElementNotFound.js")
 //returnVal.then((resolved) => {
 	//assert.strictEqual(resolved, "google.coms");
 //});
+
 class Twitter {
 	credentials: {username: string, password: string};
 	twitterAccountsDAO: TwitterAccountsDAO;
@@ -288,7 +290,7 @@ class Twitter {
 	 * @param {string} data message to tweet out
 	 * @param {string} uploadImage path to image file to be uploaded in the tweet
 	 */
-	async tweet(data: string, uploadImage?: string) {
+	async tweet(post: string, uploadImage?: string | null) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		 try {
 			await this.guardInit()
@@ -304,7 +306,7 @@ class Twitter {
 			await this.pageWrapper.page.goto(twitter, this.navigationParams);
 			// await this.page.waitFor(10000000);
 			await this.pageWrapper.page.waitFor(2000);
-			await this.pageWrapper.page.keyboard.type(data, this.typeDelay);
+			await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
 			if(uploadImage) {
 				Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadImage}`, id: this.flowID});
 				const filePath = await ImageHandler.saveImage(uploadImage);
@@ -325,7 +327,7 @@ class Twitter {
 			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
 		}
 		await this.twitterAccountsDAO.updateLastTweeted()
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${data}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${post}`, id: this.flowID})
 		return;
 	};
 	
