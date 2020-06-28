@@ -269,17 +269,13 @@ class Twitter {
 			var url = this.pageWrapper.page.url();
 			if(!LoginPage.validLoginPages.includes(url)) {
 				await this.browser.close();
-				var errorObject = {
-					name: "InvalidCredentials",
-					message: `Login went to invalid url: ${url}`
-				}
-				throw errorObject;
+				throw new Error(`Login went to invalid url: ${url}`);
 			}
 			else {
 				this.loggedon = true
 			}
 		} catch(e) {
-			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID})
+			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
 			throw e;
 		}
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Logged in`, id: this.flowID})

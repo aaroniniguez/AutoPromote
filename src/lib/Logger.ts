@@ -1,5 +1,5 @@
 import winston from "winston";
-const {combine, prettyPrint} = winston.format;
+const {combine, prettyPrint, errors} = winston.format;
 const logPath = __dirname+"/../../logs";
 const moment = require('moment-timezone');
 
@@ -8,17 +8,20 @@ const readableTime = winston.format((info, opts) => {
 	return info;	
 });
 
-const logFormat = winston.format.printf(({ timestamp, level, message, id}) => {
+const logFormat = winston.format.printf(({ timestamp, level, username , message, id, stack}) => {
 	return `
 	{ timestamp: "${timestamp}"
 	  level: "${level}"
+	  username: "${username}"
 	  message: "${message}"
-	  id: "${id}"}`;
+	  id: "${id}"
+	  ${stack ? "stack: " + stack : ""}
+	}`;
 });
 
 export const Logger = winston.createLogger({
-	level: "info", 
 	format: combine(
+		errors({stack: true}),
 		readableTime(),
 		prettyPrint(),
 		logFormat
