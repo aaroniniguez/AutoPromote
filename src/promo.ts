@@ -19,6 +19,21 @@ async function setupAccounts() {
 	await Promise.all(tasks);
 }
 
+async function tweetAirbnb() {
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType("airbnb");
+	TwitterAccountDAO.cleanup()
+	let promotionsDAO = new PromotionsDAO()
+	let promotionInfo = await promotionsDAO.getRandomTweet("airbnb");
+	await promotionsDAO.cleanup()
+	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+	twitterAccount
+		.tweet(promotionInfo.post, promotionInfo.image)
+		.then(() => twitterAccount.update())
+		.catch((e) => console.trace(e))
+		.finally(() => {
+			twitterAccount.close();
+		})
+}
 async function tweetPostmates() {
 	let promotionsDAO = new PromotionsDAO()
 	let promotionInfo = await promotionsDAO.getRandomTweet("postmates");
@@ -83,6 +98,9 @@ async function testing() {
 
 let adminAction = process.argv[2];
 switch(adminAction) {
+	case "airbnb":
+		tweetAirbnb()
+		break;
 	case "tradenet": 
 		tweetTradenet();
 		break;
