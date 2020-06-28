@@ -8,7 +8,7 @@ import { RowDataPacket } from "mysql";
 class SchedulerDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("localhost", "root", "stock")
+		this.DB = new database("stock")
 	}
 
 	getPromotionCount(promotion: string) {

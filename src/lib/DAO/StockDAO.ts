@@ -8,7 +8,7 @@ import Database from "../Database";
 class StockDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("localhost", "root", "stock")
+		this.DB = new database("stock")
 	}
 
 	async getAllAccountFollowerData() {

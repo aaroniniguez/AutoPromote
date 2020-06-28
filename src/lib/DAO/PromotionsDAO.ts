@@ -9,7 +9,7 @@ import readableTimestamp from "../../utils/readable-timestamp";
 class PromotionsDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("localhost", "root", "promotions")
+		this.DB = new database("promotions")
 	}
 
 	getRandomTweet(promoter: string) {

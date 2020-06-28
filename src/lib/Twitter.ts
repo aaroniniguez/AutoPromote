@@ -11,7 +11,6 @@ import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
 import ImageHandler from "./ImageHandler";
-import PromotionsDAO from "./DAO/PromotionsDAO";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
 const ElementNotFound = require("./ElementNotFound.js")
@@ -76,12 +75,11 @@ class Twitter {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		//DONT login the user...can only see suspended status if not logged in
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
-		let result = await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
+		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
 			.then(() => {
 				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is suspended`, id: this.flowID})
 				this.twitterAccountsDAO.setSuspended(this.credentials.username);
 			})
-			//TODO log this instead of console.log...
 			.catch(() => {
 				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is not suspended`, id: this.flowID})
 			})

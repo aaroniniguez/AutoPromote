@@ -12,10 +12,10 @@ import Connection from "mysql/lib/Connection";
 export default class Database {
 	dbConfig: DBConfig;
 	connection: Connection;
-	constructor(host = "localhost", user = "root", database = "stock") {
+	constructor(database = "stock") {
 		this.dbConfig = {
-			host: host,
-			user: user,
+			host: process.env.DB_HOST,
+			user: process.env.DB_USER,
 			database: database,
 			password: process.env.DB_PASS,
 			charset: 'utf8mb4'

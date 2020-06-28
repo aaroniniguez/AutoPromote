@@ -9,7 +9,7 @@ class TwitterAccountsDAO {
 	DB: Database;
 
 	constructor(username?: string) {
-		this.DB = new Database("localhost", "root", "stock")
+		this.DB = new Database("stock")
 		this.username = username;
 	}
 	async getTwitterAccount(username: string) {
