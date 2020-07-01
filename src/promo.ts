@@ -96,8 +96,20 @@ async function testing() {
 
 }
 
+async function loginDebug(username: string) {
+	let twitterAccount = await TwitterAccountDAO.getTwitterAccount(username)
+	TwitterAccountDAO.cleanup();
+	let account = new twitter(twitterAccount.username, twitterAccount.password);
+	await account
+		.login()
+		.catch((e) => console.log(e));
+}
+
 let adminAction = process.argv[2];
 switch(adminAction) {
+	case "login":
+		loginDebug(process.argv[3])
+		break;
 	case "airbnb":
 		tweetAirbnb()
 		break;
