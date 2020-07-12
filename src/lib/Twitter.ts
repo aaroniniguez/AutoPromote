@@ -146,7 +146,7 @@ class Twitter {
 		});
 		let numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
 		await this.twitterAccountsDAO.updateFollowers(numFollowers);
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number followers to ${numFollowers}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number of followers to ${numFollowers}`, id: this.flowID})
 	}
 
 	async changeWebsiteTo(url: string) {
@@ -218,7 +218,7 @@ class Twitter {
 	async canFollow() {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		let followingCount = await this.twitterAccountsDAO.getNumberFollowing()
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, has followers: ${followingCount}`, id: this.flowID})
+		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, has ${followingCount} followers`, id: this.flowID})
 		let isSuspended = await this.twitterAccountsDAO.getSuspended(this.credentials.username);
 		if(isSuspended === 1)
 			return false
