@@ -286,43 +286,37 @@ class Twitter {
 	 */
 	async tweet(post: string, uploadImage?: string | null) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
-		 try {
-			await this.guardInit()
-			const twitter = "https://twitter.com/compose/tweet";
-			if(debugMode) {
-				const session = await this.pageWrapper.page.target().createCDPSession()
-				const {windowId} = await session.send('Browser.getWindowForTarget') as {windowId: number};
-				await session.send('Browser.setWindowBounds', {windowId, bounds: {windowState: 'minimized'}});
-			}
-			if(!this.loggedon)
-				await this.login()
-			//print out console logging in the page
-			await this.pageWrapper.page.goto(twitter, this.navigationParams);
-			// await this.page.waitFor(10000000);
-			await this.pageWrapper.page.waitFor(2000);
-			await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
-			if(uploadImage) {
-				Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadImage}`, id: this.flowID});
-				const filePath = await ImageHandler.saveImage(uploadImage);
-				(await this.pageWrapper.findSingleElement("input[type='file']")).uploadFile(filePath);
-				await this.pageWrapper.page.waitFor(10000);
-				ImageHandler.deleteImage(filePath);
-			}
-			if(debugMode) {
-				await this.twitterAccountsDAO.updateLastTweeted()
-				return;
-			}
-			await this.pageWrapper.page.keyboard.down('MetaLeft');
-			await this.pageWrapper.page.keyboard.press('Enter');
-			await this.pageWrapper.page.keyboard.up('MetaLeft');
-			await this.pageWrapper.page.waitFor(9000);
+		await this.guardInit()
+		const twitter = "https://twitter.com/compose/tweet";
+		if(debugMode) {
+			const session = await this.pageWrapper.page.target().createCDPSession()
+			const {windowId} = await session.send('Browser.getWindowForTarget') as {windowId: number};
+			await session.send('Browser.setWindowBounds', {windowId, bounds: {windowState: 'minimized'}});
 		}
-		catch(e) {
-			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
+		if(!this.loggedon)
+			await this.login()
+		//print out console logging in the page
+		await this.pageWrapper.page.goto(twitter, this.navigationParams);
+		// await this.page.waitFor(10000000);
+		await this.pageWrapper.page.waitFor(2000);
+		await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
+		if(uploadImage) {
+			Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadImage}`, id: this.flowID});
+			const filePath = await ImageHandler.saveImage(uploadImage);
+			(await this.pageWrapper.findSingleElement("input[type='file']")).uploadFile(filePath);
+			await this.pageWrapper.page.waitFor(10000);
+			ImageHandler.deleteImage(filePath);
 		}
+		if(debugMode) {
+			await this.twitterAccountsDAO.updateLastTweeted()
+			return;
+		}
+		await this.pageWrapper.page.keyboard.down('MetaLeft');
+		await this.pageWrapper.page.keyboard.press('Enter');
+		await this.pageWrapper.page.keyboard.up('MetaLeft');
+		await this.pageWrapper.page.waitFor(9000);
 		await this.twitterAccountsDAO.updateLastTweeted()
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${post}`, id: this.flowID})
-		return;
 	};
 	
 	async close() {
