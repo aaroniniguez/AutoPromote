@@ -10,7 +10,7 @@ bash installer.sh
 ```
 
 
-Enables you to proramatically manage your Twitter Account :    
+Enables you to programmatically manage your Twitter Account :    
   - Auto tweet with/without image 
   - Auto follow
   - Auto follow unfollow
