@@ -4,7 +4,7 @@
 import Database from "../Database";
 import readableTimestamp from "../../utils/readable-timestamp";
 
-class TwitterAccountsDAO {
+export default class TwitterAccountsDAO {
 	username: string;
 	DB: Database;
 
@@ -73,5 +73,3 @@ class TwitterAccountsDAO {
 	}	
 
 }
-
-export default TwitterAccountsDAO;

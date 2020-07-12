@@ -6,7 +6,7 @@ import Database from "../Database";
 import { RowDataPacket } from "mysql";
 import readableTimestamp from "../../utils/readable-timestamp";
 
-class PromotionsDAO {
+export default class PromotionsDAO {
 	DB: Database;
 	constructor() {
 		this.DB = new database("promotions")
@@ -33,4 +33,3 @@ class PromotionsDAO {
 		this.DB.disconnect();
 	}
 }
-export default PromotionsDAO;
