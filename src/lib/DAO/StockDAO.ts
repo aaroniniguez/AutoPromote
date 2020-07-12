@@ -1,14 +1,13 @@
 /**
  * DAO for stock table
  */
-import database from "../Database";
 import { QueryError } from "mysql";
 import Database from "../Database";
 
 export default class StockDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("stock")
+		this.DB = new Database("stock")
 	}
 
 	async getAllAccountFollowerData() {

@@ -1,7 +1,6 @@
 /**
  * DAO for stock table
  */
-import database from "../Database";
 import Database from "../Database";
 import { RowDataPacket } from "mysql";
 import readableTimestamp from "../../utils/readable-timestamp";
@@ -9,7 +8,7 @@ import readableTimestamp from "../../utils/readable-timestamp";
 export default class PromotionsDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new database("promotions")
+		this.DB = new Database("promotions")
 	}
 
 	getRandomTweet(promoter: string) {

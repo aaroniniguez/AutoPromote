@@ -17,7 +17,7 @@ exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", (error, stdout, stderr) => {
     //one for cron job 
     //one for initial run 
     if(instances < 3) {
-        Logger.log({level: "info", message: "Started Command"});
+        Logger.log({level: "info", message: "Started Scheduler"});
         scheduleTweets()
     }
 });
