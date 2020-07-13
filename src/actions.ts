@@ -2,6 +2,7 @@ require("dotenv").config();
 import twitter from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
+import { promote } from "./promote";
 async function setupAccounts() {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let tasks: Promise<any>[] = [];
@@ -76,6 +77,9 @@ switch(adminAction) {
 		break;
 	case "testing": 
 		testing();
+		break;
+	case "airbnb":
+		promote("airbnb");
 		break;
 	default: 
 		console.log("Invalid Action")

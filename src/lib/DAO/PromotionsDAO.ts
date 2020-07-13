@@ -13,7 +13,7 @@ export default class PromotionsDAO {
 
 	getRandomTweet(promoter: string) {
 		return this.DB.query(`
-			SELECT id, post, image 
+			SELECT *
 			FROM promotions
 			WHERE promoter = "${promoter}"
 			ORDER BY last_read ASC
@@ -24,6 +24,9 @@ export default class PromotionsDAO {
 					SET last_read = "${readableTimestamp()}"
 					WHERE id = ${row[0].id}`
 				);
+				if(row[0]) {
+					row[0].post = row[0].post.replace(/\[referral_link\]/g, row[0].referral_link)
+				}
 				return row[0]
 			});
 	}
