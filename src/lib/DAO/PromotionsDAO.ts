@@ -19,6 +19,7 @@ export default class PromotionsDAO {
 			ORDER BY last_read ASC
 			LIMIT 1
 		`).then((row: RowDataPacket[]) => {
+				if(!row.length) throw new Error(`Invalid promotion value: ${promoter}`)
 				this.DB.query(`
 					UPDATE promotions
 					SET last_read = "${readableTimestamp()}"
