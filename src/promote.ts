@@ -18,5 +18,6 @@ export async function promote(promotion: string) {
 		.finally(() => twitterAccount.close())
 }
 
-// testing:
-promote(process.argv[2])
+if(process.argv[2]) {
+	promote(process.argv[2]);
+}
