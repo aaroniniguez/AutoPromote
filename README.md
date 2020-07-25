@@ -24,6 +24,7 @@ bash installer.sh
 
 Compile the project: 
 ```
+npm install
 npm run compile
 ```
 
