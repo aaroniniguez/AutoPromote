@@ -10,15 +10,14 @@ bash installer.sh
 ```
 
 
-Enables you to programmatically manage your Twitter Account :    
-  - Auto tweet with/without image 
-  - Auto follow
-  - Auto follow unfollow
-  - SMS on dm request 
+Enables you to programmatically manage your Twitter Account:    
+  - tweet with/without image
+  - follow/unfollow random users
+  - SMS alert on dm request 
   - Track Account Suspensions
   - Followers/Following Metrics
-  - Change Profile Information
-	- Change website
+  - Update Profile Information
+	- Update website
 
 Manage multiple accounts by: 
 
