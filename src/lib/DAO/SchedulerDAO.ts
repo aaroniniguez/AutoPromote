@@ -7,7 +7,7 @@ import { RowDataPacket } from "mysql";
 export default class SchedulerDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new Database("stock")
+		this.DB = new Database()
 	}
 
 	getAllPromotionFreq() {

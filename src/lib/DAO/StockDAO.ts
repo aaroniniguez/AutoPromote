@@ -7,7 +7,7 @@ import Database from "../Database";
 export default class StockDAO {
 	DB: Database;
 	constructor() {
-		this.DB = new Database("stock")
+		this.DB = new Database()
 	}
 
 	async getAllAccountFollowerData() {

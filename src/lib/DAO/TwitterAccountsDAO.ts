@@ -9,7 +9,7 @@ export default class TwitterAccountsDAO {
 	DB: Database;
 
 	constructor(username?: string) {
-		this.DB = new Database("stock")
+		this.DB = new Database()
 		this.username = username;
 	}
 	async getTwitterAccount(username: string) {
