@@ -1,15 +1,5 @@
 # Auto Promote
 
-To Install 
-```
-npm install -g puppeteer --unsafe-perm=true
-```
-To install chrome dependencies on Amazon Linux AMI 
-```
-bash installer.sh
-```
-
-
 Enables you to programmatically manage your Twitter Account:    
   - tweet with/without image
   - follow/unfollow random users
@@ -23,3 +13,12 @@ Manage multiple accounts by:
 
  - Uses a LIFO (based on last tweeted timestamp) approach to tweeting promotional material
  - utilizes cron jobs to tweet a promotion (which can have multiple promoters)
+
+## Installation
+```
+npm install -g puppeteer --unsafe-perm=true
+```
+To install chrome dependencies on Amazon Linux AMI 
+```
+bash installer.sh
+```
