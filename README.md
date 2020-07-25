@@ -22,7 +22,12 @@ To install chrome dependencies on Amazon Linux AMI
 bash installer.sh
 ```
 
-Add the following cron job: 
+Compile the project: 
+```
+npm run compile
+```
+
+Then add the following cron job: 
 ```
 * * * * * /usr/local/bin/node /Users/aaroniniguez/AutoPromote/dist/scheduler.js > /tmp/testing 2>&1
 ```
