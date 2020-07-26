@@ -4,7 +4,6 @@ import FollowPage from "./PageObjects/FollowPage";
 import LoginPage from "./PageObjects/LoginPage";
 import ProfilePage from "./PageObjects/ProfilePage.js";
 import MessagesPage from "./PageObjects/MessagesPage";
-// const sendMessage = require("./send_sms.js")
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
 import { Browser, Page } from "puppeteer";
 import PageWrapper from "./PageWrapper";
@@ -13,7 +12,6 @@ import generateUniqueFlowID from "../utils/create-unique-flowID";
 import ImageHandler from "./ImageHandler";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
-const ElementNotFound = require("./ElementNotFound.js")
 //const assert = require('assert');
 //const pageMock = require("../__mocks__/Page.js")
 //let myvar = new pageMock()
@@ -42,9 +40,9 @@ class Twitter {
 		this.flowID = generateUniqueFlowID()
 		this.navigationParams = {
 			waitUntil: [
-				"domcontentloaded", //waits till this is fired
-				"load", //and this
-				"networkidle2" //waits until there are no network events fired off for 500 ms
+				"domcontentloaded",
+				"load",
+				"networkidle2"
 			]
 		}
 	}
@@ -61,7 +59,7 @@ class Twitter {
 	/**
 	 * Performs routine twitter actions
 	 */
-	async update() {
+	async routineActions() {
 		await this
 			.updateSuspendedFlag()
 			.then(() => this.likeAllNotifications())

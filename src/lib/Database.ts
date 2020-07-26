@@ -7,7 +7,7 @@ interface DBConfig {
 	password: string;
 	charset: string;
 }
-import mysql, { QueryError, RowDataPacket } from "mysql"
+import mysql, { RowDataPacket } from "mysql"
 import Connection from "mysql/lib/Connection";
 export default class Database {
 	dbConfig: DBConfig;

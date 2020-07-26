@@ -1,16 +1,8 @@
-/**
- * DAO for stock table
- */
-import Database from "../Database";
 import { RowDataPacket } from "mysql";
 import readableTimestamp from "../../utils/readable-timestamp";
+import BaseDao from "./BaseDAO";
 
-export default class PromotionsDAO {
-	DB: Database;
-	constructor() {
-		this.DB = new Database()
-	}
-
+export default class PromotionsDAO extends BaseDao {
 	getRandomTweet(promoter: string) {
 		return this.DB.query(`
 			SELECT *
@@ -30,9 +22,5 @@ export default class PromotionsDAO {
 				}
 				return row[0]
 			});
-	}
-
-	cleanup() {
-		this.DB.disconnect();
 	}
 }

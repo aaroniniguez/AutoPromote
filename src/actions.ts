@@ -33,7 +33,7 @@ async function tweetQuote() {
 		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 		let accountActions = 
 			twitterAccount
-				.update()
+				.routineActions()
 				.then(() => twitterAccount.tweet(rows.shift()["quote"]))
 				.catch((e) => console.trace(e))
 				.finally(() => twitterAccount.close())
@@ -51,7 +51,6 @@ async function testing() {
 		.likeAllNotifications()
 		.then(() => account.close())
 		.catch((e) => console.log(e));
-
 }
 
 async function loginDebug(username: string) {

@@ -1,15 +1,7 @@
-/**
- * DAO for Scheduler 
- */
-import Database from "../Database";
 import { RowDataPacket } from "mysql";
+import BaseDao from "./BaseDAO";
 
-export default class SchedulerDAO {
-	DB: Database;
-	constructor() {
-		this.DB = new Database()
-	}
-
+export default class SchedulerDAO extends BaseDao {
 	getAllPromotionFreq() {
 		return this.DB.query(`
 			SELECT promotion, promotions_per_day
@@ -29,9 +21,5 @@ export default class SchedulerDAO {
         }).catch((err) => {
             console.log(err);
         });
-	}
-
-	cleanup() {
-		this.DB.disconnect();
 	}
 }

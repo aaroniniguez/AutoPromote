@@ -1,17 +1,12 @@
-/**
- * DAO for TwitterAccounts table
- */
-import Database from "../Database";
 import readableTimestamp from "../../utils/readable-timestamp";
+import BaseDao from "./BaseDAO";
 
-export default class TwitterAccountsDAO {
-	username: string;
-	DB: Database;
-
-	constructor(username?: string) {
-		this.DB = new Database()
+export default class TwitterAccountsDAO extends BaseDao {
+	constructor(public username?: string) {
+		super()
 		this.username = username;
 	}
+
 	async getTwitterAccount(username: string) {
 		return (await this.DB.query(`SELECT * FROM twitterAccounts WHERE username="${username}"`))[0];
 	}
@@ -67,9 +62,4 @@ export default class TwitterAccountsDAO {
 		let query = `UPDATE twitterAccounts SET last_tweeted = "${readableTimestamp()}" WHERE username = "${this.username}";`;
 		await this.DB.query(query);
 	}
-
-	cleanup() {
-		this.DB.disconnect();
-	}	
-
 }

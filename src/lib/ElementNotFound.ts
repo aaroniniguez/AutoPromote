@@ -1,4 +1,4 @@
-module.exports = class ElementNotFound extends Error {
+export class ElementNotFound extends Error {
 	constructor(message: string) {
 		super(message);
 		if(Error.captureStackTrace) {

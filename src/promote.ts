@@ -13,7 +13,7 @@ export async function promote(promotion: string) {
 	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
-		.then(() => twitterAccount.update())
+		.then(() => twitterAccount.routineActions())
 		.catch((e) => console.trace(e))
 		.finally(() => twitterAccount.close())
 }

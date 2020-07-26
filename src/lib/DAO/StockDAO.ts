@@ -1,15 +1,7 @@
-/**
- * DAO for stock table
- */
 import { QueryError } from "mysql";
-import Database from "../Database";
+import BaseDao from "./BaseDAO";
 
-export default class StockDAO {
-	DB: Database;
-	constructor() {
-		this.DB = new Database()
-	}
-
+export default class StockDAO extends BaseDao {
 	async getAllAccountFollowerData() {
 		let query = `
 			SELECT *
@@ -85,9 +77,5 @@ export default class StockDAO {
 			);
 			return row[0].quote
 		});
-	}
-
-	cleanup() {
-		this.DB.disconnect();
 	}
 }
