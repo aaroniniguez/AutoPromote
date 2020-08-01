@@ -1,17 +1,17 @@
 # Auto Promote
 
-Enables you to programmatically manage your Twitter Account:    
-  - tweet with/without image
-  - follow/unfollow random users
+Enables you to programmatically manage your Twitter account:    
+  - Tweet with/without image
+  - Follow/unfollow random users
   - SMS alert on dm request 
-  - Track Account Suspensions
-  - Followers/Following Metrics
-  - Update Profile Information
-	- Update website
+  - Track account suspensions
+  - Followers/Following metrics
+  - Update profile information
+	- Update website field
 
-Manage multiple accounts by: 
+Multiple account management: 
  - Uses a LIFO (based on last tweeted timestamp) approach to tweeting promotional material
- - utilizes cron jobs via a scheduler database to tweet promotions (which can have multiple promoters)
+ - Utilizes cron jobs via a scheduler database to tweet promotions (LIFO based) using a LIFO selected promoter
 
 ## Installation
 ```
