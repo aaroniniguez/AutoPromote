@@ -4,22 +4,22 @@ import BaseDao from "./BaseDAO";
 export default class SchedulerDAO extends BaseDao {
 	getAllPromotionFreq() {
 		return this.DB.query(`
-			SELECT promotion, promotions_per_day
+			SELECT promotion, promotions_per_day, updated
             FROM scheduler
 		`).then((row: RowDataPacket[]) => {
 			return row;
 		})
 	}
 
-	getPromotionCount(promotion: string) {
+	wasUpdated(): Promise<boolean>{
 		return this.DB.query(`
-			SELECT promotions_per_day
-            FROM scheduler
-            WHERE promotion='${promotion}'
+			SELECT count(*) from scheduler where updated = 1
 		`).then((row: RowDataPacket[]) => {
-			return row[0].promotions_per_day
-        }).catch((err) => {
-            console.log(err);
-        });
+			return !!row[0]['count(*)'];
+		})
+	}
+	
+	resetUpdateFlag() {
+		return this.DB.query(`UPDATE scheduler set updated = 0`);
 	}
 }

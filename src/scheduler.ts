@@ -4,7 +4,7 @@ import {exec} from "child_process";
 import { Logger } from './lib/Logger';
 import { RowDataPacket } from 'mysql';
 import { promote } from './promote';
-exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", (error, stdout, stderr) => {
+exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", async (error, stdout, stderr) => {
     if (error && error.code !== 1) {
         Logger.log({level: "error", message: "Start Command failed: " + error});
         return;
@@ -13,10 +13,18 @@ exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", (error, stdout, stderr) => {
         Logger.log({level: "error", message: "Start Command failed: " + stderr});
         return;
     }
-    let instances = parseInt(stdout);
+    const instances = parseInt(stdout);
     //one for cron job 
     //one for initial run 
-    if(instances < 3) {
+    const schedulerDao = new SchedulerDAO();
+    const schedulerUpdated  = await schedulerDao.wasUpdated()
+    if(schedulerUpdated) {
+        exec("pkill -9 node");
+        await schedulerDao.resetUpdateFlag()
+        Logger.log({level: "info", message: "Scheduler was updated, reset updated flag"});
+   }
+    schedulerDao.cleanup();
+    if(instances < 3 || schedulerUpdated) {
         Logger.log({level: "info", message: "Started Scheduler"});
         scheduleTweets()
     }
