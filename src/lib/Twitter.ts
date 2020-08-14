@@ -5,7 +5,7 @@ import LoginPage from "./PageObjects/LoginPage";
 import ProfilePage from "./PageObjects/ProfilePage.js";
 import MessagesPage from "./PageObjects/MessagesPage";
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
-import { Browser, Page } from "puppeteer";
+import { Browser, Page, DirectNavigationOptions } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
@@ -27,7 +27,7 @@ class Twitter {
 	loggedon = false;
 	typeDelay: {delay: 3};
 	clickDelay: { delay: 500};
-	navigationParams: any;
+	navigationParams: DirectNavigationOptions;
 	pageWrapper: PageWrapper;
 	browser: Browser;
 
