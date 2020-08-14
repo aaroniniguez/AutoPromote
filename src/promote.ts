@@ -2,6 +2,7 @@ require("dotenv").config();
 import twitter from "./lib/Twitter";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import PromotionsDAO from "./lib/DAO/PromotionsDAO";
+import { Logger } from "./lib/Logger";
 
 export async function promote(promotion: string) {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
@@ -14,7 +15,9 @@ export async function promote(promotion: string) {
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
 		.then(() => twitterAccount.routineActions())
-		.catch((e) => console.trace(e))
+		.catch((e) => {
+			Logger.log({level: "error", message: "Tweeting failed:"+ e});
+		})
 		.finally(() => twitterAccount.close())
 }
 
