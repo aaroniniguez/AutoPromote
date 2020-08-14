@@ -19,6 +19,7 @@ export default class PromotionsDAO extends BaseDao {
 				);
 				if(row[0]) {
 					row[0].post = row[0].post.replace(/\[referral_link\]/g, row[0].referral_link)
+					row[0].post = row[0].post.replace(/\[company_name\]/g, row[0].company_name)
 				}
 				return row[0]
 			});
