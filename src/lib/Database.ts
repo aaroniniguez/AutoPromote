@@ -20,7 +20,7 @@ export default class Database {
 			password: process.env.DB_PASS,
 			charset: 'utf8mb4'
 		};
-
+		
 		this.connection = mysql.createConnection(this.dbConfig);
 		this.connection.connect(function(err) {
 			if (err) {
