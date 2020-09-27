@@ -285,7 +285,7 @@ class Twitter {
 	async tweet(post: string, uploadImage?: string | null) {
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.guardInit()
-		const twitter = "https://twitter.com/compose/tweet";
+		const composeTweetUrl = "https://twitter.com/compose/tweet";
 		if(debugMode) {
 			const session = await this.pageWrapper.page.target().createCDPSession()
 			const {windowId} = await session.send('Browser.getWindowForTarget') as {windowId: number};
@@ -294,7 +294,7 @@ class Twitter {
 		if(!this.loggedon)
 			await this.login()
 		//print out console logging in the page
-		await this.pageWrapper.page.goto(twitter, this.navigationParams);
+		await this.pageWrapper.page.goto(composeTweetUrl, this.navigationParams);
 		// await this.page.waitFor(10000000);
 		await this.pageWrapper.page.waitFor(2000);
 		await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
@@ -313,6 +313,11 @@ class Twitter {
 		await this.pageWrapper.page.keyboard.press('Enter');
 		await this.pageWrapper.page.keyboard.up('MetaLeft');
 		await this.pageWrapper.page.waitFor(9000);
+
+		if(this.pageWrapper.page.url() === composeTweetUrl) {
+			Logger.log({level: "error", username: ProfilePageObject.url, message: "Tweet Failed To Post", id: this.flowID});
+		}
+
 		await this.twitterAccountsDAO.updateLastTweeted()
 		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${post}`, id: this.flowID})
 	};
