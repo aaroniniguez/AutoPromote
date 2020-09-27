@@ -10,7 +10,8 @@ export default class TwitterAccountsDAO extends BaseDao {
 	}
 
 	async getTwitterAccount(username: string) {
-		return (await this.DB.query(`SELECT * FROM ${this.tableName} WHERE username="${username}"`))[0];
+		const user = await this.DB.query(`SELECT * FROM ${this.tableName} WHERE username="${username}"`);
+		if(user) return user[0];
 	}
 
 	async getAllTwitterAccounts() {
