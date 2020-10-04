@@ -1,5 +1,5 @@
 require("dotenv").config();
-import twitter from "./lib/Twitter";
+import { TwitterPromoter } from "./lib/Twitter";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import PromotionsDAO from "./lib/DAO/PromotionsDAO";
 import { Logger } from "./lib/Logger";
@@ -11,7 +11,7 @@ export async function promote(promotion: string) {
 	let promotionsDAO = new PromotionsDAO()
 	let promotionInfo = await promotionsDAO.getRandomTweet(promotion);
 	promotionsDAO.cleanup()
-	let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+	let twitterAccount = new TwitterPromoter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
 		.then(() => twitterAccount.routineActions())

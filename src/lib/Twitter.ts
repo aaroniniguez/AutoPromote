@@ -20,7 +20,7 @@ const debugMode = process.argv[3] === "debug" ? true : false;
 	//assert.strictEqual(resolved, "google.coms");
 //});
 
-class Twitter {
+export class TwitterPromoter {
 	credentials: {username: string, password: string};
 	twitterAccountsDAO: TwitterAccountsDAO;
 	flowID: string;
@@ -327,6 +327,4 @@ class Twitter {
 		await this.twitterAccountsDAO.cleanup();
 		await this.browser.close();
 	}
-
 }
-export default Twitter

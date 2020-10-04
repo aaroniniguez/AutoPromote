@@ -1,5 +1,5 @@
 require("dotenv").config();
-import twitter from "./lib/Twitter";
+import { TwitterPromoter } from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import { promote } from "./promote";
@@ -9,7 +9,7 @@ async function setupAccounts() {
 	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet"]);
 	TwitterAccountDAO.cleanup()
 	twitterAccounts.forEach((credentials) => {
-		let twitterAccount  = new twitter(credentials.username, credentials.password);
+		let twitterAccount  = new TwitterPromoter(credentials.username, credentials.password);
 		let actions = twitterAccount
 			.changeWebsiteTo("https://tradeforthemoney.com")
 			.catch((e: any) => {console.log(e);})
@@ -30,7 +30,7 @@ async function tweetQuote() {
 	stockDAO.cleanup()
 	let tasks : Promise<any>[] = [];
 	twitterAccounts.forEach(twitterAccountInfo => {
-		let twitterAccount = new twitter(twitterAccountInfo.username, twitterAccountInfo.password)
+		let twitterAccount = new TwitterPromoter(twitterAccountInfo.username, twitterAccountInfo.password)
 		let accountActions = 
 			twitterAccount
 				.routineActions()
@@ -46,7 +46,7 @@ async function testing() {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let twitterAccount = await TwitterAccountDAO.getTwitterAccount("joo11244620");
 	TwitterAccountDAO.cleanup();
-	let account = new twitter(twitterAccount.username, twitterAccount.password);
+	let account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
 	await account
 		.likeAllNotifications()
 		.then(() => account.close())
@@ -57,7 +57,7 @@ async function loginDebug(username: string) {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let twitterAccount = await TwitterAccountDAO.getTwitterAccount(username)
 	TwitterAccountDAO.cleanup();
-	let account = new twitter(twitterAccount.username, twitterAccount.password);
+	let account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
 	await account
 		.login()
 		.catch((e) => console.log(e));
