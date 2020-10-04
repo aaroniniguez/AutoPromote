@@ -18,13 +18,13 @@ export default class TwitterAccountsDAO extends BaseDao {
 		return await this.DB.query(`SELECT * FROM ${this.tableName}`);
 	}
 
-	async getTwitterAccountsByType(type: string[]) {
-		return await this.DB.query(`SELECT * FROM ${this.tableName} WHERE type in ('${type.join("','")}') and suspended=0`);
+	async getTwitterAccountsByPromotion(promo: string[]) {
+		return await this.DB.query(`SELECT * FROM ${this.tableName} WHERE promotion in ('${promo.join("','")}') and suspended=0`);
 	}
 
 	//TODO: the func above will get deleted soon in a refactor... use this one
-	async getTwitterAccountByType(promo: string) {
-		return (await this.DB.query(`SELECT * FROM ${this.tableName} WHERE type="${promo}" AND suspended=0 ORDER BY last_tweeted ASC`))[0];
+	async getTwitterAccountByPromotion(promo: string) {
+		return (await this.DB.query(`SELECT * FROM ${this.tableName} WHERE promotion="${promo}" AND suspended=0 ORDER BY last_tweeted ASC`))[0];
 	}
 
 	async setSuspended(username: string) : Promise<void> {

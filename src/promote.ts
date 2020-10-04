@@ -6,7 +6,7 @@ import { Logger } from "./lib/Logger";
 
 export async function promote(promotion: string) {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
-	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByType(promotion);
+	let twitterAccountInfo = await TwitterAccountDAO.getTwitterAccountByPromotion(promotion);
 	TwitterAccountDAO.cleanup()
 	let promotionsDAO = new PromotionsDAO()
 	let promotionInfo = await promotionsDAO.getRandomTweet(promotion);
