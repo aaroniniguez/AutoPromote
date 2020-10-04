@@ -18,8 +18,8 @@ export default class TwitterAccountsDAO extends BaseDao {
 		return await this.DB.query(`SELECT * FROM ${this.tableName}`);
 	}
 
-	async getTwitterAccountsByType(type: string) {
-		return await this.DB.query(`SELECT * FROM ${this.tableName} WHERE type="${type}" and suspended=0`);
+	async getTwitterAccountsByType(type: string[]) {
+		return await this.DB.query(`SELECT * FROM ${this.tableName} WHERE type in ('${type.join("','")}') and suspended=0`);
 	}
 
 	//TODO: the func above will get deleted soon in a refactor... use this one

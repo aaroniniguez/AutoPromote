@@ -6,7 +6,7 @@ import { promote } from "./promote";
 async function setupAccounts() {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let tasks: Promise<any>[] = [];
-	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType(["tradenet"]);
 	TwitterAccountDAO.cleanup()
 	twitterAccounts.forEach((credentials) => {
 		let twitterAccount  = new twitter(credentials.username, credentials.password);
@@ -23,7 +23,7 @@ async function setupAccounts() {
 async function tweetQuote() {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let stockDAO = new StockDAO()
-	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType("tradenet");
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByType(["tradenet","chase"]);
 	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
