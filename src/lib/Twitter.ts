@@ -75,11 +75,11 @@ class Twitter {
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
 		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
 			.then(() => {
-				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is suspended`, id: this.flowID})
+				this.log("info", `Account is suspended`)
 				this.twitterAccountsDAO.setSuspended(this.credentials.username);
 			})
 			.catch(() => {
-				Logger.log({level: "info", username: ProfilePageObject.url, message: `Account is not suspended`, id: this.flowID})
+				this.log("info", `Account is not suspended`);
 			})
 	}
 
@@ -94,13 +94,17 @@ class Twitter {
 		}
 	}
 
+	log(level: string, message: string) {
+		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		Logger.log({level: level, username: ProfilePageObject.url, message: message, id: this.flowID});
+	}
+
 	async sendMessageOnDMRequest() {
 		await this.goToPage(MessagesPage.url);
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Went to dm request url ${MessagesPage.url}`, id: this.flowID})
+		this.log("info", `Went to dm request url ${MessagesPage.url}`);
 		let EH = await this.pageWrapper.page.$$(MessagesPage.dmRequests);
 		if(EH.length < 1) {
-			Logger.log({level: "info", username: ProfilePageObject.url, message: `could not find element with ${MessagesPage.dmRequests} selector`, id: this.flowID})
+			this.log("info", `could not find element with ${MessagesPage.dmRequests} selector`);
 			return
 		}
 		let newEH = EH[0]
@@ -127,7 +131,7 @@ class Twitter {
 		});
 		let numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
 		await this.twitterAccountsDAO.updateFollowing(numFollowing);
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number following to ${numFollowing}`, id: this.flowID})
+		this.log("info", `Updated number following to ${numFollowing}`);
 	}
 	/**
 	 * Saves/updates the follower account in the database
@@ -144,7 +148,7 @@ class Twitter {
 		});
 		let numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
 		await this.twitterAccountsDAO.updateFollowers(numFollowers);
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Updated number of followers to ${numFollowers}`, id: this.flowID})
+		this.log("info", `Updated number of followers to ${numFollowers}`);
 	}
 
 	async changeWebsiteTo(url: string) {
@@ -214,9 +218,8 @@ class Twitter {
 	}
 
 	async canFollow() {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		let followingCount = await this.twitterAccountsDAO.getNumberFollowing()
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Checked if TwitterAccount can follow, is currently following ${followingCount}`, id: this.flowID})
+		this.log("info", `Checked if TwitterAccount can follow, is currently following ${followingCount}`);
 		let isSuspended = await this.twitterAccountsDAO.getSuspended(this.credentials.username);
 		if(isSuspended === 1)
 			return false
@@ -233,11 +236,10 @@ class Twitter {
 	async followRandomPeople() {
 		if(await this.canFollow() === false)
 			return;
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.guardInit()
 		await this.goToPage(FollowPage.url);
 		await this.pageWrapper.page.waitForXPath(FollowPage.whoToFollow).catch(() => {
-			Logger.log({level: "info", username: ProfilePageObject.url, message: `Did not find element ${FollowPage.whoToFollow}`, id: this.flowID})
+			this.log("info", `Did not find element ${FollowPage.whoToFollow}`);
 		});
 		var results = await this.pageWrapper.page.$x(FollowPage.whoToFollow);
 		for(let i = 0; i < results.length; i++) {
@@ -249,7 +251,6 @@ class Twitter {
 	}
 
 	async login() {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		try {
 			await this.guardInit()
 			await this.pageWrapper.page.goto(LoginPage.url, this.navigationParams);
@@ -271,10 +272,11 @@ class Twitter {
 				this.loggedon = true
 			}
 		} catch(e) {
-			Logger.log({level: "error", username: ProfilePageObject.url, message: e, id: this.flowID});
+			const logLevel = e.message === "Navigation failed because browser has disconnected!" ? "info" : "error";
+			this.log(logLevel, e);
 			throw e;
 		}
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Logged in`, id: this.flowID})
+		this.log("info", `Logged in`);
 	}
 
 	/**
@@ -283,7 +285,6 @@ class Twitter {
 	 * @param {string} uploadImage path to image file to be uploaded in the tweet
 	 */
 	async tweet(post: string, uploadImage?: string | null) {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.guardInit()
 		const composeTweetUrl = "https://twitter.com/compose/tweet";
 		if(debugMode) {
@@ -299,7 +300,7 @@ class Twitter {
 		await this.pageWrapper.page.waitFor(2000);
 		await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
 		if(uploadImage) {
-			Logger.log({level: "info", username: ProfilePageObject.url, message: `Uploading file: ${uploadImage}`, id: this.flowID});
+			this.log("info", `Uploading file: ${uploadImage}`);
 			const filePath = await ImageHandler.saveImage(uploadImage);
 			(await this.pageWrapper.findSingleElement("input[type='file']")).uploadFile(filePath);
 			await this.pageWrapper.page.waitFor(10000);
@@ -315,11 +316,11 @@ class Twitter {
 		await this.pageWrapper.page.waitFor(9000);
 
 		if(this.pageWrapper.page.url() === composeTweetUrl) {
-			Logger.log({level: "error", username: ProfilePageObject.url, message: "Tweet Failed To Post", id: this.flowID});
+			this.log("error", "Tweet Failed To Post");
 		}
 
 		await this.twitterAccountsDAO.updateLastTweeted()
-		Logger.log({level: "info", username: ProfilePageObject.url, message: `Tweeted ${post}`, id: this.flowID})
+		this.log("info", `Tweeted ${post}`);
 	};
 	
 	async close() {
