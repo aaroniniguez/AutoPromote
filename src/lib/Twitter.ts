@@ -10,6 +10,7 @@ import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
 import ImageHandler from "./ImageHandler";
+import LogoutPage from "./PageObjects/LogoutPage";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
 //const assert = require('assert');
@@ -60,27 +61,29 @@ export class TwitterPromoter {
 	 * Performs routine twitter actions
 	 */
 	async routineActions() {
-		await this
-			.updateSuspendedFlag()
-			.then(() => this.likeAllNotifications())
+		await this.likeAllNotifications()
 			.then(() => this.sendMessageOnDMRequest())
 			.then(() => this.saveFollowingCount())
 			.then(() => this.saveFollowerCount())
 			.then(() => this.followRandomPeople())
+			.then(() => this.updateSuspendedFlag())
 	}
 	async updateSuspendedFlag() {
 		await this.guardInit();
+		await this.logout()
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
 		//DONT login the user...can only see suspended status if not logged in
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
-		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 5000})
-			.then(() => {
-				this.log("info", `Account is suspended`)
-				this.twitterAccountsDAO.setSuspended(this.credentials.username);
-			})
-			.catch(() => {
-				this.log("info", `Account is not suspended`);
-			})
+		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 50000})
+		.then(() => {
+			console.log('Account is suspended');
+			this.log("error", `Account is suspended`)
+			this.twitterAccountsDAO.setSuspended(this.credentials.username);
+		})
+		.catch(() => {
+			console.log('Account is not suspended');
+			this.log("info", `Account is not suspended`);
+		})
 	}
 
 	async likeAllNotifications() {
@@ -248,6 +251,13 @@ export class TwitterPromoter {
 			});
 			await this.pageWrapper.page.waitFor(500)
 		}
+	}
+
+	async logout() {
+		await this.pageWrapper.page.goto(LogoutPage.url, this.navigationParams);
+		await this.pageWrapper.page.waitFor(2000)
+		await this.pageWrapper.page.keyboard.press('Enter')
+		await this.pageWrapper.page.waitFor(5000)
 	}
 
 	async login() {

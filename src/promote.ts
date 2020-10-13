@@ -14,10 +14,10 @@ export async function promote(promotion: string) {
 	let twitterAccount = new TwitterPromoter(twitterAccountInfo.username, twitterAccountInfo.password)
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
-		.then(() => twitterAccount.routineActions())
 		.catch((e) => {
 			Logger.log({level: "error", message: "Tweeting failed:"+ e});
 		})
+		.then(() => twitterAccount.routineActions())
 		.finally(() => twitterAccount.close())
 }
 
