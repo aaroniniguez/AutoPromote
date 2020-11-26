@@ -81,7 +81,6 @@ export class TwitterPromoter {
 			this.twitterAccountsDAO.setSuspended(this.credentials.username);
 		})
 		.catch(() => {
-			console.log('Account is not suspended');
 			this.log("info", `Account is not suspended`);
 		})
 	}
@@ -258,6 +257,7 @@ export class TwitterPromoter {
 		await this.pageWrapper.page.waitFor(2000)
 		await this.pageWrapper.page.keyboard.press('Enter')
 		await this.pageWrapper.page.waitFor(5000)
+		this.loggedon = false;
 	}
 
 	async login() {
@@ -279,7 +279,7 @@ export class TwitterPromoter {
 				throw new Error(`Login went to invalid url: ${url}`);
 			}
 			else {
-				this.loggedon = true
+				this.loggedon = true;
 			}
 		} catch(e) {
 			const logLevel = e.message === "Navigation failed because browser has disconnected!" ? "info" : "error";

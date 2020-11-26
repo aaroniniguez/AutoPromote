@@ -23,7 +23,7 @@ async function setupAccounts() {
 async function tweetQuote() {
 	let TwitterAccountDAO = new TwitterAccountsDAO();
 	let stockDAO = new StockDAO()
-	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet","chase"]);
+	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet","chase", "chase_unlimited", "amex"]);
 	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
 	let rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
