@@ -11,6 +11,7 @@ import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
 import ImageHandler from "./ImageHandler";
 import LogoutPage from "./PageObjects/LogoutPage";
+import { sendMessage } from "./sendMessage";
 
 const debugMode = process.argv[3] === "debug" ? true : false;
 //const assert = require('assert');
@@ -76,7 +77,7 @@ export class TwitterPromoter {
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
 		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 50000})
 		.then(() => {
-			console.log('Account is suspended');
+			sendMessage(`Account suspended: username: ${this.credentials.username}`);
 			this.log("error", `Account is suspended`)
 			this.twitterAccountsDAO.setSuspended(this.credentials.username);
 		})
