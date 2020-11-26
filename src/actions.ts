@@ -77,9 +77,12 @@ switch(adminAction) {
 	case "testing": 
 		testing();
 		break;
-	case "airbnb":
-		promote("airbnb");
-		break;
+	case "promote": 
+		if(!process.argv[3]) {
+			console.log("promote action must have a promotion argument")
+		} else {
+			promote(process.argv[3]);
+		}
 	default: 
-		console.log("Invalid Action")
+		console.log("Invalid Action");
 }
