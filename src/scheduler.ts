@@ -4,6 +4,7 @@ import {exec} from "child_process";
 import { Logger } from './lib/Logger';
 import { RowDataPacket } from 'mysql';
 import { promote } from './promote';
+import TwitterAccountsDAO from './lib/DAO/TwitterAccountsDAO';
 exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", async (error, stdout, stderr) => {
     if (error && error.code !== 1) {
         Logger.log({level: "error", message: "Start Command failed: " + error});
@@ -17,6 +18,17 @@ exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", async (error, stdout, stderr
     //one for cron job 
     //one for initial run 
     const schedulerDao = new SchedulerDAO();
+    const twitterAccountsDao = new TwitterAccountsDAO();
+    if(await twitterAccountsDao.wasUpdated()) {
+        console.log('twitter accounts was updated');
+        // update twitter account work here...
+        // done updating 
+        await twitterAccountsDao.resetUpdateFlag();
+        exec("pkill -9 node");
+    } else {
+        console.log('was not updated');
+    }
+    twitterAccountsDao.cleanup();
     const schedulerUpdated  = await schedulerDao.wasUpdated()
     if(schedulerUpdated) {
         exec("pkill -9 node");

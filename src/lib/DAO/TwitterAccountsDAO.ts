@@ -1,3 +1,4 @@
+import { RowDataPacket } from "mysql";
 import readableTimestamp from "../../utils/readable-timestamp";
 import BaseDao from "./BaseDAO";
 
@@ -7,6 +8,14 @@ export default class TwitterAccountsDAO extends BaseDao {
 		super()
 		this.username = username;
 		this.tableName = 'twitter_accounts';
+	}
+
+	async wasUpdated() {
+		return await this.DB.query(`SELECT count(*) from ${this.tableName} where updated = 1`).then((row: RowDataPacket[]) => !!row[0]['count(*)']);
+	}
+	
+	async resetUpdateFlag() {
+		return await this.DB.query(`UPDATE ${this.tableName} set updated = 0`);
 	}
 
 	async getTwitterAccount(username: string) {
@@ -36,9 +45,9 @@ export default class TwitterAccountsDAO extends BaseDao {
 	}
 
 	async addNewAccount(username: string, password: string, email: string, phone: string) {
-		//TODO: temp pass in 1 for owner
+		//TODO: temp pass in 1 for promotion_id 
 		let query = `
-			INSERT INTO ${this.tableName} (username, password, email, phone, owner)
+			INSERT INTO ${this.tableName} (username, password, email, phone, promotion_id)
 			VALUES ("${username}", "${password}", "${email}", "${phone}", 1)
 		`;
 		return await this.DB.query(query);
