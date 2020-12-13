@@ -51,7 +51,7 @@ export class TwitterPromoter {
 
 	async guardInit() {
 		if(!this.browser)
-			this.browser = await puppeteer.launch({headless: false});
+			this.browser = await puppeteer.launch({headless: true});
 		if(!this.pageWrapper) {
 			this.pageWrapper = new PageWrapper(await this.browser.newPage());
 			this.pageWrapper.init()
