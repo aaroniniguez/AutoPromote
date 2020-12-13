@@ -90,7 +90,7 @@ export class TwitterPromoter {
 		await this.guardInit();
 		await this.goToPage(NotificationsPage.url);		
 		let EH = await this.pageWrapper.page.$$(NotificationsPage.getHearts);
-		console.log(`Liking ${EH.length} mentions`)
+		this.log("info", `Liking ${EH.length} mentions`);
 		for(let i =0; i < EH.length; i++) {
 			await EH[i].click(this.clickDelay).catch((e) => console.log(e));
 

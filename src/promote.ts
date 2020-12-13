@@ -15,7 +15,7 @@ export async function promote(promotion: string) {
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
 		.catch((e) => {
-			Logger.log({level: "error", message: "Tweeting failed:"+ e});
+			twitterAccount.log("error", `Tweeting Failed: ${e}`);
 		})
 		.then(() => twitterAccount.routineActions())
 		.finally(() => twitterAccount.close())
