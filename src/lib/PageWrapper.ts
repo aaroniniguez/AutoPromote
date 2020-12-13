@@ -8,7 +8,7 @@ export default class PageWrapper {
     }
 
     async findSingleXPathElement(selector: string) {
-        return await this.page.waitForXPath(selector).catch((e) => {
+        return await this.page.waitForXPath(selector).catch(() => {
             throw new Error(`could not find xpath selector ${selector}`);
         });
     }

@@ -50,9 +50,9 @@ async function scheduleTweets() {
     promotionSchedules.forEach((entry: RowDataPacket) => {
         const numberPromotions = entry.promotions_per_day;
         for(let i =0; i < parseInt(numberPromotions); i++) {
-            let currentTimeMinutes = Math.floor(i* 1440/parseInt(numberPromotions));
-            let hour = Math.floor(currentTimeMinutes/60)
-            let minutes = currentTimeMinutes % 60;
+            const currentTimeMinutes = Math.floor(i* 1440/parseInt(numberPromotions));
+            const hour = Math.floor(currentTimeMinutes/60)
+            const minutes = currentTimeMinutes % 60;
             console.log(`${minutes} ${hour} * * *`, entry.promotion)
             cron.schedule(`${minutes} ${hour} * * *`, () => {
                 promote(entry.promotion);

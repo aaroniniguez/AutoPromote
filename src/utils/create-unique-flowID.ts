@@ -1,5 +1,5 @@
-var random = require('randomstring');
+const random = require('randomstring');
 export default function generateUniqueFlowID() {
-    var dt = new Date();
+    const dt = new Date();
     return random.generate() + dt.toISOString();
 }
