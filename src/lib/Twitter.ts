@@ -58,9 +58,6 @@ export class TwitterPromoter {
 		}
 	}
 
-	/**
-	 * Performs routine twitter actions
-	 */
 	async routineActions() {
 		await this.likeAllNotifications()
 			.then(() => this.sendMessageOnDMRequest())
@@ -71,9 +68,9 @@ export class TwitterPromoter {
 	}
 	async updateSuspendedFlag() {
 		await this.guardInit();
+		// you can only see suspended status if not logged in
 		await this.logout()
 		let ProfilePageObject = new ProfilePage(this.credentials.username);
-		//DONT login the user...can only see suspended status if not logged in
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
 		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 50000})
 		.then(() => {
@@ -168,9 +165,6 @@ export class TwitterPromoter {
 		return
 	}
 
-	/**
-	 * Go to a specific twitter page
-	 */
 	async goToPage(pageGoTo: string) {
 		await this.guardInit()
 		if(!this.loggedon) {
@@ -179,13 +173,6 @@ export class TwitterPromoter {
 		await this.pageWrapper.page.goto(pageGoTo, this.navigationParams);
 	}
 
-	async goToPageTest(page: Page, pageGoTo: string) {
-		await this.guardInit()
-		if(!this.loggedon) {
-			await this.login()
-		}
-		await page.goto(pageGoTo, this.navigationParams);
-	}
 	/**
 	 * Gets all the follow buttons on the page
 	 * @returns {Promise} array of ElementHandle's
@@ -234,7 +221,7 @@ export class TwitterPromoter {
 	/**
 	 * Follows everyone on who_to_follow page
 	 * 	1. does not follow if suspended
-	 * 	2. max follow is 5,000
+	 * 	2. twitter max allowable follow is 5,000
 	 */
 	async followRandomPeople() {
 		if(await this.canFollow() === false)
@@ -265,11 +252,9 @@ export class TwitterPromoter {
 		try {
 			await this.guardInit()
 			await this.pageWrapper.page.goto(LoginPage.url, this.navigationParams);
-			//await this.page.waitFor(3000);
 			let EH = await this.pageWrapper.findSingleElement(LoginPage.username);
 			await EH.type(this.credentials.username, this.typeDelay);
 			await this.pageWrapper.page.type(LoginPage.password, this.credentials.password, this.typeDelay);
-			//await this.page.waitFor(300000);
 			await this.pageWrapper.findSingleXPathElement(LoginPage.loginButton).then((EH)=>EH.click());
 			//check if user successfully logged in
 			//wait for page to load before getting url
@@ -305,9 +290,7 @@ export class TwitterPromoter {
 		}
 		if(!this.loggedon)
 			await this.login()
-		//print out console logging in the page
 		await this.pageWrapper.page.goto(composeTweetUrl, this.navigationParams);
-		// await this.page.waitFor(10000000);
 		await this.pageWrapper.page.waitFor(2000);
 		await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
 		if(uploadImage) {

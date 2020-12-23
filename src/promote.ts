@@ -14,6 +14,7 @@ export async function promote(promotion: string) {
 	twitterAccount
 		.tweet(promotionInfo.post, promotionInfo.image)
 		.catch((e) => {
+			// TODO: if this doesnt get reached often , send a text alert.
 			twitterAccount.log("error", `Tweeting Failed: ${e}`);
 		})
 		.then(() => twitterAccount.routineActions())

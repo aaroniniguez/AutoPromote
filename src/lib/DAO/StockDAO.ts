@@ -39,8 +39,7 @@ export default class StockDAO extends BaseDao {
 				return this.DB.query(`select count(*) from stockQuotes`)
 			})
 			.then((data) => console.log(data))
-			//TODO what type should the error object be...
-			.catch((e: QueryError)=> {
+			.catch(() => {
 				console.log("Duplicate Entries Not Allowed!");
 			});
 	}
