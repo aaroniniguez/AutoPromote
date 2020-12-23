@@ -83,6 +83,7 @@ switch(adminAction) {
 		} else {
 			promote(process.argv[3]);
 		}
+		break;
 	default: 
 		console.log("Invalid Action");
 }
