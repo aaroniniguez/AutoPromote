@@ -81,7 +81,7 @@ switch(adminAction) {
 		if(!process.argv[3]) {
 			console.log("promote action must have a promotion argument")
 		} else {
-			promote(process.argv[3]);
+			promote(process.argv[3], false);
 		}
 		break;
 	default: 

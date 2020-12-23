@@ -33,7 +33,7 @@ export class TwitterPromoter {
 	pageWrapper: PageWrapper;
 	browser: Browser;
 
-	constructor(username: string, password: string) {
+	constructor(username: string, password: string, private headless = true) {
 		this.credentials = {
 			username,
 			password
@@ -51,7 +51,7 @@ export class TwitterPromoter {
 
 	async guardInit() {
 		if(!this.browser)
-			this.browser = await puppeteer.launch({headless: true});
+			this.browser = await puppeteer.launch({headless: this.headless});
 		if(!this.pageWrapper) {
 			this.pageWrapper = new PageWrapper(await this.browser.newPage());
 			this.pageWrapper.init()
