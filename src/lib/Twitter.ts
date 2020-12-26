@@ -5,7 +5,7 @@ import LoginPage from "./PageObjects/LoginPage";
 import ProfilePage from "./PageObjects/ProfilePage.js";
 import MessagesPage from "./PageObjects/MessagesPage";
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
-import { Browser, Page, DirectNavigationOptions } from "puppeteer";
+import { Browser, DirectNavigationOptions } from "puppeteer";
 import PageWrapper from "./PageWrapper";
 import NotificationsPage from "./PageObjects/NotificationsPage";
 import generateUniqueFlowID from "../utils/create-unique-flowID";
@@ -70,7 +70,7 @@ export class TwitterPromoter {
 		await this.guardInit();
 		// you can only see suspended status if not logged in
 		await this.logout()
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
 		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 50000})
 		.then(() => {
@@ -86,7 +86,7 @@ export class TwitterPromoter {
 	async likeAllNotifications() {
 		await this.guardInit();
 		await this.goToPage(NotificationsPage.url);		
-		let EH = await this.pageWrapper.page.$$(NotificationsPage.getHearts);
+		const EH = await this.pageWrapper.page.$$(NotificationsPage.getHearts);
 		this.log("info", `Liking ${EH.length} mentions`);
 		for(let i =0; i < EH.length; i++) {
 			await EH[i].click(this.clickDelay).catch((e) => console.log(e));
@@ -95,19 +95,19 @@ export class TwitterPromoter {
 	}
 
 	log(level: string, message: string) {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		Logger.log({level: level, username: ProfilePageObject.url, message: message, id: this.flowID});
 	}
 
 	async sendMessageOnDMRequest() {
 		await this.goToPage(MessagesPage.url);
 		this.log("info", `Went to dm request url ${MessagesPage.url}`);
-		let EH = await this.pageWrapper.page.$$(MessagesPage.dmRequests);
+		const EH = await this.pageWrapper.page.$$(MessagesPage.dmRequests);
 		if(EH.length < 1) {
 			this.log("info", `could not find element with ${MessagesPage.dmRequests} selector`);
 			return
 		}
-		let newEH = EH[0]
+		const newEH = EH[0]
 		await this.pageWrapper.page.evaluate(newEH => {
 				return newEH.innerText;
 		}, newEH).then((text) => {
@@ -120,16 +120,16 @@ export class TwitterPromoter {
 	}
 
 	async saveFollowingCount() {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url);
-		let followingCountSelection = ProfilePageObject.numberFollowing;
-		let EH = await this.pageWrapper.findSingleElement(followingCountSelection);
-		let text = await this.pageWrapper.page.evaluate(EH => {
+		const followingCountSelection = ProfilePageObject.numberFollowing;
+		const EH = await this.pageWrapper.findSingleElement(followingCountSelection);
+		const text = await this.pageWrapper.page.evaluate(EH => {
 				return EH.innerText;
 		}, EH).then((text) => {
 			return text;
 		});
-		let numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
+		const numFollowing = parseInt(text.split("Following")[0].replace(",", ""));
 		await this.twitterAccountsDAO.updateFollowing(numFollowing);
 		this.log("info", `Updated number following to ${numFollowing}`);
 	}
@@ -137,22 +137,22 @@ export class TwitterPromoter {
 	 * Saves/updates the follower account in the database
 	 */
 	async saveFollowerCount() {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url);
-		let followerCountSelection = ProfilePageObject.numberOfFollowers;
-		let EH = await this.pageWrapper.findSingleElement(followerCountSelection);
-		let text = await this.pageWrapper.page.evaluate(EH => {
+		const followerCountSelection = ProfilePageObject.numberOfFollowers;
+		const EH = await this.pageWrapper.findSingleElement(followerCountSelection);
+		const text = await this.pageWrapper.page.evaluate(EH => {
 				return EH.innerText;
 		}, EH).then((text) => {
 			return text;
 		});
-		let numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
+		const numFollowers = parseInt(text.split("Followers")[0].replace(",", ""));
 		await this.twitterAccountsDAO.updateFollowers(numFollowers);
 		this.log("info", `Updated number of followers to ${numFollowers}`);
 	}
 
 	async changeWebsiteTo(url: string) {
-		let ProfilePageObject = new ProfilePage(this.credentials.username);
+		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.goToPage(ProfilePageObject.url)
 		let EH = await this.pageWrapper.findSingleXPathElement(ProfilePageObject.editProfile);
 		await EH.click()
@@ -180,8 +180,7 @@ export class TwitterPromoter {
 	async getAllFollowButtons() {
 		await this.guardInit()
 		await this.pageWrapper.page.waitForXPath(FollowPage.whoToFollow);
-		let results = await this.pageWrapper.page.$x(FollowPage.whoToFollow);
-		return results
+		return await this.pageWrapper.page.$x(FollowPage.whoToFollow);
 	}
 
 	/**
@@ -192,7 +191,7 @@ export class TwitterPromoter {
 		if(!this.loggedon)
 			await this.login()
 		await this.goToPage(FollowPage.url)
-		let followButtons = await this.getAllFollowButtons()
+		const followButtons = await this.getAllFollowButtons()
 		for(let i =0; i < followButtons.length; i ++) {
 			await followButtons[i].click(this.clickDelay).catch(function(rejection) {
 				console.log("button not clickable", rejection)
@@ -208,9 +207,9 @@ export class TwitterPromoter {
 	}
 
 	async canFollow() {
-		let followingCount = await this.twitterAccountsDAO.getNumberFollowing()
+		const followingCount = await this.twitterAccountsDAO.getNumberFollowing()
 		this.log("info", `Checked if TwitterAccount can follow, is currently following ${followingCount}`);
-		let isSuspended = await this.twitterAccountsDAO.getSuspended(this.credentials.username);
+		const isSuspended = await this.twitterAccountsDAO.getSuspended(this.credentials.username);
 		if(isSuspended === 1)
 			return false
 		if(followingCount < 4990)
@@ -231,7 +230,7 @@ export class TwitterPromoter {
 		await this.pageWrapper.page.waitForXPath(FollowPage.whoToFollow).catch(() => {
 			this.log("info", `Did not find element ${FollowPage.whoToFollow}`);
 		});
-		var results = await this.pageWrapper.page.$x(FollowPage.whoToFollow);
+		const results = await this.pageWrapper.page.$x(FollowPage.whoToFollow);
 		for(let i = 0; i < results.length; i++) {
 			await results[i].click(this.clickDelay).catch(function(rejection) {
 				console.log("Follow Button not clickable: ", rejection);
@@ -252,14 +251,14 @@ export class TwitterPromoter {
 		try {
 			await this.guardInit()
 			await this.pageWrapper.page.goto(LoginPage.url, this.navigationParams);
-			let EH = await this.pageWrapper.findSingleElement(LoginPage.username);
+			const EH = await this.pageWrapper.findSingleElement(LoginPage.username);
 			await EH.type(this.credentials.username, this.typeDelay);
 			await this.pageWrapper.page.type(LoginPage.password, this.credentials.password, this.typeDelay);
 			await this.pageWrapper.findSingleXPathElement(LoginPage.loginButton).then((EH)=>EH.click());
 			//check if user successfully logged in
 			//wait for page to load before getting url
 			await this.pageWrapper.page.waitFor(3000);
-			var url = this.pageWrapper.page.url();
+			const url = this.pageWrapper.page.url();
 			if(!LoginPage.validLoginPages.includes(url)) {
 				await this.browser.close();
 				throw new Error(`Login went to invalid url: ${url}`);
@@ -315,7 +314,7 @@ export class TwitterPromoter {
 
 		await this.twitterAccountsDAO.updateLastTweeted()
 		this.log("info", `Tweeted ${post}`);
-	};
+	}
 	
 	async close() {
 		await this.twitterAccountsDAO.cleanup();
