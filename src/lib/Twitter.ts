@@ -259,13 +259,15 @@ export class TwitterPromoter {
 			//wait for page to load before getting url
 			await this.pageWrapper.page.waitFor(3000);
 			const url = this.pageWrapper.page.url();
-			if(!LoginPage.validLoginPages.includes(url)) {
+			if(LoginPage.tempRestrictedLoginPages.includes(url)) {
+				const continueToTwitterButton = await this.pageWrapper.findSingleElement(LoginPage.continueToTwitterButton);
+				await continueToTwitterButton.click();
+			}
+			else if(!LoginPage.validLoginPages.includes(url)) {
 				await this.browser.close();
 				throw new Error(`Login went to invalid url: ${url}`);
 			}
-			else {
-				this.loggedon = true;
-			}
+			this.loggedon = true;
 		} catch(e) {
 			const logLevel = e.message === "Navigation failed because browser has disconnected!" ? "info" : "error";
 			this.log(logLevel, e);

@@ -3,14 +3,19 @@ import Page from "./Page";
 class LoginPage extends Page {
 
 	validLoginPages: string[];
+	tempRestrictedLoginPages: string[];
 	url = "https://twitter.com/login";
 
 	constructor() {
 		super()
 		this.validLoginPages = [
 			"https://twitter.com/home",
-			"https://twitter.com/"
+			"https://twitter.com/",
 		];
+		// twitter restricts accounts from following and liking if they follow more than 400 a day
+		this.tempRestrictedLoginPages = [
+			"https://twitter.com/account/access"
+		]
 	}
 
 	get username() {
@@ -18,13 +23,15 @@ class LoginPage extends Page {
 	}
 
 	get password() {
-		// old version: const passwordSelector = "input.js-password-field"
 		return "input[name='session[password]']";
 	}
 
 	get loginButton() {
-		// old version: await this.page.waitForXPath("//button[text()='Log in']").then((EH)=>EH.click());
 		return "//span[text()='Log in']";
+	}
+
+	get continueToTwitterButton() {
+		return "input[value='Continue to Twitter']";	
 	}
 
 }
