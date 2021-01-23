@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer")
 import {Logger} from "./Logger";
 import FollowPage from "./PageObjects/FollowPage";
 import LoginPage from "./PageObjects/LoginPage";
+import ComposeTweetPage from './PageObjects/ComposeTweetPage';
 import ProfilePage from "./PageObjects/ProfilePage.js";
 import MessagesPage from "./PageObjects/MessagesPage";
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
@@ -283,7 +284,6 @@ export class TwitterPromoter {
 	 */
 	async tweet(post: string, uploadImage?: string | null) {
 		await this.guardInit()
-		const composeTweetUrl = "https://twitter.com/compose/tweet";
 		if(debugMode) {
 			const session = await this.pageWrapper.page.target().createCDPSession()
 			const {windowId} = await session.send('Browser.getWindowForTarget') as {windowId: number};
@@ -291,13 +291,13 @@ export class TwitterPromoter {
 		}
 		if(!this.loggedon)
 			await this.login()
-		await this.pageWrapper.page.goto(composeTweetUrl, this.navigationParams);
+		await this.pageWrapper.page.goto(ComposeTweetPage.url, this.navigationParams);
 		await this.pageWrapper.page.waitFor(2000);
 		await this.pageWrapper.page.keyboard.type(post, this.typeDelay);
 		if(uploadImage) {
 			this.log("info", `Uploading file: ${uploadImage}`);
 			const filePath = await ImageHandler.saveImage(uploadImage);
-			(await this.pageWrapper.findSingleElement("input[type='file']")).uploadFile(filePath);
+			(await this.pageWrapper.findSingleElement(ComposeTweetPage.uploadFile)).uploadFile(filePath);
 			await this.pageWrapper.page.waitFor(10000);
 			ImageHandler.deleteImage(filePath);
 		}
@@ -310,7 +310,7 @@ export class TwitterPromoter {
 		await this.pageWrapper.page.keyboard.up('MetaLeft');
 		await this.pageWrapper.page.waitFor(9000);
 
-		if(this.pageWrapper.page.url() === composeTweetUrl) {
+		if(this.pageWrapper.page.url() === ComposeTweetPage.url) {
 			this.log("error", "Tweet Failed To Post");
 		}
 

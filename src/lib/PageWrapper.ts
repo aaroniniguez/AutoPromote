@@ -15,7 +15,7 @@ export default class PageWrapper {
 
     async findSingleElement(selector: string) {
         await this.page.waitForSelector(selector);
-        let EH = await this.page.$$(selector);
+        const EH = await this.page.$$(selector);
         if(EH.length === 0) {
             throw new Error(`could not find selector ${selector}`);
         } else {
