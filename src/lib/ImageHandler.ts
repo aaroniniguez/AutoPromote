@@ -14,8 +14,8 @@ class ImageHandler {
      * @returns string image file path
      */
     async saveImage(imageUrl: string) : Promise<string> {
-        let response = await axios.get(imageUrl, {responseType: 'stream'});
-        let filestream = fs.createWriteStream(this.createImageName(imageUrl));
+        const response = await axios.get(imageUrl, {responseType: 'stream'});
+        const filestream = fs.createWriteStream(this.createImageName(imageUrl));
         return await new Promise((resolve, reject) => {
             response.data.pipe(filestream);    
             response.data.on('end', () => {

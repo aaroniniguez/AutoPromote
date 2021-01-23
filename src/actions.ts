@@ -4,15 +4,15 @@ import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";
 import { promote } from "./promote";
 async function setupAccounts() {
-	let TwitterAccountDAO = new TwitterAccountsDAO();
-	let tasks: Promise<any>[] = [];
-	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet"]);
+	const TwitterAccountDAO = new TwitterAccountsDAO();
+	const tasks: Promise<void>[] = [];
+	const twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet"]);
 	TwitterAccountDAO.cleanup()
 	twitterAccounts.forEach((credentials) => {
-		let twitterAccount  = new TwitterPromoter(credentials.username, credentials.password);
-		let actions = twitterAccount
+		const twitterAccount  = new TwitterPromoter(credentials.username, credentials.password);
+		const actions = twitterAccount
 			.changeWebsiteTo("https://tradeforthemoney.com")
-			.catch((e: any) => {console.log(e);})
+			.catch(e => {console.log(e);})
 			.finally(() => twitterAccount.close())
 		tasks.push(actions);
 	});
@@ -21,17 +21,17 @@ async function setupAccounts() {
 
 //TODO: in future , pass in db object...
 async function tweetQuote() {
-	let TwitterAccountDAO = new TwitterAccountsDAO();
-	let stockDAO = new StockDAO()
-	let twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet","chase", "chase_unlimited", "amex"]);
-	let rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
-	let rows = await rowsPromise
+	const TwitterAccountDAO = new TwitterAccountsDAO();
+	const stockDAO = new StockDAO()
+	const twitterAccounts = await TwitterAccountDAO.getTwitterAccountsByPromotion(["tradenet","chase", "chase_unlimited", "amex"]);
+	const rowsPromise = stockDAO.getQuotes(twitterAccounts.length);
+	const rows = await rowsPromise
 	TwitterAccountDAO.cleanup();
 	stockDAO.cleanup()
-	let tasks : Promise<any>[] = [];
+	const tasks : Promise<void>[] = [];
 	twitterAccounts.forEach(twitterAccountInfo => {
-		let twitterAccount = new TwitterPromoter(twitterAccountInfo.username, twitterAccountInfo.password)
-		let accountActions = 
+		const twitterAccount = new TwitterPromoter(twitterAccountInfo.username, twitterAccountInfo.password)
+		const accountActions = 
 			twitterAccount
 				.routineActions()
 				.then(() => twitterAccount.tweet(rows.shift()["quote"]))
@@ -43,10 +43,10 @@ async function tweetQuote() {
 }
 
 async function testing() {
-	let TwitterAccountDAO = new TwitterAccountsDAO();
-	let twitterAccount = await TwitterAccountDAO.getTwitterAccount("joo11244620");
+	const TwitterAccountDAO = new TwitterAccountsDAO();
+	const twitterAccount = await TwitterAccountDAO.getTwitterAccount("joo11244620");
 	TwitterAccountDAO.cleanup();
-	let account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
+	const account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
 	await account
 		.likeAllNotifications()
 		.then(() => account.close())
@@ -54,16 +54,16 @@ async function testing() {
 }
 
 async function loginDebug(username: string) {
-	let TwitterAccountDAO = new TwitterAccountsDAO();
-	let twitterAccount = await TwitterAccountDAO.getTwitterAccount(username)
+	const TwitterAccountDAO = new TwitterAccountsDAO();
+	const twitterAccount = await TwitterAccountDAO.getTwitterAccount(username)
 	TwitterAccountDAO.cleanup();
-	let account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
+	const account = new TwitterPromoter(twitterAccount.username, twitterAccount.password, false);
 	await account
 		.login()
 		.catch((e) => console.log(e));
 }
 
-let adminAction = process.argv[2];
+const adminAction = process.argv[2];
 switch(adminAction) {
 	case "login":
 		loginDebug(process.argv[3])

@@ -24,10 +24,10 @@ export default class Database {
 		this.connection = mysql.createConnection(this.dbConfig);
 		this.connection.connect(function(err) {
 			if (err) {
-			  throw console.error('Could not connect to Mysql Server: ' + err.message);
+				throw console.error('Could not connect to Mysql Server: ' + err.message);
 			}
 			console.log('Connected to the MySQL server.');
-		  });
+		});
 	}
 
 	//this is when you want to stop the connection between your app and the mysql server..so only when your app is stopped...
@@ -53,7 +53,7 @@ export default class Database {
 						console.log(err);
 						this.disconnect();
 					}
-				};
+				}
 				resolve(rows);
 			});
 		})

@@ -5,7 +5,7 @@ import { Logger } from './lib/Logger';
 import { RowDataPacket } from 'mysql';
 import { promote } from './promote';
 import TwitterAccountsDAO from './lib/DAO/TwitterAccountsDAO';
-exec("ps -e|grep '[n]ode .*dist/scheduler\.js' -c", async (error, stdout, stderr) => {
+exec("ps -e|grep '[n]ode .*dist/scheduler.js' -c", async (error, stdout, stderr) => {
     if (error && error.code !== 1) {
         Logger.log({level: "error", message: "Start Command failed: " + error});
         return;

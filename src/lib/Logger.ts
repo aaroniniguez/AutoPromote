@@ -3,7 +3,7 @@ const {combine, prettyPrint, errors} = winston.format;
 const logPath = __dirname+"/../../logs";
 const moment = require('moment-timezone');
 
-const readableTime = winston.format((info, opts) => {
+const readableTime = winston.format(info => {
 	info.timestamp = moment().tz("America/Los_Angeles").format("LLLL");
 	return info;	
 });

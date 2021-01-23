@@ -1,20 +1,18 @@
-import { QueryError } from "mysql";
 import BaseDao from "./BaseDAO";
 
 export default class StockDAO extends BaseDao {
 	async getAllAccountFollowerData() {
-		let query = `
+		const query = `
 			SELECT *
 			FROM twitterAccounts
 			LEFT JOIN 
 			followers on twitterAccounts.id = followers.userId
 			ORDER BY twitterAccounts.id, time ASC
 		`;
-		let result = await this.DB.query(query)
-		return result;
+		return await this.DB.query(query)
 	}
 	async getAccountFollowerData(userID: string) {
-		let query =  
+		const query =  
 		`
 			SELECT *
 			FROM twitterAccounts
@@ -24,8 +22,7 @@ export default class StockDAO extends BaseDao {
 			ORDER BY time ASC
 			LIMIT 10
 		`;
-		let result = await this.DB.query(query);
-		return result;
+		return await this.DB.query(query);
 	}
 
 
@@ -33,7 +30,7 @@ export default class StockDAO extends BaseDao {
 	 * 
 	 * @param {string} quote inserts a quote into the table
 	 */
-	insert(quote: string): Promise<any> {
+	insert(quote: string) {
 		return this.DB.query(`insert into stockQuotes (quote) values("${quote}")`)
 			.then(() => {
 				return this.DB.query(`select count(*) from stockQuotes`)
@@ -50,7 +47,7 @@ export default class StockDAO extends BaseDao {
 			ORDER BY last_read ASC
 			LIMIT ${number} 
 		`).then(row => {
-			let ids = row.map((curRow) => curRow.id).join(",");
+			const ids = row.map((curRow) => curRow.id).join(",");
 			this.DB.query(`
 				UPDATE stockQuotes
 				SET last_read = now()

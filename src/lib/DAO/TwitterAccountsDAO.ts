@@ -46,7 +46,7 @@ export default class TwitterAccountsDAO extends BaseDao {
 
 	async addNewAccount(username: string, password: string, email: string, phone: string) {
 		//TODO: temp pass in 1 for promotion_id 
-		let query = `
+		const query = `
 			INSERT INTO ${this.tableName} (username, password, email, phone, promotion_id)
 			VALUES ("${username}", "${password}", "${email}", "${phone}", 1)
 		`;
@@ -65,13 +65,13 @@ export default class TwitterAccountsDAO extends BaseDao {
 	}
 	
 	async updateFollowers(numFollowers: number) {
-		let accountId = await this.getAccountID();
-		let query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${readableTimestamp()}','${numFollowers}')`;
+		const accountId = await this.getAccountID();
+		const query = `INSERT INTO followers (userId, time, followers) values('${accountId}','${readableTimestamp()}','${numFollowers}')`;
 		await this.DB.query(query);
 	}
 
 	async updateLastTweeted() {
-		let query = `UPDATE ${this.tableName} SET last_tweeted = "${readableTimestamp()}" WHERE username = "${this.username}";`;
+		const query = `UPDATE ${this.tableName} SET last_tweeted = "${readableTimestamp()}" WHERE username = "${this.username}";`;
 		await this.DB.query(query);
 	}
 }
