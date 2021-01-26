@@ -3,6 +3,7 @@ import {Logger} from "./Logger";
 import FollowPage from "./PageObjects/FollowPage";
 import LoginPage from "./PageObjects/LoginPage";
 import ComposeTweetPage from './PageObjects/ComposeTweetPage';
+import EditProfilePage from './PageObjects/EditProfilePage';
 import ProfilePage from "./PageObjects/ProfilePage.js";
 import MessagesPage from "./PageObjects/MessagesPage";
 import TwitterAccountsDAO from "./DAO/TwitterAccountsDAO";
@@ -153,14 +154,11 @@ export class TwitterPromoter {
 	}
 
 	async changeWebsiteTo(url: string) {
-		const ProfilePageObject = new ProfilePage(this.credentials.username);
-		await this.goToPage(ProfilePageObject.url)
-		let EH = await this.pageWrapper.findSingleXPathElement(ProfilePageObject.editProfile);
-		await EH.click()
-		EH = await this.pageWrapper.findSingleElement(ProfilePageObject.editWebsite);
-		await EH.click({ clickCount: 3 })
+		await this.goToPage(EditProfilePage.url)
+		let EH = await this.pageWrapper.findSingleElement(EditProfilePage.editWebsite);
+		await EH.click({clickCount: 3});
 		await EH.type(url)
-		EH = await this.pageWrapper.findSingleXPathElement(ProfilePageObject.saveProfileEdits);
+		EH = await this.pageWrapper.findSingleXPathElement(EditProfilePage.saveProfileEdits);
 		await EH.click()
 		await this.pageWrapper.page.waitForNavigation(this.navigationParams)
 		return

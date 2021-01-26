@@ -16,16 +16,8 @@ export default class ProfilePage extends Page {
 		return "//span[text()='Edit profile']";
 	}
 
-	get editWebsite() {
-		return "input[placeholder='Add your website']"
-	}
-
 	get numberOfFollowers() {
 		return `a[href='/${this.username}/followers']`;
-	}
-
-	get saveProfileEdits() {
-		return "//span[text()='Save']"
 	}
 
 	get isAcccountSuspended() {
