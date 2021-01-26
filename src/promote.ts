@@ -19,5 +19,6 @@ export async function promote(promotion: string, headless = true) {
 			sendText(`Tweeting Failed: username: ${twitterAccountInfo.username}`);
 		})
 		.then(() => twitterAccount.routineActions())
+		.catch((e) => console.trace(e))
 		.finally(() => twitterAccount.close())
 }
