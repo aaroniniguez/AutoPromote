@@ -46,14 +46,14 @@ async function testing() {
 	const TwitterAccountDAO = new TwitterAccountsDAO();
 	const twitterAccount = await TwitterAccountDAO.getTwitterAccount("joo11244620");
 	TwitterAccountDAO.cleanup();
-	const account = new TwitterPromoter(twitterAccount.username, twitterAccount.password);
+	const account = new TwitterPromoter(twitterAccount.username, twitterAccount.password, false);
 	await account
-		.likeAllNotifications()
+		.changeWebsiteTo('https://www.referyourchasecard.com/18f/FGZYL1E0HY')
 		.then(() => account.close())
 		.catch((e) => console.log(e));
 }
 
-async function loginDebug(username: string) {
+async function login(username: string) {
 	const TwitterAccountDAO = new TwitterAccountsDAO();
 	const twitterAccount = await TwitterAccountDAO.getTwitterAccount(username)
 	TwitterAccountDAO.cleanup();
@@ -66,7 +66,7 @@ async function loginDebug(username: string) {
 const adminAction = process.argv[2];
 switch(adminAction) {
 	case "login":
-		loginDebug(process.argv[3])
+		login(process.argv[3])
 		break;
 	case "quote":
 		tweetQuote();
