@@ -261,6 +261,7 @@ export class TwitterPromoter {
 			if(LoginPage.tempRestrictedLoginPages.includes(url)) {
 				const continueToTwitterButton = await this.pageWrapper.findSingleElement(LoginPage.continueToTwitterButton);
 				await continueToTwitterButton.click();
+				await this.pageWrapper.page.waitFor(2000);
 			}
 			else if(!LoginPage.validLoginPages.includes(url)) {
 				await this.browser.close();
