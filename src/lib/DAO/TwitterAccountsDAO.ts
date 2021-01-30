@@ -10,6 +10,10 @@ export default class TwitterAccountsDAO extends BaseDao {
 		this.tableName = 'twitter_accounts';
 	}
 
+	async getPromotion() : Promise<string> {
+		return (await this.DB.query(`SELECT promotion FROM ${this.tableName} WHERE username="${this.username}"`))[0]["promotion"];
+	}
+
 	async wasUpdated() {
 		return await this.DB.query(`SELECT count(*) from ${this.tableName} where updated = 1`).then((row: RowDataPacket[]) => !!row[0]['count(*)']);
 	}

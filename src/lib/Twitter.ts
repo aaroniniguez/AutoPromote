@@ -70,13 +70,14 @@ export class TwitterPromoter {
 	}
 	async updateSuspendedFlag() {
 		await this.guardInit();
-		// you can only see suspended status if not logged in
+		// you can only see suspended status when logged out
 		await this.logout()
 		const ProfilePageObject = new ProfilePage(this.credentials.username);
 		await this.pageWrapper.page.goto(ProfilePageObject.url, this.navigationParams);
 		await this.pageWrapper.page.waitForXPath(ProfilePageObject.isAcccountSuspended, {timeout: 50000})
-		.then(() => {
-			sendText(`Account suspended: username: ${this.credentials.username}`);
+		.then(async () => {
+			const promotion = await this.twitterAccountsDAO.getPromotion();
+			sendText(`Account suspended (${promotion}): username: ${this.credentials.username}`);
 			this.log("error", `Account is suspended`)
 			this.twitterAccountsDAO.setSuspended(this.credentials.username);
 		})
