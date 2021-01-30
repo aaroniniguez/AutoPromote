@@ -6,7 +6,6 @@ export default class TwitterAccountsDAO extends BaseDao {
 	private tableName: string;
 	constructor(public username?: string) {
 		super()
-		this.username = username;
 		this.tableName = 'twitter_accounts';
 	}
 
