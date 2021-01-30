@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer")
+import puppeteer from "puppeteer";
 import {Logger} from "./Logger";
 import FollowPage from "./PageObjects/FollowPage";
 import LoginPage from "./PageObjects/LoginPage";

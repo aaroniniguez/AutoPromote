@@ -1,4 +1,5 @@
-require("dotenv").config();
+import dotenv from 'dotenv'
+dotenv.config()
 import { TwitterPromoter } from "./lib/Twitter";
 import StockDAO from "./lib/DAO/StockDAO";
 import TwitterAccountsDAO from "./lib/DAO/TwitterAccountsDAO";

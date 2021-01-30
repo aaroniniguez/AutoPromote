@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '/Users/aaroniniguez/AutoPromote/.env'})
+import dotenv from 'dotenv'
+dotenv.config({ path: '/Users/aaroniniguez/AutoPromote/.env'})
 
 interface DBConfig {
 	host: string; 
